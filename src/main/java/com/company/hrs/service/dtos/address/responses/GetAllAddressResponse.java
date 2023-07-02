@@ -1,6 +1,7 @@
 package com.company.hrs.service.dtos.address.responses;
 
 import com.company.hrs.entities.Address;
+import com.company.hrs.service.dtos.city.responses.GetAllCityResponse;
 import lombok.*;
 
 @AllArgsConstructor
@@ -8,7 +9,7 @@ import lombok.*;
 @Data
 public class GetAllAddressResponse {
     private String id;
-    private GetAllAddressResponse parent;
-    private String name;
+    private GetAllCityResponse city;
+    private String addressLine;
 
 }

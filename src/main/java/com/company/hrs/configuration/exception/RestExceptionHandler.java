@@ -28,9 +28,9 @@ public class RestExceptionHandler {
         }
         return validationProblemDetails;
     }
-    @ExceptionHandler
-    @ResponseStatus(code= HttpStatus.BAD_REQUEST)
-    public ProblemDetails handleServiceException(Exception exception){
-        return new ProblemDetails(exception.getMessage());
-    }
+//    @ExceptionHandler
+//    @ResponseStatus(code= HttpStatus.BAD_REQUEST)
+//    public ProblemDetails handleServiceException(Exception exception){
+//        return new ProblemDetails(exception.getMessage());
+//    }
 }

@@ -32,8 +32,4 @@ public class AddressController {
     public void delete(String id){
         addressService.delete(id);
     }
-    @GetMapping("getbyname")
-    public List<GetByNameAddressResponse> getByName(String name){
-        return addressService.getByName(name);
-    }
 }

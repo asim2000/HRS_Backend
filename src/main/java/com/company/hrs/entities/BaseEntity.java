@@ -11,6 +11,8 @@ import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.Date;
 
 @Getter
 @Setter
@@ -24,11 +26,11 @@ public class BaseEntity {
     @GeneratedValue(generator = "db-uuid")
     private String id;
     @Column(name = "CREATED_DATE")
-    private LocalDate createdDate;
+    private LocalDateTime createdDate = LocalDateTime.now();
 
     @Column(name = "UPDATED_DATE")
     private LocalDate updatedDate;
 
     @Column(name = "ACTIVE")
-    private Long active;
+    private Long active = 1L;
 }

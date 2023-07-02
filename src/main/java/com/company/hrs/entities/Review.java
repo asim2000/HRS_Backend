@@ -14,8 +14,8 @@ import java.time.LocalDate;
 @Table(name = "REVIEW")
 public class Review extends BaseEntity{
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "CUSTOMER_ID")
-    private Customer customer;
+    @JoinColumn(name = "PERSON_ID")
+    private Person person;
 
     @Size(max = 30)
     @NotNull

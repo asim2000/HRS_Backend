@@ -15,6 +15,7 @@ public class PersonRole extends BaseEntity{
     @JoinColumn(name = "PERSON_ID")
     private Person person;
 
-    @Column(name = "ROLE_ID")
-    private byte[] roleId;
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "ROLE_ID")
+    private Role role;
 }

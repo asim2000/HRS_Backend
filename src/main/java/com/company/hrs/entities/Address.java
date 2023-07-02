@@ -15,12 +15,12 @@ import lombok.*;
 @Table(name = "ADDRESS")
 public class Address extends BaseEntity{
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "PARENT_ID",nullable = true)
-    private Address parent;
+    @JoinColumn(name = "CITY_ID",nullable = true)
+    private City city;
 
     @Size(max = 50)
     @NotNull
-    @Column(name = "NAME", nullable = false, length = 50)
-    private String name;
+    @Column(name = "ADDRESS_LINE", nullable = false, length = 50)
+    private String addressLine;
 
 }

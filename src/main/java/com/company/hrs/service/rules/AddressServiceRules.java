@@ -9,9 +9,5 @@ import org.springframework.stereotype.Service;
 @AllArgsConstructor
 public class AddressServiceRules {
     private AddressRepository addressRepository;
-    public void checkIfAddressNameExists(String name){
-        if(addressRepository.existsAddressByNameIgnoreCase(name)){
-            throw new ServiceException("Address name exists");
-        }
-    }
+
 }

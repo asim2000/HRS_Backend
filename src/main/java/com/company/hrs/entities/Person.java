@@ -5,24 +5,30 @@ import com.company.hrs.enums.Gender;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.ColumnDefault;
+import org.springframework.beans.factory.annotation.Value;
 
 import java.time.LocalDate;
 
 @Getter
 @Setter
 @Entity
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "PERSON")
 public class Person extends BaseEntity{
 
-    @NotNull
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ADDRESS_ID", nullable = false)
     private Address address;
 
-    @NotNull
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "CONTACT_ID", nullable = false)
     private Contact contact;
 
@@ -48,12 +54,11 @@ public class Person extends BaseEntity{
     @Size(max = 50)
     @NotNull
     @Column(name = "GENDER", nullable = false, length = 50)
-    private Gender gender;
+    private String gender;
 
     @Size(max = 50)
-    @NotNull
-    @Column(name = "ACCOUNT_STATUS", nullable = false, length = 50)
-    private AccountStatus accountStatus;
+    @Column(name = "ACCOUNT_STATUS", length = 50)
+    private String accountStatus = "ACTIVE";
 
     @Column(name = "IMAGE")
     private byte[] image;

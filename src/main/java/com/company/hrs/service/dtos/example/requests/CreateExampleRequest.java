@@ -15,4 +15,5 @@ public class CreateExampleRequest {
     @NotNull
     @NotBlank
     private String name;
+    private String surname;
 }

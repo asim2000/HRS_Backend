@@ -15,8 +15,8 @@ public class CustomerService extends BaseEntity{
 
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "CUSTOMER_ID", nullable = false)
-    private Customer customer;
+    @JoinColumn(name = "PERSON_ID", nullable = false)
+    private Person person;
 
     @NotNull
     @Column(name = "SERVICE_ID", nullable = false)

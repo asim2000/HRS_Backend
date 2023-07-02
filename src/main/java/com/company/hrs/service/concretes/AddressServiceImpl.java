@@ -5,6 +5,7 @@ import com.company.hrs.repository.AddressRepository;
 import com.company.hrs.service.abstracts.AddressService;
 import com.company.hrs.service.dtos.address.requestes.CreateAddressRequest;
 import com.company.hrs.service.dtos.address.requestes.UpdateAddressRequest;
+import com.company.hrs.service.dtos.address.responses.CreatedAddressResponse;
 import com.company.hrs.service.dtos.address.responses.GetAllAddressResponse;
 import com.company.hrs.service.dtos.address.responses.GetByNameAddressResponse;
 import com.company.hrs.service.rules.AddressServiceRules;
@@ -29,10 +30,10 @@ public class AddressServiceImpl implements AddressService
     }
 
     @Override
-    public void create(CreateAddressRequest createAddressRequest) {
-        addressServiceRules.checkIfAddressNameExists(createAddressRequest.getName());
+    public CreatedAddressResponse create(CreateAddressRequest createAddressRequest) {
         Address address = modelMapperService.forRequest().map(createAddressRequest,Address.class);
-        addressRepository.save(address);
+        Address createdAddress = addressRepository.save(address);
+        return modelMapperService.forResponse().map(createdAddress, CreatedAddressResponse.class);
     }
 
     @Override
@@ -43,11 +44,5 @@ public class AddressServiceImpl implements AddressService
     @Override
     public void update(UpdateAddressRequest updateAddressRequest) {
         addressRepository.save(modelMapperService.forRequest().map(updateAddressRequest,Address.class));
-    }
-
-    @Override
-    public List<GetByNameAddressResponse> getByName(String name) {
-        List<Address> addresses = addressRepository.findAddressByName(name);
-        return addresses.stream().map(address -> modelMapperService.forResponse().map(address, GetByNameAddressResponse.class)).collect(Collectors.toList());
     }
 }
