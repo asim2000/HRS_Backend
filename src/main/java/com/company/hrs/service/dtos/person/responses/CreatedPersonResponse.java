@@ -20,7 +20,7 @@ public class CreatedPersonResponse {
     private String name;
     private String surname;
     private LocalDate dateOfBirth;
-    private Gender gender;
+    private String gender;
     private String password;
     private byte[] image;
 }

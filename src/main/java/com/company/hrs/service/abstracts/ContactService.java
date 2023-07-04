@@ -6,5 +6,6 @@ import com.company.hrs.service.dtos.contact.responses.CreatedContactResponse;
 
 public interface ContactService {
     CreatedContactResponse create(CreateContactRequest request);
-    boolean existsContactByByEmail(String email);
+    boolean existsContactByEmail(String email);
+
 }

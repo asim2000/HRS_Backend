@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @AllArgsConstructor
-public class ContactServiceImpl implements ContactService {
+public class ContactServiceImpl implements ContactService{
     private ContactRepository contactRepository;
     private ModelMapperService modelMapperService;
 
@@ -22,7 +22,9 @@ public class ContactServiceImpl implements ContactService {
     }
 
     @Override
-    public boolean existsContactByByEmail(String email) {
+    public boolean existsContactByEmail(String email) {
         return contactRepository.existsContactByEmail(email);
     }
+
+
 }

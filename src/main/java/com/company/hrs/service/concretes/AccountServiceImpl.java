@@ -2,6 +2,7 @@ package com.company.hrs.service.concretes;
 
 import com.company.hrs.entities.*;
 import com.company.hrs.service.abstracts.*;
+import com.company.hrs.service.dtos.account.requests.LoginRequest;
 import com.company.hrs.service.dtos.account.requests.RegisterRequest;
 import com.company.hrs.service.dtos.address.requestes.CreateAddressRequest;
 import com.company.hrs.service.dtos.address.responses.CreatedAddressResponse;
@@ -9,6 +10,7 @@ import com.company.hrs.service.dtos.contact.requests.CreateContactRequest;
 import com.company.hrs.service.dtos.contact.responses.CreatedContactResponse;
 import com.company.hrs.service.dtos.person.requests.CreatePersonRequest;
 import com.company.hrs.service.dtos.person.responses.CreatedPersonResponse;
+import com.company.hrs.service.dtos.person.responses.LoginPersonResponse;
 import com.company.hrs.service.dtos.personRole.requests.CreatePersonRoleRequest;
 import com.company.hrs.service.dtos.role.requests.CreateRoleRequest;
 import com.company.hrs.service.rules.AccountServiceRules;
@@ -59,6 +61,14 @@ public class AccountServiceImpl implements AccountService {
             role = roleService.create(new CreateRoleRequest(request.getRole()));
             createPersonRole(createdPerson.getId(),role.getId());
         }
+
+    }
+
+    @Override
+    public LoginPersonResponse login(LoginRequest loginRequest) {
+        accountServiceRules.checkIfPersonEmailNotExists(loginRequest.getEmail());
+        accountServiceRules.checkIfPersonPasswordConfirm(loginRequest);
+        return personService.getPersonByEmail(loginRequest.getEmail());
 
     }
 

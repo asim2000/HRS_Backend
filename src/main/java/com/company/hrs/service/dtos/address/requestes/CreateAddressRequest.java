@@ -15,5 +15,6 @@ public class CreateAddressRequest {
     private String cityId;
     @NotBlank
     @NotNull
+    @Column(name = "ADDRESS_LINE")
     private String addressLine;
 }

@@ -5,6 +5,7 @@ import com.company.hrs.repository.PersonRepository;
 import com.company.hrs.service.abstracts.PersonService;
 import com.company.hrs.service.dtos.person.requests.CreatePersonRequest;
 import com.company.hrs.service.dtos.person.responses.CreatedPersonResponse;
+import com.company.hrs.service.dtos.person.responses.LoginPersonResponse;
 import com.company.hrs.utils.mappers.ModelMapperService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -19,5 +20,15 @@ public class PersonServiceImpl implements PersonService {
         Person p = modelMapperService.forRequest().map(createPersonRequest,Person.class);
         Person person = personRepository.save(p);
         return modelMapperService.forResponse().map(person,CreatedPersonResponse.class);
+    }
+
+    @Override
+    public boolean existsPersonByEmailAndPassword(String email, String password) {
+        return personRepository.existsPersonByEmailAndPassword(email,password);
+    }
+
+    @Override
+    public LoginPersonResponse getPersonByEmail(String email) {
+        return modelMapperService.forResponse().map(personRepository.getPersonByEmail(email),LoginPersonResponse.class);
     }
 }

@@ -14,6 +14,7 @@ import java.util.List;
 @RestController
 @RequestMapping("city")
 @AllArgsConstructor
+@CrossOrigin
 public class CityController {
     private CityService cityService;
     @PostMapping

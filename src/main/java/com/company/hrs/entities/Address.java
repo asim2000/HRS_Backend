@@ -15,7 +15,8 @@ import lombok.*;
 @Table(name = "ADDRESS")
 public class Address extends BaseEntity{
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "CITY_ID",nullable = true)
+    @NotNull
+    @JoinColumn(name = "CITY_ID",nullable = false)
     private City city;
 
     @Size(max = 50)
