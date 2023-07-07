@@ -36,13 +36,13 @@ public class CityServiceImpl implements CityService {
     }
 
     @Override
-    public void delete(String id) {
+    public void delete(Long id) {
         cityRepository.deleteById(id);
     }
 
     @Override
     public List<GetAllCityResponse> getAll() {
-        List<City> cities = cityRepository.getAllByActiveOrderByNameAsc(Status.ACTIVE.value);
+        List<City> cities = cityRepository.getAllByActiveOrderByNameAsc(Status.ACTIVE);
         return cities.stream().map(city -> modelMapperService.forResponse().map(city,GetAllCityResponse.class)).collect(Collectors.toList());
     }
 }

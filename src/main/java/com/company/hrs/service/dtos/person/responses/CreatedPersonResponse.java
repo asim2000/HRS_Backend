@@ -12,11 +12,11 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CreatedPersonResponse {
-    private String id;
-    @Column(name = "ADDRESS_ID")
-    private String addressId;
-    @Column(name = "CONTACT_ID")
-    private String contactId;
+    private Long id;
+    @Column(name = "address_id")
+    private Long addressId;
+    @Column(name = "contact_id")
+    private Long contactId;
     private String name;
     private String surname;
     private LocalDate dateOfBirth;

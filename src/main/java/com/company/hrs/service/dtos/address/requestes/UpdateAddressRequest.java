@@ -13,11 +13,11 @@ import lombok.NoArgsConstructor;
 public class UpdateAddressRequest {
     @NotBlank
     @NotNull
-    private String id;
-    @Column(name = "CITY_ID")
-    private String cityId;
+    private Long id;
+    @Column(name = "city_id")
+    private Long cityId;
     @NotBlank
     @NotNull
-    @Column(name = "ADDRESS_LINE")
+    @Column(name = "address_line")
     private String addressLine;
 }

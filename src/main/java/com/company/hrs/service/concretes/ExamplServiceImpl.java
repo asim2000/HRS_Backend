@@ -35,7 +35,7 @@ public class ExamplServiceImpl implements ExampleService {
     }
 
     @Override
-    public void delete(String id) {
+    public void delete(Long id) {
         exampleRepository.deleteById(id);
     }
 }

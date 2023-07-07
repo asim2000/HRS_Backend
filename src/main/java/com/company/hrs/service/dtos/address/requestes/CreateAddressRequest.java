@@ -11,10 +11,10 @@ import lombok.*;
 @NoArgsConstructor
 @Data
 public class CreateAddressRequest {
-    @Column(name = "CITY_ID")
-    private String cityId;
+    @Column(name = "city_id")
+    private Long cityId;
     @NotBlank
     @NotNull
-    @Column(name = "ADDRESS_LINE")
+    @Column(name = "address_line")
     private String addressLine;
 }

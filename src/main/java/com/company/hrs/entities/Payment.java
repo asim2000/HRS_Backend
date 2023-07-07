@@ -4,29 +4,29 @@ import com.company.hrs.enums.PaymentStatus;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
-import java.time.LocalDate;
-
-@Getter
-@Setter
+@Data
 @Entity
-@Table(name = "PAYMENT")
+@Table(name = "payment")
 public class Payment extends BaseEntity{
 
     @NotNull
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "CREDIT_CARD_ID", nullable = false)
+    @ManyToOne()
+    @JoinColumn(name = "credit_card_id", nullable = false)
     private CreditCard creditCard;
+
+    @ManyToOne()
+    @JoinColumn(name = "booking_id",nullable = false)
+    private Booking booking;
 
     @Size(max = 50)
     @NotNull
-    @Column(name = "PAYMENT_STATUS", nullable = false, length = 50)
+    @Column(name = "payment_status", nullable = false, length = 50)
     private PaymentStatus paymentStatus;
 
     @NotNull
-    @Column(name = "TOTAL", nullable = false)
-    private Double total;
+    @Column(name = "amount", nullable = false)
+    private Double amount;
 
 }

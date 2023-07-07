@@ -1,36 +1,34 @@
 package com.company.hrs.entities;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.MappedSuperclass;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import com.company.hrs.enums.Status;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.GenericGenerator;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Date;
 
-@Getter
-@Setter
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
 @MappedSuperclass
 public class BaseEntity {
     @Id
-    @Column(name = "ID", nullable = false)
-    @GenericGenerator(name = "db-uuid", strategy = "guid")
-    @GeneratedValue(generator = "db-uuid")
-    private String id;
-    @Column(name = "CREATED_DATE")
+    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    @NotNull
+    @Column(name = "created_date",columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
     private LocalDateTime createdDate = LocalDateTime.now();
 
-    @Column(name = "UPDATED_DATE")
+    @Column(name = "updated_date")
     private LocalDate updatedDate;
 
-    @Column(name = "ACTIVE")
-    private Long active = 1L;
+    @NotNull
+    @Column(name = "active",columnDefinition = "TINYINT(4) default 0")
+    @Enumerated(EnumType.ORDINAL)
+    private Status active = Status.ACTIVE;
 }

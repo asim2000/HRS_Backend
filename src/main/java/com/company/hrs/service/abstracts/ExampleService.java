@@ -11,5 +11,5 @@ public interface ExampleService {
     List<GetAllExampleResponse> getAll();
     void create(CreateExampleRequest createExampleRequest);
     void update(UpdateExampleRequest updateExampleRequest);
-    void delete(String id);
+    void delete(Long id);
 }

@@ -4,26 +4,26 @@ import com.company.hrs.enums.Position;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDate;
 
-@Getter
-@Setter
+@Data
 @Entity
 @Table(name = "EMPLOYEE")
 public class Employee extends BaseEntity{
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne()
     @JoinColumn(name = "PARENT_ID")
     private Employee parent;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne()
     @JoinColumn(name = "PERSON_ID")
     private Person person;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne()
     @JoinColumn(name = "HOTEL_ID")
     private Hotel hotel;
 
@@ -31,4 +31,8 @@ public class Employee extends BaseEntity{
     @NotNull
     @Column(name = "POSITION", nullable = false, length = 50)
     private Position position;
+    @NotNull
+    @OneToOne()
+    @JoinColumn(name = "room_house_keeper",referencedColumnName = "id", nullable = false)
+    private RoomHouseKeeper roomHouseKeeper;
 }

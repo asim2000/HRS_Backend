@@ -1,25 +1,28 @@
 package com.company.hrs.entities;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
-@Getter
-@Setter
+@Data
 @Entity
-@Table(name = "ROLE")
+@Table(name = "role")
 public class Role extends BaseEntity{
 
     @Size(max = 20)
     @NotNull
-    @Column(name = "NAME", nullable = false, length = 20)
+    @NotEmpty
+    @Column(name = "name", nullable = false, length = 20)
     private String name;
+    @ManyToMany(mappedBy = "roles")
+    private List<Person> persons = new ArrayList<>();
 
 }

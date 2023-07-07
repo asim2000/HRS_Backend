@@ -31,6 +31,6 @@ public class RestExceptionHandler {
 //    @ExceptionHandler
 //    @ResponseStatus(code= HttpStatus.BAD_REQUEST)
 //    public ProblemDetails handleServiceException(Exception exception){
-//        return new ProblemDetails(exception.getMessage());
+//        return new ProblemDetails("Internal exception");
 //    }
 }

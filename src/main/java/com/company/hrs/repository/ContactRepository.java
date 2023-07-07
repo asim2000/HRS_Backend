@@ -4,7 +4,7 @@ import com.company.hrs.entities.Contact;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
-public interface ContactRepository extends JpaRepository<Contact,String> {
+public interface ContactRepository extends JpaRepository<Contact,Long> {
     boolean existsContactByEmail(String email);
 
 }

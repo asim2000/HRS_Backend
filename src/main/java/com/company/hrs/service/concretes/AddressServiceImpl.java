@@ -1,6 +1,7 @@
 package com.company.hrs.service.concretes;
 
 import com.company.hrs.entities.Address;
+import com.company.hrs.entities.City;
 import com.company.hrs.repository.AddressRepository;
 import com.company.hrs.service.abstracts.AddressService;
 import com.company.hrs.service.dtos.address.requestes.CreateAddressRequest;
@@ -31,13 +32,18 @@ public class AddressServiceImpl implements AddressService
 
     @Override
     public CreatedAddressResponse create(CreateAddressRequest createAddressRequest) {
-        Address address = modelMapperService.forRequest().map(createAddressRequest,Address.class);
+        Address address = new Address();
+        address.setAddressLine(createAddressRequest.getAddressLine());
+        City city = new City();
+        city.setId(createAddressRequest.getCityId());
+        address.setCity(city);
+        //Address address = modelMapperService.forRequest().map(createAddressRequest,Address.class);
         Address createdAddress = addressRepository.save(address);
         return modelMapperService.forResponse().map(createdAddress, CreatedAddressResponse.class);
     }
 
     @Override
-    public void delete(String id) {
+    public void delete(Long id) {
         addressRepository.deleteById(id);
     }
 

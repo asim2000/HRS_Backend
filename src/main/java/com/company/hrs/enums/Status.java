@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
 public enum Status {
-    ACTIVE(1),DEACTIVE(0);
+    ACTIVE(0),DEACTIVE(1);
 
     public int value;
 }

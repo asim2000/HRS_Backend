@@ -11,12 +11,15 @@ import com.company.hrs.service.dtos.contact.responses.CreatedContactResponse;
 import com.company.hrs.service.dtos.person.requests.CreatePersonRequest;
 import com.company.hrs.service.dtos.person.responses.CreatedPersonResponse;
 import com.company.hrs.service.dtos.person.responses.LoginPersonResponse;
-import com.company.hrs.service.dtos.personRole.requests.CreatePersonRoleRequest;
 import com.company.hrs.service.dtos.role.requests.CreateRoleRequest;
 import com.company.hrs.service.rules.AccountServiceRules;
 import com.company.hrs.utils.mappers.ModelMapperService;
+
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
 @AllArgsConstructor
@@ -24,12 +27,12 @@ public class AccountServiceImpl implements AccountService {
     private PersonService personService;
     private AddressService addressService;
     private RoleService roleService;
-    private PersonRoleService personRoleService;
     private AccountServiceRules accountServiceRules;
     private ModelMapperService modelMapperService;
     private final ContactService contactService;
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void register(RegisterRequest request) {
         accountServiceRules.checkIfPersonEmailExists(request.getEmail());
 
@@ -52,16 +55,13 @@ public class AccountServiceImpl implements AccountService {
         createPersonRequest.setImage(request.getImage());
         createPersonRequest.setPassword(request.getPassword());
         createPersonRequest.setDateOfBirth(request.getDateOfBirth());
-
-        CreatedPersonResponse createdPerson = personService.create(createPersonRequest);
-        Role role=null;
-        if((role = roleService.getRoleByNameIgnoreCase(request.getRole()))!=null){
-            createPersonRole(createdPerson.getId(),role.getId());
-        }else{
+        Role role = null;
+        if((role = roleService.getRoleByNameIgnoreCase(request.getRole()))==null){
             role = roleService.create(new CreateRoleRequest(request.getRole()));
-            createPersonRole(createdPerson.getId(),role.getId());
         }
-
+        role.getPersons().add(modelMapperService.forRequest().map(createPersonRequest,Person.class));
+        createPersonRequest.getRoles().add(role);
+        CreatedPersonResponse createdPerson = personService.create(createPersonRequest);
     }
 
     @Override
@@ -71,12 +71,4 @@ public class AccountServiceImpl implements AccountService {
         return personService.getPersonByEmail(loginRequest.getEmail());
 
     }
-
-    public void createPersonRole(String personId,String roleId){
-        CreatePersonRoleRequest createPersonRoleRequest = new CreatePersonRoleRequest();
-        createPersonRoleRequest.setPersonId(personId);
-        createPersonRoleRequest.setRoleId(roleId);
-        personRoleService.create(createPersonRoleRequest);
-    }
-
 }

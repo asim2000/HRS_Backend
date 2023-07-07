@@ -28,8 +28,8 @@ public class AddressController {
     public void update(@RequestBody @Valid UpdateAddressRequest updateAddressRequest){
         addressService.update(updateAddressRequest);
     }
-    @DeleteMapping()
-    public void delete(String id){
+    @DeleteMapping("{id}")
+    public void delete(@PathVariable Long id){
         addressService.delete(id);
     }
 }

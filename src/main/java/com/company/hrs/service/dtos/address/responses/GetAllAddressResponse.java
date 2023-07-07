@@ -2,6 +2,7 @@ package com.company.hrs.service.dtos.address.responses;
 
 import com.company.hrs.entities.Address;
 import com.company.hrs.service.dtos.city.responses.GetAllCityResponse;
+import com.company.hrs.service.dtos.city.responses.GetCityResponse;
 import jakarta.persistence.Column;
 import lombok.*;
 
@@ -9,9 +10,9 @@ import lombok.*;
 @NoArgsConstructor
 @Data
 public class GetAllAddressResponse {
-    private String id;
-    private GetAllCityResponse city;
-    @Column(name = "ADDRESS_LINE")
+    private Long id;
+    private GetCityResponse city;
+    @Column(name = "address_line")
     private String addressLine;
 
 }

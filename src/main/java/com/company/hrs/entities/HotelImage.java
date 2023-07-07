@@ -2,24 +2,25 @@ package com.company.hrs.entities;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDate;
 
-@Getter
-@Setter
+@Data
 @Entity
-@Table(name = "HOTEL_IMAGE")
+@Table(name = "hotel_image")
 public class HotelImage extends BaseEntity{
 
     @NotNull
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "HOTEL_ID", nullable = false)
+    @ManyToOne()
+    @JoinColumn(name = "hotel_id", nullable = false)
     private Hotel hotel;
 
     @NotNull
-    @Column(name = "IMAGE", nullable = false)
+    @Column(name = "image", nullable = false)
+    @Lob
     private byte[] image;
 
 }

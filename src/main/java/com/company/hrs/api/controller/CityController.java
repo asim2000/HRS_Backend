@@ -8,7 +8,9 @@ import com.company.hrs.service.dtos.city.responses.GetAllCityResponse;
 import com.company.hrs.service.dtos.city.responses.UpdatedCityResponse;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.HttpServerErrorException;
 
+import java.rmi.ServerException;
 import java.util.List;
 
 @RestController
@@ -25,8 +27,8 @@ public class CityController {
     public UpdatedCityResponse update(UpdateCityRequest updateCityRequest){
         return cityService.update(updateCityRequest);
     }
-    @DeleteMapping
-    public void delete(String id){
+    @DeleteMapping("{id}")
+    public void delete(@PathVariable Long id){
         cityService.delete(id);
     }
     @GetMapping

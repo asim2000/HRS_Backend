@@ -30,8 +30,8 @@ public class ExampleController {
     public void update(UpdateExampleRequest updateExampleRequest){
         exampleService.update(updateExampleRequest);
     }
-    @DeleteMapping()
-    public void delete(String id){
+    @DeleteMapping("{id}")
+    public void delete(@PathVariable Long id){
         exampleService.delete(id);
     }
 }

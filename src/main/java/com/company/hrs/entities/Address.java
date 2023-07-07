@@ -7,21 +7,24 @@ import jakarta.validation.constraints.Size;
 import lombok.*;
 
 @Data
-@Getter
-@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "ADDRESS")
+@Table(name = "address")
 public class Address extends BaseEntity{
-    @ManyToOne(fetch = FetchType.LAZY)
-    @NotNull
-    @JoinColumn(name = "CITY_ID",nullable = false)
+    @ManyToOne()
+    @JoinColumn(name = "city_id",referencedColumnName = "id",nullable = false)
     private City city;
 
     @Size(max = 50)
     @NotNull
-    @Column(name = "ADDRESS_LINE", nullable = false, length = 50)
+    @Column(name = "address_line", nullable = false, length = 50)
     private String addressLine;
+
+    @OneToOne(mappedBy = "address")
+    private Hotel hotel;
+
+    @OneToOne(mappedBy = "address")
+    private Person person;
 
 }

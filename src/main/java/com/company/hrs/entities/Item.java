@@ -1,25 +1,25 @@
 package com.company.hrs.entities;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDate;
+import java.util.List;
 
-@Getter
-@Setter
+@Data
 @Entity
-@Table(name = "ITEM")
+@Table(name = "item")
 public class Item extends BaseEntity{
 
-    @Size(max = 20)
+    @Size(max = 50)
     @NotNull
-    @Column(name = "NAME", nullable = false, length = 20)
+    @Column(name = "name", nullable = false, length = 50)
     private String name;
 
+    @ManyToMany(mappedBy = "items")
+    private List<Room> rooms;
 }

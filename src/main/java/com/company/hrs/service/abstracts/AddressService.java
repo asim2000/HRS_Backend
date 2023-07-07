@@ -12,6 +12,6 @@ import java.util.List;
 public interface AddressService {
     List<GetAllAddressResponse> getAll();
     CreatedAddressResponse create(CreateAddressRequest createAddressRequest);
-    void delete(String id);
+    void delete(Long id);
     void update(UpdateAddressRequest updateAddressRequest);
 }
