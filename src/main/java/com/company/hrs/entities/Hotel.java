@@ -16,12 +16,12 @@ import java.util.List;
 public class Hotel extends BaseEntity{
 
     @NotNull
-    @OneToOne()
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "address_id",referencedColumnName = "id",nullable = false)
     private Address address;
 
     @NotNull
-    @OneToOne()
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "contact_id",referencedColumnName = "id", nullable = false)
     private Contact contact;
 
@@ -37,14 +37,14 @@ public class Hotel extends BaseEntity{
     @Size(max = 2000)
     @Column(name = "description", length = 2000)
     private String description;
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(
             name = "hotel_service",
             joinColumns = @JoinColumn(name = "hotel_id"),
             inverseJoinColumns = @JoinColumn(name = "service_id"))
     private List<Service> services;
 
-    @OneToMany(mappedBy = "hotel")
+    @OneToMany(mappedBy = "hotel",cascade = CascadeType.ALL)
     private List<HotelImage> images;
 
     @OneToMany(mappedBy = "hotel")

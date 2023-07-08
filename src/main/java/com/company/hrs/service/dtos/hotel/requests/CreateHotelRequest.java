@@ -2,6 +2,7 @@ package com.company.hrs.service.dtos.hotel.requests;
 
 import com.company.hrs.entities.Service;
 import com.company.hrs.service.dtos.service.requests.CreateServiceRequest;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import jakarta.persistence.Column;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -10,6 +11,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.Serializable;
 import java.util.List;
 
 @NoArgsConstructor
@@ -22,6 +24,6 @@ public class CreateHotelRequest {
     private String addressLine;
     private String phone;
     private String description;
-    private List<Integer> serviceIds;
-    private MultipartFile images;
+    private List<Long> serviceIds;
+    private MultipartFile[] images;
 }

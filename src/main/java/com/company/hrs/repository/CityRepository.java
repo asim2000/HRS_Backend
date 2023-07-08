@@ -8,4 +8,5 @@ import java.util.List;
 
 public interface CityRepository extends JpaRepository<City,Long> {
     List<City> getAllByActiveOrderByNameAsc(Status status);
+    City getCityByIdAndActive(Long id,Status status);
 }

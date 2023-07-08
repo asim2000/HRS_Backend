@@ -19,8 +19,7 @@ public class Contact extends BaseEntity{
     private String phone;
 
     @Size(max = 50)
-    @NotNull
-    @Column(name = "email", nullable = false, length = 50)
+    @Column(name = "email", length = 50)
     private String email;
 
     @OneToOne(mappedBy = "contact")

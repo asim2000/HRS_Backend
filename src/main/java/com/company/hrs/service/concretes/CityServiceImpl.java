@@ -6,10 +6,7 @@ import com.company.hrs.repository.CityRepository;
 import com.company.hrs.service.abstracts.CityService;
 import com.company.hrs.service.dtos.city.requests.CreateCityRequest;
 import com.company.hrs.service.dtos.city.requests.UpdateCityRequest;
-import com.company.hrs.service.dtos.city.responses.CreatedCityResponse;
-import com.company.hrs.service.dtos.city.responses.DeletedCityResponse;
-import com.company.hrs.service.dtos.city.responses.GetAllCityResponse;
-import com.company.hrs.service.dtos.city.responses.UpdatedCityResponse;
+import com.company.hrs.service.dtos.city.responses.*;
 import com.company.hrs.utils.mappers.ModelMapperService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -44,5 +41,10 @@ public class CityServiceImpl implements CityService {
     public List<GetAllCityResponse> getAll() {
         List<City> cities = cityRepository.getAllByActiveOrderByNameAsc(Status.ACTIVE);
         return cities.stream().map(city -> modelMapperService.forResponse().map(city,GetAllCityResponse.class)).collect(Collectors.toList());
+    }
+
+    @Override
+    public GetCityResponse getById(Long id) {
+        return modelMapperService.forResponse().map(cityRepository.getCityByIdAndActive(id,Status.ACTIVE),GetCityResponse.class);
     }
 }
