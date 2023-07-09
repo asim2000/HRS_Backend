@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -20,5 +21,5 @@ public class Service extends BaseEntity{
     private String name;
 
     @ManyToMany(mappedBy = "services")
-    private List<Hotel> hotels;
+    private List<Hotel> hotels = new ArrayList<>();
 }

@@ -44,6 +44,7 @@ public class HotelServiceImpl implements HotelService {
             HotelImage hotelImage = new HotelImage();
             try {
                 hotelImage.setImage(image.getBytes());
+                hotelImage.setHotel(hotel);
                 return hotelImage;
             } catch (IOException e) {
                 throw new RuntimeException(e);
@@ -52,8 +53,11 @@ public class HotelServiceImpl implements HotelService {
         hotel.setServices(request.getServiceIds().stream().map(id->{
             com.company.hrs.entities.Service service = new com.company.hrs.entities.Service();
             service.setId(id);
+            service.getHotels().add(hotel);
             return service;
         }).collect(Collectors.toList()));
+        hotel.getContact().setHotel(hotel);
+        hotel.getAddress().setHotel(hotel);
         hotelRepository.save(hotel);
     }
 }

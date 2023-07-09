@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -37,15 +38,15 @@ public class Hotel extends BaseEntity{
     @Size(max = 2000)
     @Column(name = "description", length = 2000)
     private String description;
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany()
     @JoinTable(
             name = "hotel_service",
             joinColumns = @JoinColumn(name = "hotel_id"),
             inverseJoinColumns = @JoinColumn(name = "service_id"))
-    private List<Service> services;
+    private List<Service> services = new ArrayList<>();
 
     @OneToMany(mappedBy = "hotel",cascade = CascadeType.ALL)
-    private List<HotelImage> images;
+    private List<HotelImage> images = new ArrayList<>();
 
     @OneToMany(mappedBy = "hotel")
     private List<Room> rooms;
