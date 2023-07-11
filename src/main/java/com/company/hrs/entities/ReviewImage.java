@@ -13,7 +13,7 @@ import java.time.LocalDate;
 @Table(name = "review_image")
 public class ReviewImage extends BaseEntity{
     @NotNull
-    @ManyToOne()
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "review_id",referencedColumnName = "id", nullable = false)
     private Review review;
 

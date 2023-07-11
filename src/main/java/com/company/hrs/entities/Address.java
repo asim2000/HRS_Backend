@@ -1,6 +1,8 @@
 package com.company.hrs.entities;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -11,8 +13,9 @@ import lombok.*;
 @AllArgsConstructor
 @Entity
 @Table(name = "address")
+@JsonIgnoreProperties({"hibernateLazyInitializer","handler","hotel"})
 public class Address extends BaseEntity{
-    @ManyToOne()
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "city_id",referencedColumnName = "id",nullable = false)
     private City city;
 
@@ -21,10 +24,10 @@ public class Address extends BaseEntity{
     @Column(name = "address_line", nullable = false, length = 50)
     private String addressLine;
 
-    @OneToOne(mappedBy = "address")
+    @OneToOne(mappedBy = "address",fetch = FetchType.LAZY)
     private Hotel hotel;
 
-    @OneToOne(mappedBy = "address")
+    @OneToOne(mappedBy = "address",fetch = FetchType.LAZY)
     private Person person;
 
 }

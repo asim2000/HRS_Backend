@@ -17,12 +17,12 @@ import java.util.List;
 public class Hotel extends BaseEntity{
 
     @NotNull
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     @JoinColumn(name = "address_id",referencedColumnName = "id",nullable = false)
     private Address address;
 
     @NotNull
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     @JoinColumn(name = "contact_id",referencedColumnName = "id", nullable = false)
     private Contact contact;
 
@@ -30,25 +30,23 @@ public class Hotel extends BaseEntity{
     @NotNull
     @Column(name = "name", nullable = false, length = 100)
     private String name;
-
-    @NotNull
-    @Column(name = "rating", nullable = false)
-    private byte rating;
+    @Column(name = "rating")
+    private Float rating;
 
     @Size(max = 2000)
     @Column(name = "description", length = 2000)
     private String description;
-    @ManyToMany()
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "hotel_service",
             joinColumns = @JoinColumn(name = "hotel_id"),
             inverseJoinColumns = @JoinColumn(name = "service_id"))
     private List<Service> services = new ArrayList<>();
 
-    @OneToMany(mappedBy = "hotel",cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "hotel",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     private List<HotelImage> images = new ArrayList<>();
 
-    @OneToMany(mappedBy = "hotel")
+    @OneToMany(mappedBy = "hotel",fetch = FetchType.LAZY)
     private List<Room> rooms;
 
 }

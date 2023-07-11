@@ -12,11 +12,11 @@ import lombok.Data;
 public class Payment extends BaseEntity{
 
     @NotNull
-    @ManyToOne()
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "credit_card_id", nullable = false)
     private CreditCard creditCard;
 
-    @ManyToOne()
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "booking_id",nullable = false)
     private Booking booking;
 

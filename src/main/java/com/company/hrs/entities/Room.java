@@ -18,7 +18,7 @@ import java.util.List;
 public class Room extends BaseEntity{
 
     @NotNull
-    @ManyToOne()
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "hotel_id", nullable = false)
     private Hotel hotel;
 
@@ -77,13 +77,13 @@ public class Room extends BaseEntity{
     @Column(name = "room_size", nullable = false)
     private Long roomSize;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "room_item",
             joinColumns = @JoinColumn(name = "room_id"),
             inverseJoinColumns = @JoinColumn(name = "item_id"))
     private List<Item> items;
-    @OneToMany(mappedBy = "room")
+    @OneToMany(mappedBy = "room",fetch = FetchType.LAZY)
     private List<RoomImage> roomImages;
 
 }

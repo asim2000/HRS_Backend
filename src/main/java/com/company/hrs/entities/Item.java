@@ -20,6 +20,6 @@ public class Item extends BaseEntity{
     @Column(name = "name", nullable = false, length = 50)
     private String name;
 
-    @ManyToMany(mappedBy = "items")
+    @ManyToMany(mappedBy = "items",fetch = FetchType.LAZY)
     private List<Room> rooms;
 }

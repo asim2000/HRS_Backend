@@ -20,15 +20,17 @@ public class BaseEntity {
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(name = "created_date")
     @NotNull
-    @Column(name = "created_date",columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
     private LocalDateTime createdDate = LocalDateTime.now();
 
     @Column(name = "updated_date")
     private LocalDate updatedDate;
 
+
+    @Column(name = "active")
     @NotNull
-    @Column(name = "active",columnDefinition = "TINYINT(4) default 0")
     @Enumerated(EnumType.ORDINAL)
     private Status active = Status.ACTIVE;
 }

@@ -1,5 +1,7 @@
 package com.company.hrs.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -12,6 +14,7 @@ import java.time.LocalDate;
 @Data
 @Entity
 @Table(name = "contact")
+@JsonIgnoreProperties({"hibernateLazyInitializer","handler","hotel","person"})
 public class Contact extends BaseEntity{
     @Size(max = 15)
     @NotNull
@@ -22,9 +25,9 @@ public class Contact extends BaseEntity{
     @Column(name = "email", length = 50)
     private String email;
 
-    @OneToOne(mappedBy = "contact")
+    @OneToOne(mappedBy = "contact",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     private Hotel hotel;
-    @OneToOne(mappedBy = "contact")
+    @OneToOne(mappedBy = "contact",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     private Person person;
 
 }

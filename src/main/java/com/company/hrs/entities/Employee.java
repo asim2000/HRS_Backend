@@ -15,15 +15,15 @@ import java.time.LocalDate;
 @Table(name = "EMPLOYEE")
 public class Employee extends BaseEntity{
 
-    @ManyToOne()
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "PARENT_ID")
     private Employee parent;
 
-    @OneToOne()
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "PERSON_ID")
     private Person person;
 
-    @OneToOne()
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "HOTEL_ID")
     private Hotel hotel;
 
@@ -32,7 +32,7 @@ public class Employee extends BaseEntity{
     @Column(name = "POSITION", nullable = false, length = 50)
     private Position position;
     @NotNull
-    @OneToOne()
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "room_house_keeper",referencedColumnName = "id", nullable = false)
     private RoomHouseKeeper roomHouseKeeper;
 }

@@ -14,10 +14,8 @@ import java.util.List;
 @Entity
 @Table(name = "review")
 public class Review extends BaseEntity{
-    @ManyToOne()
-    @JoinColumn(name = "person_id",referencedColumnName = "id")
-    private Person person;
-
+    @OneToOne(mappedBy = "review",fetch = FetchType.LAZY)
+    private Booking booking;
     @Size(max = 30)
     @NotNull
     @Column(name = "title", nullable = false, length = 30)
@@ -26,6 +24,6 @@ public class Review extends BaseEntity{
     @Size(max = 2000)
     @Column(name = "text", length = 2000)
     private String text;
-    @OneToMany(mappedBy = "review")
+    @OneToMany(mappedBy = "review",fetch = FetchType.LAZY)
     private List<ReviewImage> image;
 }

@@ -19,13 +19,15 @@ public class Booking extends BaseEntity{
     @ManyToOne()
     @JoinColumn(name = "person_id", nullable = false,referencedColumnName = "id")
     private Person person;
+    @OneToOne(fetch = FetchType.LAZY)
+    private Review review;
 
     @NotNull
-    @ManyToOne()
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "room_id",referencedColumnName = "id", nullable = false)
     private Room room;
 
-    @OneToMany(mappedBy = "booking")
+    @OneToMany(mappedBy = "booking",fetch = FetchType.LAZY)
     private List<Payment> payments;
 
     @Size(max = 30)

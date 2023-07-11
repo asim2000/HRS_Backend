@@ -17,12 +17,12 @@ import java.util.List;
 @AllArgsConstructor
 @Table(name = "person")
 public class Person extends BaseEntity{
-    @OneToOne()
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "address_id",referencedColumnName = "id", nullable = false)
     private Address address;
 
 
-    @OneToOne()
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "contact_id",referencedColumnName = "id", nullable = false)
     private Contact contact;
 
@@ -59,16 +59,15 @@ public class Person extends BaseEntity{
     @Column(name = "image")
     @Lob
     private byte[] image;
-    @OneToMany(mappedBy = "person")
-    private List<Review> reviews;
-    @ManyToMany()
+
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "person_role",
             joinColumns = @JoinColumn(name = "person_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private List<Role> roles = new ArrayList<>();
 
-    @OneToMany(mappedBy = "person")
+    @OneToMany(mappedBy = "person",fetch = FetchType.LAZY)
     private List<Booking> bookings;
 
 }

@@ -14,7 +14,7 @@ import java.time.LocalDate;
 public class RoomImage extends BaseEntity{
 
     @NotNull
-    @ManyToOne()
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "room_id",referencedColumnName = "id", nullable = false)
     private Room room;
 

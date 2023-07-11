@@ -22,7 +22,7 @@ public class Role extends BaseEntity{
     @NotEmpty
     @Column(name = "name", nullable = false, length = 20)
     private String name;
-    @ManyToMany(mappedBy = "roles")
+    @ManyToMany(mappedBy = "roles",fetch = FetchType.LAZY)
     private List<Person> persons = new ArrayList<>();
 
 }

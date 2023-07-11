@@ -33,6 +33,6 @@ public class CreditCard extends BaseEntity{
     @Column(name = "exp_year", nullable = false)
     private byte expYear;
 
-    @OneToMany(mappedBy = "creditCard")
+    @OneToMany(mappedBy = "creditCard",fetch = FetchType.LAZY)
     private List<Payment> payments;
 }
