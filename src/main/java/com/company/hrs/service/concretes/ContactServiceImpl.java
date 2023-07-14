@@ -1,6 +1,7 @@
 package com.company.hrs.service.concretes;
 
 import com.company.hrs.entities.Contact;
+import com.company.hrs.enums.Status;
 import com.company.hrs.repository.ContactRepository;
 import com.company.hrs.service.abstracts.ContactService;
 import com.company.hrs.service.dtos.contact.requests.CreateContactRequest;
@@ -23,7 +24,7 @@ public class ContactServiceImpl implements ContactService{
 
     @Override
     public boolean existsContactByEmail(String email) {
-        return contactRepository.existsContactByEmail(email);
+        return contactRepository.existsContactByEmailAndActive(email, Status.ACTIVE);
     }
 
 

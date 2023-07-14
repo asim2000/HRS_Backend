@@ -17,7 +17,7 @@ public class HotelImage extends BaseEntity{
 
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "hotel_id", nullable = false)
+    @JoinColumn(name = "hotel_id",referencedColumnName = "id",nullable = false)
     private Hotel hotel;
 
     @NotNull

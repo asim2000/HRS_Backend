@@ -19,7 +19,4 @@ public class Service extends BaseEntity{
     @NotNull
     @Column(name = "name", nullable = false, length = 50)
     private String name;
-
-    @ManyToMany(mappedBy = "services",fetch = FetchType.LAZY)
-    private List<Hotel> hotels = new ArrayList<>();
 }

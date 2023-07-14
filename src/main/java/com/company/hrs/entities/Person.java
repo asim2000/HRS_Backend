@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -51,10 +52,9 @@ public class Person extends BaseEntity{
     @Enumerated(value = EnumType.ORDINAL)
     private Gender gender;
 
-    @NotNull
-    @Column(name = "account_status",columnDefinition = "TINYINT(4) default 0")
+    @Column(name = "account_status",columnDefinition = "TINYINT default 0")
     @Enumerated(value = EnumType.ORDINAL)
-    private AccountStatus accountStatus = AccountStatus.ACTIVE;
+    private AccountStatus accountStatus;
 
     @Column(name = "image")
     @Lob
@@ -66,8 +66,5 @@ public class Person extends BaseEntity{
             joinColumns = @JoinColumn(name = "person_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private List<Role> roles = new ArrayList<>();
-
-    @OneToMany(mappedBy = "person",fetch = FetchType.LAZY)
-    private List<Booking> bookings;
 
 }

@@ -1,6 +1,7 @@
 package com.company.hrs.service.concretes;
 
 import com.company.hrs.entities.Role;
+import com.company.hrs.enums.Status;
 import com.company.hrs.repository.RoleRepository;
 import com.company.hrs.service.abstracts.RoleService;
 import com.company.hrs.service.dtos.role.requests.CreateRoleRequest;
@@ -15,7 +16,7 @@ public class RoleServiceImpl implements RoleService {
     private ModelMapperService modelMapperService;
     @Override
     public Role getRoleByNameIgnoreCase(String name) {
-        return roleRepository.getRoleByNameIgnoreCase(name);
+        return roleRepository.getRoleByActiveAndNameIgnoreCase(Status.ACTIVE,name);
     }
 
     @Override

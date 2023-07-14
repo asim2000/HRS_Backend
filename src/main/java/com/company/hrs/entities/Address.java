@@ -23,11 +23,4 @@ public class Address extends BaseEntity{
     @NotNull
     @Column(name = "address_line", nullable = false, length = 50)
     private String addressLine;
-
-    @OneToOne(mappedBy = "address",fetch = FetchType.LAZY)
-    private Hotel hotel;
-
-    @OneToOne(mappedBy = "address",fetch = FetchType.LAZY)
-    private Person person;
-
 }

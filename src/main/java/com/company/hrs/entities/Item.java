@@ -19,7 +19,4 @@ public class Item extends BaseEntity{
     @NotNull
     @Column(name = "name", nullable = false, length = 50)
     private String name;
-
-    @ManyToMany(mappedBy = "items",fetch = FetchType.LAZY)
-    private List<Room> rooms;
 }

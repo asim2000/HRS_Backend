@@ -59,7 +59,6 @@ public class AccountServiceImpl implements AccountService {
         if((role = roleService.getRoleByNameIgnoreCase(request.getRole()))==null){
             role = roleService.create(new CreateRoleRequest(request.getRole()));
         }
-        role.getPersons().add(modelMapperService.forRequest().map(createPersonRequest,Person.class));
         createPersonRequest.getRoles().add(role);
         CreatedPersonResponse createdPerson = personService.create(createPersonRequest);
     }

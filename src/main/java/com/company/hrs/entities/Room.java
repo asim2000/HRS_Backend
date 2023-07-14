@@ -19,7 +19,7 @@ public class Room extends BaseEntity{
 
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "hotel_id", nullable = false)
+    @JoinColumn(name = "hotel_id",referencedColumnName = "id",nullable = false)
     private Hotel hotel;
 
     @Column(name = "room_number")
@@ -83,7 +83,4 @@ public class Room extends BaseEntity{
             joinColumns = @JoinColumn(name = "room_id"),
             inverseJoinColumns = @JoinColumn(name = "item_id"))
     private List<Item> items;
-    @OneToMany(mappedBy = "room",fetch = FetchType.LAZY)
-    private List<RoomImage> roomImages;
-
 }

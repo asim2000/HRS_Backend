@@ -1,6 +1,7 @@
 package com.company.hrs.service.concretes;
 
 import com.company.hrs.entities.Person;
+import com.company.hrs.enums.Status;
 import com.company.hrs.repository.PersonRepository;
 import com.company.hrs.service.abstracts.PersonService;
 import com.company.hrs.service.dtos.person.requests.CreatePersonRequest;
@@ -24,11 +25,11 @@ public class PersonServiceImpl implements PersonService {
 
     @Override
     public boolean existsPersonByEmailAndPassword(String email, String password) {
-        return personRepository.existsPersonByEmailAndPassword(email,password);
+        return personRepository.existsPersonByEmailAndPasswordAndActive(email,password, Status.ACTIVE);
     }
 
     @Override
     public LoginPersonResponse getPersonByEmail(String email) {
-        return modelMapperService.forResponse().map(personRepository.getPersonByEmail(email),LoginPersonResponse.class);
+        return modelMapperService.forResponse().map(personRepository.getPersonByEmailAndActive(email,Status.ACTIVE),LoginPersonResponse.class);
     }
 }

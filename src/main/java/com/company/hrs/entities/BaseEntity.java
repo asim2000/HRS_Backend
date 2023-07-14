@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.GenericGenerator;
 
 import java.time.LocalDate;
@@ -21,16 +22,14 @@ public class BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "created_date")
-    @NotNull
-    private LocalDateTime createdDate = LocalDateTime.now();
+    @Column(name = "created_date",columnDefinition="TIMESTAMP DEFAULT CURRENT_TIMESTAMP", nullable = false, updatable = false)
+    private LocalDateTime createdDate;
 
     @Column(name = "updated_date")
     private LocalDate updatedDate;
 
 
-    @Column(name = "active")
-    @NotNull
+    @Column(name = "active",columnDefinition = "TINYINT default 0")
     @Enumerated(EnumType.ORDINAL)
     private Status active = Status.ACTIVE;
 }

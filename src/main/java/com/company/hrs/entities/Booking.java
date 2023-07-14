@@ -27,9 +27,6 @@ public class Booking extends BaseEntity{
     @JoinColumn(name = "room_id",referencedColumnName = "id", nullable = false)
     private Room room;
 
-    @OneToMany(mappedBy = "booking",fetch = FetchType.LAZY)
-    private List<Payment> payments;
-
     @Size(max = 30)
     @NotNull
     @Column(name = "reservation_number", nullable = false, length = 30)

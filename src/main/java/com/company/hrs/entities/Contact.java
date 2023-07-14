@@ -14,7 +14,6 @@ import java.time.LocalDate;
 @Data
 @Entity
 @Table(name = "contact")
-@JsonIgnoreProperties({"hibernateLazyInitializer","handler","hotel","person"})
 public class Contact extends BaseEntity{
     @Size(max = 15)
     @NotNull
@@ -24,10 +23,5 @@ public class Contact extends BaseEntity{
     @Size(max = 50)
     @Column(name = "email", length = 50)
     private String email;
-
-    @OneToOne(mappedBy = "contact",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-    private Hotel hotel;
-    @OneToOne(mappedBy = "contact",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-    private Person person;
 
 }

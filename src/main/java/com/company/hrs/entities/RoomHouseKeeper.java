@@ -14,7 +14,8 @@ import java.time.LocalDate;
 public class RoomHouseKeeper extends BaseEntity{
 
 
-    @OneToOne(mappedBy = "roomHouseKeeper",fetch = FetchType.LAZY)
+    @OneToOne()
+    @JoinColumn(name = "employee_id",referencedColumnName = "id")
     private Employee employee;
 
     @NotNull

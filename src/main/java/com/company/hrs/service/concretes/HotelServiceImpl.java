@@ -59,20 +59,18 @@ public class HotelServiceImpl implements HotelService {
         hotel.setServices(request.getServiceIds().stream().map(id->{
             com.company.hrs.entities.Service service = new com.company.hrs.entities.Service();
             service.setId(id);
-            service.getHotels().add(hotel);
+            //service.getHotels().add(hotel);
             return service;
         }).collect(Collectors.toList()));
-        hotel.getContact().setHotel(hotel);
-        hotel.getAddress().setHotel(hotel);
+        //hotel.getContact().setHotel(hotel);
+        //hotel.getAddress().setHotel(hotel);
         hotelRepository.save(hotel);
     }
 
     @Override
     public List<GetAllHomeHotelResponse> getAllHomeHotels() {
-        List<Hotel> hotels = hotelRepository.findAll();
+        List<Hotel> hotels = hotelRepository.findAllByActive(Status.ACTIVE);
         hotelServiceRules.checkIfHotelListIsNull(hotels);
-        List<GetAllHomeHotelResponse> getAllHomeHotelResponses=new ArrayList<>();
-        //return getAllHomeHotelResponses;
         return hotels.stream().map(hotel -> modelMapperService.forResponse().map(hotel,GetAllHomeHotelResponse.class)).collect(Collectors.toList());
     }
     private String saveImage(MultipartFile image){

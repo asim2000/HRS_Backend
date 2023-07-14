@@ -2,6 +2,7 @@ package com.company.hrs.service.concretes;
 
 import com.company.hrs.entities.Address;
 import com.company.hrs.entities.City;
+import com.company.hrs.enums.Status;
 import com.company.hrs.repository.AddressRepository;
 import com.company.hrs.service.abstracts.AddressService;
 import com.company.hrs.service.dtos.address.requestes.CreateAddressRequest;
@@ -26,7 +27,7 @@ public class AddressServiceImpl implements AddressService
     private AddressServiceRules addressServiceRules;
     @Override
     public List<GetAllAddressResponse> getAll() {
-        List<Address> addresses = addressRepository.findAll();
+        List<Address> addresses = addressRepository.findAllByActive(Status.ACTIVE);
         return addresses.stream().map(address -> modelMapperService.forResponse().map(address, GetAllAddressResponse.class)).collect(Collectors.toList());
     }
 
@@ -37,7 +38,6 @@ public class AddressServiceImpl implements AddressService
         City city = new City();
         city.setId(createAddressRequest.getCityId());
         address.setCity(city);
-        //Address address = modelMapperService.forRequest().map(createAddressRequest,Address.class);
         Address createdAddress = addressRepository.save(address);
         return modelMapperService.forResponse().map(createdAddress, CreatedAddressResponse.class);
     }

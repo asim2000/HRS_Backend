@@ -12,27 +12,19 @@ import java.time.LocalDate;
 
 @Data
 @Entity
-@Table(name = "EMPLOYEE")
+@Table(name = "employee")
 public class Employee extends BaseEntity{
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "PARENT_ID")
+    @JoinColumn(name = "parent_id",referencedColumnName = "id")
     private Employee parent;
 
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "PERSON_ID")
+    @JoinColumn(name = "person_id",referencedColumnName = "id")
     private Person person;
-
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "HOTEL_ID")
-    private Hotel hotel;
 
     @Size(max = 50)
     @NotNull
-    @Column(name = "POSITION", nullable = false, length = 50)
+    @Column(name = "position", nullable = false, length = 50)
     private Position position;
-    @NotNull
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "room_house_keeper",referencedColumnName = "id", nullable = false)
-    private RoomHouseKeeper roomHouseKeeper;
 }
