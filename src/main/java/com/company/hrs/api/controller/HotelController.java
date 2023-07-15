@@ -3,6 +3,7 @@ package com.company.hrs.api.controller;
 import com.company.hrs.service.abstracts.HotelService;
 import com.company.hrs.service.dtos.hotel.requests.CreateHotelRequest;
 import com.company.hrs.service.dtos.hotel.response.GetAllHomeHotelResponse;
+import com.company.hrs.service.dtos.hotel.response.GetHotelDetailsResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -21,4 +22,12 @@ public class HotelController {
         hotelService.create(request);
     }
 
+    @GetMapping("home/all")
+    public List<GetAllHomeHotelResponse> getAllHomeHotels(){
+        return hotelService.getAllHomeHotels();
+    }
+    @GetMapping("details/{id}")
+    public GetHotelDetailsResponse getHotelDetails(@PathVariable Long id){
+        return hotelService.getHotelDetails(id);
+    }
 }

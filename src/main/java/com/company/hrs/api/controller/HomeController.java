@@ -14,10 +14,4 @@ import java.util.List;
 @RequestMapping("home")
 @RequiredArgsConstructor
 @CrossOrigin
-public class HomeController {
-    private final HotelService hotelService;
-    @GetMapping("index")
-    public List<GetAllHomeHotelResponse> index(){
-        return hotelService.getAllHomeHotels();
-    }
-}
+public class HomeController {}

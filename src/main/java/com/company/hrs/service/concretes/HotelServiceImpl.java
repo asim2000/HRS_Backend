@@ -7,6 +7,7 @@ import com.company.hrs.service.abstracts.CityService;
 import com.company.hrs.service.abstracts.HotelService;
 import com.company.hrs.service.dtos.hotel.requests.CreateHotelRequest;
 import com.company.hrs.service.dtos.hotel.response.GetAllHomeHotelResponse;
+import com.company.hrs.service.dtos.hotel.response.GetHotelDetailsResponse;
 import com.company.hrs.service.rules.HotelServiceRules;
 import com.company.hrs.utils.exceptions.ServiceException;
 import com.company.hrs.utils.mappers.ModelMapperService;
@@ -73,6 +74,13 @@ public class HotelServiceImpl implements HotelService {
         hotelServiceRules.checkIfHotelListIsNull(hotels);
         return hotels.stream().map(hotel -> modelMapperService.forResponse().map(hotel,GetAllHomeHotelResponse.class)).collect(Collectors.toList());
     }
+
+    @Override
+    public GetHotelDetailsResponse getHotelDetails(Long id) {
+        Hotel hotel = hotelRepository.findByIdAndActive(id,Status.ACTIVE);
+        return modelMapperService.forResponse().map(hotel,GetHotelDetailsResponse.class);
+    }
+
     private String saveImage(MultipartFile image){
         Path fileStorageLocation = Paths.get("D:\\Projects\\HRS_Frontend\\src\\assets\\img");
         String originalFileName = image.getOriginalFilename();

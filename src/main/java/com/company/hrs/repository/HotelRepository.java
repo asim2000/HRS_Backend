@@ -9,4 +9,5 @@ import java.util.List;
 
 public interface HotelRepository extends JpaRepository<Hotel,Long> {
     List<Hotel> findAllByActive(Status status);
+    Hotel findByIdAndActive(Long id,Status status);
 }

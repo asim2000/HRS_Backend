@@ -23,8 +23,8 @@ public class Employee extends BaseEntity{
     @JoinColumn(name = "person_id",referencedColumnName = "id")
     private Person person;
 
-    @Size(max = 50)
     @NotNull
-    @Column(name = "position", nullable = false, length = 50)
+    @Column(name = "position", nullable = false)
+    @Enumerated(EnumType.ORDINAL)
     private Position position;
 }

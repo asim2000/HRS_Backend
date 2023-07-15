@@ -1,6 +1,7 @@
 package com.company.hrs.service.concretes;
 
 import com.company.hrs.entities.*;
+import com.company.hrs.enums.Position;
 import com.company.hrs.service.abstracts.*;
 import com.company.hrs.service.dtos.account.requests.LoginRequest;
 import com.company.hrs.service.dtos.account.requests.RegisterRequest;
@@ -8,6 +9,7 @@ import com.company.hrs.service.dtos.address.requestes.CreateAddressRequest;
 import com.company.hrs.service.dtos.address.responses.CreatedAddressResponse;
 import com.company.hrs.service.dtos.contact.requests.CreateContactRequest;
 import com.company.hrs.service.dtos.contact.responses.CreatedContactResponse;
+import com.company.hrs.service.dtos.employee.requests.CreateEmployeeRequest;
 import com.company.hrs.service.dtos.person.requests.CreatePersonRequest;
 import com.company.hrs.service.dtos.person.responses.CreatedPersonResponse;
 import com.company.hrs.service.dtos.person.responses.LoginPersonResponse;
@@ -16,20 +18,22 @@ import com.company.hrs.service.rules.AccountServiceRules;
 import com.company.hrs.utils.mappers.ModelMapperService;
 
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class AccountServiceImpl implements AccountService {
-    private PersonService personService;
-    private AddressService addressService;
-    private RoleService roleService;
-    private AccountServiceRules accountServiceRules;
-    private ModelMapperService modelMapperService;
+    private final PersonService personService;
+    private final AddressService addressService;
+    private final RoleService roleService;
+    private final AccountServiceRules accountServiceRules;
+    private final ModelMapperService modelMapperService;
     private final ContactService contactService;
+    private final EmployeeService employeeService;
 
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -61,6 +65,13 @@ public class AccountServiceImpl implements AccountService {
         }
         createPersonRequest.getRoles().add(role);
         CreatedPersonResponse createdPerson = personService.create(createPersonRequest);
+
+        if(request.getRole().equalsIgnoreCase("hotel")){
+            CreateEmployeeRequest employee = new CreateEmployeeRequest();
+            employee.setPersonId(createdPerson.getId());
+            employee.setPosition(Position.Admin);
+            employeeService.create(employee);
+        }
     }
 
     @Override
