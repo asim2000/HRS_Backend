@@ -3,6 +3,8 @@ package com.company.hrs.service.concretes;
 import com.company.hrs.entities.*;
 import com.company.hrs.enums.Position;
 import com.company.hrs.service.abstracts.*;
+import com.company.hrs.service.constant.Message;
+import com.company.hrs.service.constant.StatusCode;
 import com.company.hrs.service.dtos.account.requests.LoginRequest;
 import com.company.hrs.service.dtos.account.requests.RegisterRequest;
 import com.company.hrs.service.dtos.address.requestes.CreateAddressRequest;
@@ -14,6 +16,10 @@ import com.company.hrs.service.dtos.person.requests.CreatePersonRequest;
 import com.company.hrs.service.dtos.person.responses.CreatedPersonResponse;
 import com.company.hrs.service.dtos.person.responses.LoginPersonResponse;
 import com.company.hrs.service.dtos.role.requests.CreateRoleRequest;
+import com.company.hrs.service.result.DataResult;
+import com.company.hrs.service.result.Result;
+import com.company.hrs.service.result.SuccessDataResult;
+import com.company.hrs.service.result.SuccessResult;
 import com.company.hrs.service.rules.AccountServiceRules;
 import com.company.hrs.utils.mappers.ModelMapperService;
 
@@ -37,7 +43,7 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void register(RegisterRequest request) {
+    public Result register(RegisterRequest request) {
         accountServiceRules.checkIfPersonEmailExists(request.getEmail());
 
         CreateAddressRequest address = new CreateAddressRequest();
@@ -72,13 +78,14 @@ public class AccountServiceImpl implements AccountService {
             employee.setPosition(Position.Admin);
             employeeService.create(employee);
         }
+        return new SuccessResult();
     }
 
     @Override
-    public LoginPersonResponse login(LoginRequest loginRequest) {
+    public DataResult<LoginPersonResponse> login(LoginRequest loginRequest) {
         accountServiceRules.checkIfPersonEmailNotExists(loginRequest.getEmail());
         accountServiceRules.checkIfPersonPasswordConfirm(loginRequest);
-        return personService.getPersonByEmail(loginRequest.getEmail());
-
+        LoginPersonResponse response = personService.getPersonByEmail(loginRequest.getEmail());
+        return new DataResult<LoginPersonResponse>(response,StatusCode.OK, Message.SUCCESSFULLY_LOGIN);
     }
 }

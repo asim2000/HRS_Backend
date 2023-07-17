@@ -5,6 +5,7 @@ import com.company.hrs.enums.Status;
 import com.company.hrs.repository.HotelRepository;
 import com.company.hrs.service.abstracts.CityService;
 import com.company.hrs.service.abstracts.HotelService;
+import com.company.hrs.service.constant.StatusCode;
 import com.company.hrs.service.dtos.hotel.requests.CreateHotelRequest;
 import com.company.hrs.service.dtos.hotel.response.GetAllHomeHotelResponse;
 import com.company.hrs.service.dtos.hotel.response.GetHotelDetailsResponse;
@@ -60,11 +61,8 @@ public class HotelServiceImpl implements HotelService {
         hotel.setServices(request.getServiceIds().stream().map(id->{
             com.company.hrs.entities.Service service = new com.company.hrs.entities.Service();
             service.setId(id);
-            //service.getHotels().add(hotel);
             return service;
         }).collect(Collectors.toList()));
-        //hotel.getContact().setHotel(hotel);
-        //hotel.getAddress().setHotel(hotel);
         hotelRepository.save(hotel);
     }
 
@@ -85,14 +83,12 @@ public class HotelServiceImpl implements HotelService {
         Path fileStorageLocation = Paths.get("D:\\Projects\\HRS_Frontend\\src\\assets\\img");
         String originalFileName = image.getOriginalFilename();
         try (InputStream inputStream = image.getInputStream()) {
-            if(originalFileName.contains("..")){
-                throw new ServiceException("File name contains invalid path: "+originalFileName);
-            }
+            hotelServiceRules.checkIfFileNameInvalid(originalFileName);
             Path targetLocation = fileStorageLocation.resolve(originalFileName);
             Files.copy(inputStream,targetLocation, StandardCopyOption.REPLACE_EXISTING);
             return originalFileName;
         } catch (IOException e) {
-            throw new ServiceException(e.getMessage());
+            throw new ServiceException(StatusCode.FAILED_OR_INTERRUPT,e.getMessage());
         }
     }
 }

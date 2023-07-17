@@ -1,5 +1,8 @@
 package com.company.hrs.configuration.exception;
 
+import com.company.hrs.service.constant.Message;
+import com.company.hrs.service.constant.StatusCode;
+import com.company.hrs.service.result.Result;
 import com.company.hrs.utils.exceptions.ProblemDetails;
 import com.company.hrs.utils.exceptions.ServiceException;
 import com.company.hrs.utils.exceptions.ValidationProblemDetails;
@@ -16,21 +19,21 @@ import java.util.HashMap;
 public class RestExceptionHandler {
     @ExceptionHandler
     @ResponseStatus(code= HttpStatus.BAD_REQUEST)
-    public ProblemDetails handleServiceException(ServiceException serviceException){
-        return new ProblemDetails(serviceException.getMessage());
+    public Result handleServiceException(ServiceException serviceException){
+        return new Result(serviceException.getCode(),serviceException.getMessage());
     }
     @ExceptionHandler
     @ResponseStatus(code= HttpStatus.BAD_REQUEST)
-    public ValidationProblemDetails handleServiceException(MethodArgumentNotValidException methodArgumentNotValidException){
-        ValidationProblemDetails validationProblemDetails = new ValidationProblemDetails(new HashMap<>());
+    public Result handleServiceException(MethodArgumentNotValidException methodArgumentNotValidException){
+        String message = "";
         for(FieldError fieldError:methodArgumentNotValidException.getBindingResult().getFieldErrors()){
-            validationProblemDetails.getValidationErrors().put(fieldError.getField(),fieldError.getDefaultMessage());
+            message = message + fieldError.getField() + " : " + fieldError.getDefaultMessage() + "/n";
         }
-        return validationProblemDetails;
+        return new Result(StatusCode.ValidationException,message);
     }
-//    @ExceptionHandler
-//    @ResponseStatus(code= HttpStatus.BAD_REQUEST)
-//    public ProblemDetails handleServiceException(Exception exception){
-//        return new ProblemDetails("Internal exception");
-//    }
+    @ExceptionHandler
+    @ResponseStatus(code= HttpStatus.BAD_REQUEST)
+    public Result handleServiceException(Exception exception){
+        return new Result(StatusCode.INTERNAL_EXCEPTION,Message.INTERNAL_EXCEPTION);
+    }
 }

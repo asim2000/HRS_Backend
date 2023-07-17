@@ -1,63 +1,50 @@
-package com.company.hrs.entities;
+package com.company.hrs.service.dtos.room.requests;
 
+import com.company.hrs.entities.Item;
 import com.company.hrs.enums.RoomStatus;
 import com.company.hrs.enums.RoomStyle;
-import jakarta.persistence.*;
+import com.company.hrs.service.dtos.item.requests.CreateItemRequest;
+import jakarta.persistence.Column;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.NoArgsConstructor;
 
-import java.time.LocalDate;
 import java.util.List;
 
 @Data
-@Entity
-@Table(name = "room")
-public class Room extends BaseEntity{
-
-    @NotNull
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "hotel_id",referencedColumnName = "id",nullable = false)
-    private Hotel hotel;
-
+@AllArgsConstructor
+@NoArgsConstructor
+public class CreateRoomRequest {
+    @Column(name = "hotel_id")
+    private Integer hotelId;
     @Column(name = "room_number")
-    @Size(max = 20)
     private String roomNumber;
-
     @NotNull
     @Column(name = "price_per_night", nullable = false)
     private Double pricePerNight;
-
     @NotNull
-    @Column(name = "floor", nullable = false)
     private Long floor;
-
     @NotNull
     @Column(name = "adult_count", nullable = false)
     private byte adultCount;
     @NotNull
     @Column(name = "childreen_count", nullable = false)
     private byte childreenCount;
-
     @Size(max = 50)
     @NotNull
     @Column(name = "room_status", nullable = false, length = 50)
     private RoomStatus roomStatus;
-
     @NotNull
     @Column(name = "twin_bed_count", nullable = false)
     private Long twinBedCount;
-
     @NotNull
     @Column(name = "single_bed_count", nullable = false)
     private Long singleBedCount;
-
     @Column(name = "is_pet_allowed")
     @NotNull
     private boolean isPetAllowed;
-
     @NotNull
     @Column(name = "room_count", nullable = false)
     private Long roomCount;
@@ -85,11 +72,5 @@ public class Room extends BaseEntity{
     @NotNull
     @Column(name = "room_size", nullable = false)
     private Short roomSize;
-
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(
-            name = "room_item",
-            joinColumns = @JoinColumn(name = "room_id"),
-            inverseJoinColumns = @JoinColumn(name = "item_id"))
-    private List<Item> items;
+    private List<CreateItemRequest> items;
 }

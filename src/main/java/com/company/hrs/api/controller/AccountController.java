@@ -4,8 +4,11 @@ import com.company.hrs.service.abstracts.AccountService;
 import com.company.hrs.service.dtos.account.requests.LoginRequest;
 import com.company.hrs.service.dtos.account.requests.RegisterRequest;
 import com.company.hrs.service.dtos.person.responses.LoginPersonResponse;
+import com.company.hrs.service.result.DataResult;
+import com.company.hrs.service.result.Result;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
+import lombok.Data;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,11 +21,11 @@ public class AccountController {
 
     @PostMapping("register")
     @ResponseStatus(value = HttpStatus.CREATED)
-    public void registerForCustomer(@RequestBody @Valid RegisterRequest request){
-        accountService.register(request);
+    public Result registerForCustomer(@RequestBody @Valid RegisterRequest request){
+        return accountService.register(request);
     }
     @PostMapping("login")
-    public LoginPersonResponse login(@RequestBody @Valid LoginRequest request){
+    public DataResult<LoginPersonResponse> login(@RequestBody @Valid LoginRequest request){
         return accountService.login(request);
     }
 }
