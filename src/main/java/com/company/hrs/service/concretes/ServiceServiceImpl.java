@@ -6,6 +6,11 @@ import com.company.hrs.service.abstracts.ServiceService;
 import com.company.hrs.service.dtos.service.requests.CreateServiceRequest;
 import com.company.hrs.service.dtos.service.requests.UpdateServiceRequest;
 import com.company.hrs.service.dtos.service.responses.GetAllServiceResponse;
+import com.company.hrs.service.result.DataResult;
+import com.company.hrs.service.result.Result;
+import com.company.hrs.service.result.SuccessDataResult;
+import com.company.hrs.service.result.SuccessResult;
+import com.company.hrs.service.rules.ServiceRules;
 import com.company.hrs.utils.mappers.ModelMapperService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -18,19 +23,24 @@ import java.util.stream.Collectors;
 public class ServiceServiceImpl implements ServiceService {
     private final ServiceRepository serviceRepository;
     private final ModelMapperService modelMapperService;
+    private final ServiceRules serviceRules;
     @Override
-    public void create(CreateServiceRequest createServiceRequest) {
+    public Result create(CreateServiceRequest createServiceRequest) {
         serviceRepository.save(modelMapperService.forRequest().map(createServiceRequest, com.company.hrs.entities.Service.class));
+        return new SuccessResult();
     }
 
     @Override
-    public void update(UpdateServiceRequest updateServiceRequest) {
+    public Result update(UpdateServiceRequest updateServiceRequest) {
         serviceRepository.save(modelMapperService.forRequest().map(updateServiceRequest, com.company.hrs.entities.Service.class));
+        return new SuccessResult();
     }
 
     @Override
-    public List<GetAllServiceResponse> getAll() {
+    public DataResult<List<GetAllServiceResponse>> getAll() {
         List<com.company.hrs.entities.Service> services = serviceRepository.findAllByActive(Status.ACTIVE);
-        return services.stream().map(service -> modelMapperService.forResponse().map(service,GetAllServiceResponse.class)).collect(Collectors.toList());
+        serviceRules.checkIfIsNullOrEmptyServices(services);
+        List<GetAllServiceResponse> response = services.stream().map(service -> modelMapperService.forResponse().map(service,GetAllServiceResponse.class)).collect(Collectors.toList());
+        return new SuccessDataResult<List<GetAllServiceResponse>>(response);
     }
 }

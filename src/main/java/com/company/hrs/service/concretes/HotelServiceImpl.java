@@ -5,10 +5,15 @@ import com.company.hrs.enums.Status;
 import com.company.hrs.repository.HotelRepository;
 import com.company.hrs.service.abstracts.CityService;
 import com.company.hrs.service.abstracts.HotelService;
+import com.company.hrs.service.constant.Message;
 import com.company.hrs.service.constant.StatusCode;
 import com.company.hrs.service.dtos.hotel.requests.CreateHotelRequest;
 import com.company.hrs.service.dtos.hotel.response.GetAllHomeHotelResponse;
 import com.company.hrs.service.dtos.hotel.response.GetHotelDetailsResponse;
+import com.company.hrs.service.result.DataResult;
+import com.company.hrs.service.result.Result;
+import com.company.hrs.service.result.SuccessDataResult;
+import com.company.hrs.service.result.SuccessResult;
 import com.company.hrs.service.rules.HotelServiceRules;
 import com.company.hrs.utils.exceptions.ServiceException;
 import com.company.hrs.utils.mappers.ModelMapperService;
@@ -39,12 +44,12 @@ public class HotelServiceImpl implements HotelService {
     private final HotelServiceRules hotelServiceRules;
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public void create(CreateHotelRequest request) {
+    public Result create(CreateHotelRequest request) {
         Contact contact = new Contact();
         contact.setPhone(request.getPhone());
 
         Address address = new Address();
-        address.setCity(modelMapperService.forRequest().map(cityService.getById(request.getCityId()),City.class));
+        address.setCity(modelMapperService.forRequest().map(cityService.getById(request.getCityId()).getData(),City.class));
         address.setAddressLine(request.getAddressLine());
 
         Hotel hotel = new Hotel();
@@ -64,22 +69,26 @@ public class HotelServiceImpl implements HotelService {
             return service;
         }).collect(Collectors.toList()));
         hotelRepository.save(hotel);
+        return new SuccessResult();
     }
 
     @Override
-    public List<GetAllHomeHotelResponse> getAllHomeHotels() {
+    public DataResult<List<GetAllHomeHotelResponse>> getAllHomeHotels() {
         List<Hotel> hotels = hotelRepository.findAllByActive(Status.ACTIVE);
-        hotelServiceRules.checkIfHotelListIsNull(hotels);
-        return hotels.stream().map(hotel -> modelMapperService.forResponse().map(hotel,GetAllHomeHotelResponse.class)).collect(Collectors.toList());
+        hotelServiceRules.checkIfHotelsIsNullOrEmpty(hotels);
+        List<GetAllHomeHotelResponse> homeHotelResponses = hotels.stream().map(hotel -> modelMapperService.forResponse().map(hotel,GetAllHomeHotelResponse.class)).collect(Collectors.toList());
+        return new SuccessDataResult<List<GetAllHomeHotelResponse>>(homeHotelResponses);
     }
 
     @Override
-    public GetHotelDetailsResponse getHotelDetails(Long id) {
+    public DataResult<GetHotelDetailsResponse> getHotelDetails(Long id) {
         Hotel hotel = hotelRepository.findByIdAndActive(id,Status.ACTIVE);
-        return modelMapperService.forResponse().map(hotel,GetHotelDetailsResponse.class);
+        GetHotelDetailsResponse hotelDetailsResponse = modelMapperService.forResponse().map(hotel,GetHotelDetailsResponse.class);
+        return new SuccessDataResult<GetHotelDetailsResponse>(hotelDetailsResponse);
     }
 
-    private String saveImage(MultipartFile image){
+    @Transactional(rollbackFor = Exception.class)
+    public String saveImage(MultipartFile image){
         Path fileStorageLocation = Paths.get("D:\\Projects\\HRS_Frontend\\src\\assets\\img");
         String originalFileName = image.getOriginalFilename();
         try (InputStream inputStream = image.getInputStream()) {
@@ -88,7 +97,7 @@ public class HotelServiceImpl implements HotelService {
             Files.copy(inputStream,targetLocation, StandardCopyOption.REPLACE_EXISTING);
             return originalFileName;
         } catch (IOException e) {
-            throw new ServiceException(StatusCode.FAILED_OR_INTERRUPT,e.getMessage());
+            throw new ServiceException(StatusCode.IO_EXCEPTION, Message.IO_EXCEPTION);
         }
     }
 }

@@ -5,6 +5,8 @@ import com.company.hrs.service.dtos.address.requestes.CreateAddressRequest;
 import com.company.hrs.service.dtos.address.requestes.UpdateAddressRequest;
 import com.company.hrs.service.dtos.address.responses.GetAllAddressResponse;
 import com.company.hrs.service.dtos.address.responses.GetByNameAddressResponse;
+import com.company.hrs.service.result.DataResult;
+import com.company.hrs.service.result.Result;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -17,19 +19,19 @@ import java.util.List;
 public class AddressController {
     private AddressService addressService;
     @GetMapping()
-    public List<GetAllAddressResponse> getAll(){
+    public DataResult<List<GetAllAddressResponse>> getAll(){
         return addressService.getAll();
     }
     @PostMapping()
-    public void create(@RequestBody @Valid CreateAddressRequest createAddressRequest){
-        addressService.create(createAddressRequest);
+    public Result create(@RequestBody @Valid CreateAddressRequest createAddressRequest){
+        return addressService.create(createAddressRequest);
     }
     @PutMapping()
-    public void update(@RequestBody @Valid UpdateAddressRequest updateAddressRequest){
-        addressService.update(updateAddressRequest);
+    public Result update(@RequestBody @Valid UpdateAddressRequest updateAddressRequest){
+       return addressService.update(updateAddressRequest);
     }
     @DeleteMapping("{id}")
-    public void delete(@PathVariable Long id){
-        addressService.delete(id);
+    public Result delete(@PathVariable Long id){
+        return addressService.delete(id);
     }
 }

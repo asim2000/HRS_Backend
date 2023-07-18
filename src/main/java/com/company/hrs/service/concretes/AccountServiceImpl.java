@@ -16,19 +16,16 @@ import com.company.hrs.service.dtos.person.requests.CreatePersonRequest;
 import com.company.hrs.service.dtos.person.responses.CreatedPersonResponse;
 import com.company.hrs.service.dtos.person.responses.LoginPersonResponse;
 import com.company.hrs.service.dtos.role.requests.CreateRoleRequest;
+import com.company.hrs.service.dtos.role.responses.CreatedRoleResponse;
 import com.company.hrs.service.result.DataResult;
 import com.company.hrs.service.result.Result;
-import com.company.hrs.service.result.SuccessDataResult;
 import com.company.hrs.service.result.SuccessResult;
 import com.company.hrs.service.rules.AccountServiceRules;
 import com.company.hrs.utils.mappers.ModelMapperService;
 
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -49,12 +46,12 @@ public class AccountServiceImpl implements AccountService {
         CreateAddressRequest address = new CreateAddressRequest();
         address.setCityId(request.getCityId());
         address.setAddressLine(request.getAddressLine());
-        CreatedAddressResponse createdAddress = addressService.create(address);
+        CreatedAddressResponse createdAddress = addressService.create(address).getData();
 
         CreateContactRequest contact = new CreateContactRequest();
         contact.setEmail(request.getEmail());
         contact.setPhone(request.getPhone());
-        CreatedContactResponse createdContact = contactService.create(contact);
+        CreatedContactResponse createdContact = contactService.create(contact).getData();
 
         CreatePersonRequest createPersonRequest = new CreatePersonRequest();
         createPersonRequest.setAddressId(createdAddress.getId());
@@ -66,11 +63,16 @@ public class AccountServiceImpl implements AccountService {
         createPersonRequest.setPassword(request.getPassword());
         createPersonRequest.setDateOfBirth(request.getDateOfBirth());
         Role role = null;
-        if((role = roleService.getRoleByNameIgnoreCase(request.getRole()))==null){
-            role = roleService.create(new CreateRoleRequest(request.getRole()));
+        if(roleService.existsRoleByNameIgnoreCase(request.getRole()).getCode() == StatusCode.NOT_FOUND){
+            DataResult<CreatedRoleResponse> createdRoleResponse = roleService.create(new CreateRoleRequest(request.getRole()));
+            if(createdRoleResponse.getCode() == StatusCode.SUCCESS){
+                role = modelMapperService.forResponse().map(createdRoleResponse.getData(),Role.class);
+            }
+        }else{
+            role = modelMapperService.forResponse().map(roleService.getRoleByNameIgnoreCase(request.getRole()).getData(),Role.class);
         }
         createPersonRequest.getRoles().add(role);
-        CreatedPersonResponse createdPerson = personService.create(createPersonRequest);
+        CreatedPersonResponse createdPerson = personService.create(createPersonRequest).getData();
 
         if(request.getRole().equalsIgnoreCase("hotel")){
             CreateEmployeeRequest employee = new CreateEmployeeRequest();
@@ -85,7 +87,7 @@ public class AccountServiceImpl implements AccountService {
     public DataResult<LoginPersonResponse> login(LoginRequest loginRequest) {
         accountServiceRules.checkIfPersonEmailNotExists(loginRequest.getEmail());
         accountServiceRules.checkIfPersonPasswordConfirm(loginRequest);
-        LoginPersonResponse response = personService.getPersonByEmail(loginRequest.getEmail());
-        return new DataResult<LoginPersonResponse>(response,StatusCode.OK, Message.SUCCESSFULLY_LOGIN);
+        LoginPersonResponse response = personService.getPersonByEmail(loginRequest.getEmail()).getData();
+        return new DataResult<LoginPersonResponse>(response,StatusCode.SUCCESS, Message.SUCCESSFULLY_LOGIN);
     }
 }

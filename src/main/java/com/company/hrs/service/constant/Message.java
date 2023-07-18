@@ -10,4 +10,5 @@ public class Message {
     public static final String NOT_FOUND = "Tapilmadi";
     public static final String FAILED_OR_INTERRUPT = "";
     public static final String SUCCESSFULLY_LOGIN = "Successfully login";
+    public static final String IO_EXCEPTION = "Fayla yazma zamani xeta bas verdi";
 }

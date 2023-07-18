@@ -10,6 +10,10 @@ import com.company.hrs.service.dtos.address.requestes.UpdateAddressRequest;
 import com.company.hrs.service.dtos.address.responses.CreatedAddressResponse;
 import com.company.hrs.service.dtos.address.responses.GetAllAddressResponse;
 import com.company.hrs.service.dtos.address.responses.GetByNameAddressResponse;
+import com.company.hrs.service.result.DataResult;
+import com.company.hrs.service.result.Result;
+import com.company.hrs.service.result.SuccessDataResult;
+import com.company.hrs.service.result.SuccessResult;
 import com.company.hrs.service.rules.AddressServiceRules;
 import com.company.hrs.utils.mappers.ModelMapperService;
 import lombok.AllArgsConstructor;
@@ -26,29 +30,33 @@ public class AddressServiceImpl implements AddressService
     private AddressRepository addressRepository;
     private AddressServiceRules addressServiceRules;
     @Override
-    public List<GetAllAddressResponse> getAll() {
+    public DataResult<List<GetAllAddressResponse>> getAll() {
         List<Address> addresses = addressRepository.findAllByActive(Status.ACTIVE);
-        return addresses.stream().map(address -> modelMapperService.forResponse().map(address, GetAllAddressResponse.class)).collect(Collectors.toList());
+        List<GetAllAddressResponse> response = addresses.stream().map(address -> modelMapperService.forResponse().map(address, GetAllAddressResponse.class)).collect(Collectors.toList());
+        return new SuccessDataResult<List<GetAllAddressResponse>>(response);
     }
 
     @Override
-    public CreatedAddressResponse create(CreateAddressRequest createAddressRequest) {
+    public DataResult<CreatedAddressResponse> create(CreateAddressRequest createAddressRequest) {
         Address address = new Address();
         address.setAddressLine(createAddressRequest.getAddressLine());
         City city = new City();
         city.setId(createAddressRequest.getCityId());
         address.setCity(city);
         Address createdAddress = addressRepository.save(address);
-        return modelMapperService.forResponse().map(createdAddress, CreatedAddressResponse.class);
+        CreatedAddressResponse response = modelMapperService.forResponse().map(createdAddress, CreatedAddressResponse.class);
+        return new SuccessDataResult<CreatedAddressResponse>(response);
     }
 
     @Override
-    public void delete(Long id) {
+    public Result delete(Long id) {
         addressRepository.deleteById(id);
+        return new SuccessResult();
     }
 
     @Override
-    public void update(UpdateAddressRequest updateAddressRequest) {
+    public Result update(UpdateAddressRequest updateAddressRequest) {
         addressRepository.save(modelMapperService.forRequest().map(updateAddressRequest,Address.class));
+        return new SuccessResult();
     }
 }

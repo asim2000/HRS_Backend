@@ -6,6 +6,8 @@ import com.company.hrs.service.dtos.city.requests.UpdateCityRequest;
 import com.company.hrs.service.dtos.city.responses.CreatedCityResponse;
 import com.company.hrs.service.dtos.city.responses.GetAllCityResponse;
 import com.company.hrs.service.dtos.city.responses.UpdatedCityResponse;
+import com.company.hrs.service.result.DataResult;
+import com.company.hrs.service.result.Result;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.HttpServerErrorException;
@@ -20,19 +22,19 @@ import java.util.List;
 public class CityController {
     private CityService cityService;
     @PostMapping
-    public CreatedCityResponse create(CreateCityRequest createCityRequest){
+    public Result create(CreateCityRequest createCityRequest){
         return cityService.create(createCityRequest);
     }
     @PutMapping
-    public UpdatedCityResponse update(UpdateCityRequest updateCityRequest){
+    public Result update(UpdateCityRequest updateCityRequest){
         return cityService.update(updateCityRequest);
     }
     @DeleteMapping("{id}")
-    public void delete(@PathVariable Long id){
-        cityService.delete(id);
+    public Result delete(@PathVariable Long id){
+        return cityService.delete(id);
     }
     @GetMapping
-    public List<GetAllCityResponse> getAll(){
+    public DataResult<List<GetAllCityResponse>> getAll(){
         return cityService.getAll();
     }
 }

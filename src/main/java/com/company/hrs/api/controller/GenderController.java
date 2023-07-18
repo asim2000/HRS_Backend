@@ -1,6 +1,8 @@
 package com.company.hrs.api.controller;
 
 import com.company.hrs.enums.Gender;
+import com.company.hrs.service.result.DataResult;
+import com.company.hrs.service.result.SuccessDataResult;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,7 +16,7 @@ import java.util.List;
 @CrossOrigin
 public class GenderController {
     @GetMapping
-    public List<Gender> getAll(){
-        return Arrays.stream(Gender.values()).toList();
+    public DataResult<List<Gender>> getAll(){
+        return new SuccessDataResult<List<Gender>>(Arrays.stream(Gender.values()).toList());
     }
 }

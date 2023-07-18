@@ -5,6 +5,6 @@ import com.company.hrs.service.constant.StatusCode;
 
 public class SuccessResult extends Result{
     public SuccessResult(){
-        super(StatusCode.OK, Message.OK);
+        super(StatusCode.SUCCESS, Message.OK);
     }
 }

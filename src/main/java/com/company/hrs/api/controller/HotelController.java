@@ -4,6 +4,8 @@ import com.company.hrs.service.abstracts.HotelService;
 import com.company.hrs.service.dtos.hotel.requests.CreateHotelRequest;
 import com.company.hrs.service.dtos.hotel.response.GetAllHomeHotelResponse;
 import com.company.hrs.service.dtos.hotel.response.GetHotelDetailsResponse;
+import com.company.hrs.service.result.DataResult;
+import com.company.hrs.service.result.Result;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -18,16 +20,16 @@ import java.util.List;
 public class HotelController {
     private final HotelService hotelService;
     @PostMapping()
-    public void create(@ModelAttribute() CreateHotelRequest request){
-        hotelService.create(request);
+    public Result create(@ModelAttribute() @Valid CreateHotelRequest request){
+        return hotelService.create(request);
     }
 
     @GetMapping("home/all")
-    public List<GetAllHomeHotelResponse> getAllHomeHotels(){
+    public DataResult<List<GetAllHomeHotelResponse>> getAllHomeHotels(){
         return hotelService.getAllHomeHotels();
     }
     @GetMapping("details/{id}")
-    public GetHotelDetailsResponse getHotelDetails(@PathVariable Long id){
+    public DataResult<GetHotelDetailsResponse> getHotelDetails(@PathVariable Long id){
         return hotelService.getHotelDetails(id);
     }
 }

@@ -18,22 +18,20 @@ import java.util.HashMap;
 @RestControllerAdvice
 public class RestExceptionHandler {
     @ExceptionHandler
-    @ResponseStatus(code= HttpStatus.BAD_REQUEST)
     public Result handleServiceException(ServiceException serviceException){
         return new Result(serviceException.getCode(),serviceException.getMessage());
     }
     @ExceptionHandler
-    @ResponseStatus(code= HttpStatus.BAD_REQUEST)
     public Result handleServiceException(MethodArgumentNotValidException methodArgumentNotValidException){
-        String message = "";
+        StringBuilder message = new StringBuilder();
         for(FieldError fieldError:methodArgumentNotValidException.getBindingResult().getFieldErrors()){
-            message = message + fieldError.getField() + " : " + fieldError.getDefaultMessage() + "/n";
+            message.append(fieldError.getField() + " : " + fieldError.getDefaultMessage());
+            message.append('\n');
         }
-        return new Result(StatusCode.ValidationException,message);
+        return new Result(StatusCode.ValidationException,message.toString());
     }
-    @ExceptionHandler
-    @ResponseStatus(code= HttpStatus.BAD_REQUEST)
-    public Result handleServiceException(Exception exception){
-        return new Result(StatusCode.INTERNAL_EXCEPTION,Message.INTERNAL_EXCEPTION);
-    }
+//    @ExceptionHandler
+//    public Result handleServiceException(Exception exception){
+//        return new Result(StatusCode.INTERNAL_EXCEPTION,Message.INTERNAL_EXCEPTION);
+//    }
 }

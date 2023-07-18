@@ -4,9 +4,10 @@ import com.company.hrs.entities.Person;
 import com.company.hrs.service.dtos.person.requests.CreatePersonRequest;
 import com.company.hrs.service.dtos.person.responses.CreatedPersonResponse;
 import com.company.hrs.service.dtos.person.responses.LoginPersonResponse;
+import com.company.hrs.service.result.DataResult;
 
 public interface PersonService {
-    CreatedPersonResponse create(CreatePersonRequest createPersonRequest);
-    boolean existsPersonByEmailAndPassword(String email,String password);
-    LoginPersonResponse getPersonByEmail(String email);
+    DataResult<CreatedPersonResponse> create(CreatePersonRequest createPersonRequest);
+    DataResult<Boolean> existsPersonByEmailAndPassword(String email,String password);
+    DataResult<LoginPersonResponse> getPersonByEmail(String email);
 }
