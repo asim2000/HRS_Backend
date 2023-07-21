@@ -42,8 +42,9 @@ public class Room extends BaseEntity{
     @Column(name = "childreen_count", nullable = false)
     private Byte childreenCount;
 
-    @Column(name = "room_status",columnDefinition = "varchar(32) default 'AVAILABLE'")
-    private RoomStatus roomStatus;
+    @Column(name = "room_status")
+    @ColumnDefault(value = "0")
+    private RoomStatus roomStatus = RoomStatus.AVAILABLE;
 
     @NotNull
     @Column(name = "twin_bed_count", nullable = false)
@@ -73,8 +74,9 @@ public class Room extends BaseEntity{
     @Column(name = "room_style", nullable = false, length = 50)
     private RoomStyle roomStyle;
 
-    @Column(name = "is_clean",columnDefinition="tinyint(1) default 1")
-    private Boolean isClean;
+    @Column(name = "is_clean")
+    @ColumnDefault(value = "true")
+    private Boolean isClean = true;
 
 
     @NotNull
