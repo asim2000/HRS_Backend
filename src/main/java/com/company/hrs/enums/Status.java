@@ -6,5 +6,5 @@ import lombok.AllArgsConstructor;
 public enum Status {
     ACTIVE(0),DEACTIVE(1);
 
-    public int value;
+    public Integer value;
 }

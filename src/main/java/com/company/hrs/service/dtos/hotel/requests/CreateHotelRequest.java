@@ -21,6 +21,9 @@ import java.util.List;
 public class CreateHotelRequest {
     @NotNull
     private String name;
+    @NotNull
+    @Column(name = "employee_id")
+    private Long employeeId;
     @Column(name = "city_id")
     private Long cityId;
     @Column(name = "address_line")

@@ -3,12 +3,15 @@ package com.company.hrs.service.concretes;
 import com.company.hrs.entities.*;
 import com.company.hrs.enums.Status;
 import com.company.hrs.repository.HotelRepository;
+import com.company.hrs.repository.HotelServiceRepository;
 import com.company.hrs.service.abstracts.CityService;
 import com.company.hrs.service.abstracts.HotelService;
+import com.company.hrs.service.abstracts.HotelServiceService;
 import com.company.hrs.service.constant.Message;
 import com.company.hrs.service.constant.StatusCode;
 import com.company.hrs.service.dtos.hotel.requests.CreateHotelRequest;
 import com.company.hrs.service.dtos.hotel.response.GetAllHomeHotelResponse;
+import com.company.hrs.service.dtos.hotel.response.GetByEmployeeIdResponse;
 import com.company.hrs.service.dtos.hotel.response.GetHotelDetailsResponse;
 import com.company.hrs.service.result.DataResult;
 import com.company.hrs.service.result.Result;
@@ -20,7 +23,6 @@ import com.company.hrs.utils.mappers.ModelMapperService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -29,10 +31,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
 @Service
@@ -42,6 +42,9 @@ public class HotelServiceImpl implements HotelService {
     private final ModelMapperService modelMapperService;
     private final CityService cityService;
     private final HotelServiceRules hotelServiceRules;
+    private final HotelServiceRepository hotelServiceRepository;
+    private final HotelServiceService hotelServiceService;
+
     @Transactional(rollbackFor = Exception.class)
     @Override
     public Result create(CreateHotelRequest request) {
@@ -52,7 +55,7 @@ public class HotelServiceImpl implements HotelService {
         address.setCity(modelMapperService.forRequest().map(cityService.getById(request.getCityId()).getData(),City.class));
         address.setAddressLine(request.getAddressLine());
 
-        Hotel hotel = new Hotel();
+        Hotel hotel = modelMapperService.forRequest().map(request,Hotel.class);
         hotel.setContact(contact);
         hotel.setAddress(address);
         hotel.setName(request.getName());
@@ -63,11 +66,14 @@ public class HotelServiceImpl implements HotelService {
                 hotelImage.setHotel(hotel);
                 return hotelImage;
         }).collect(Collectors.toList()));
-        hotel.setServices(request.getServiceIds().stream().map(id->{
+        request.getServiceIds().stream().forEach(id->{
+            com.company.hrs.entities.HotelService hotelService = new com.company.hrs.entities.HotelService();
+            hotelService.setHotel(hotel);
             com.company.hrs.entities.Service service = new com.company.hrs.entities.Service();
             service.setId(id);
-            return service;
-        }).collect(Collectors.toList()));
+            hotelService.setService(service);
+            hotelServiceRepository.save(hotelService);
+        });
         hotelRepository.save(hotel);
         return new SuccessResult();
     }
@@ -84,7 +90,15 @@ public class HotelServiceImpl implements HotelService {
     public DataResult<GetHotelDetailsResponse> getHotelDetails(Long id) {
         Hotel hotel = hotelRepository.findByIdAndActive(id,Status.ACTIVE);
         GetHotelDetailsResponse hotelDetailsResponse = modelMapperService.forResponse().map(hotel,GetHotelDetailsResponse.class);
+        hotelDetailsResponse.setServices(hotelServiceService.getAllServiceByHotel(modelMapperService.forRequest().map(hotel,Hotel.class)));
         return new SuccessDataResult<GetHotelDetailsResponse>(hotelDetailsResponse);
+    }
+
+    @Override
+    public DataResult<GetByEmployeeIdResponse> getByEmployeeId(Long id) {
+        Hotel hotel = hotelRepository.findByEmployeeId(id,Status.ACTIVE);
+        hotelServiceRules.checkIfHotelIsNull(hotel);
+        return new SuccessDataResult<GetByEmployeeIdResponse>(modelMapperService.forResponse().map(hotel,GetByEmployeeIdResponse.class));
     }
 
     @Transactional(rollbackFor = Exception.class)

@@ -3,6 +3,7 @@ package com.company.hrs.api.controller;
 import com.company.hrs.service.abstracts.HotelService;
 import com.company.hrs.service.dtos.hotel.requests.CreateHotelRequest;
 import com.company.hrs.service.dtos.hotel.response.GetAllHomeHotelResponse;
+import com.company.hrs.service.dtos.hotel.response.GetByEmployeeIdResponse;
 import com.company.hrs.service.dtos.hotel.response.GetHotelDetailsResponse;
 import com.company.hrs.service.result.DataResult;
 import com.company.hrs.service.result.Result;
@@ -31,5 +32,9 @@ public class HotelController {
     @GetMapping("details/{id}")
     public DataResult<GetHotelDetailsResponse> getHotelDetails(@PathVariable Long id){
         return hotelService.getHotelDetails(id);
+    }
+    @GetMapping("employee/{id}")
+    public DataResult<GetByEmployeeIdResponse> getByEmployeeId(@PathVariable Long id){
+        return hotelService.getByEmployeeId(id);
     }
 }

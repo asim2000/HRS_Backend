@@ -8,6 +8,7 @@ import jakarta.validation.constraints.Size;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.ColumnDefault;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -18,7 +19,7 @@ import java.util.List;
 public class Room extends BaseEntity{
 
     @NotNull
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne()
     @JoinColumn(name = "hotel_id",referencedColumnName = "id",nullable = false)
     private Hotel hotel;
 
@@ -28,68 +29,55 @@ public class Room extends BaseEntity{
 
     @NotNull
     @Column(name = "price_per_night", nullable = false)
-    private Double pricePerNight;
+    private Float pricePerNight;
 
     @NotNull
     @Column(name = "floor", nullable = false)
-    private Long floor;
+    private Byte floor;
 
     @NotNull
     @Column(name = "adult_count", nullable = false)
-    private byte adultCount;
+    private Byte adultCount;
     @NotNull
     @Column(name = "childreen_count", nullable = false)
-    private byte childreenCount;
+    private Byte childreenCount;
 
-    @Size(max = 50)
-    @NotNull
-    @Column(name = "room_status", nullable = false, length = 50)
+    @Column(name = "room_status",columnDefinition = "varchar(32) default 'AVAILABLE'")
     private RoomStatus roomStatus;
 
     @NotNull
     @Column(name = "twin_bed_count", nullable = false)
-    private Long twinBedCount;
+    private Byte twinBedCount;
 
     @NotNull
     @Column(name = "single_bed_count", nullable = false)
-    private Long singleBedCount;
+    private Byte singleBedCount;
 
     @Column(name = "is_pet_allowed")
     @NotNull
-    private boolean isPetAllowed;
+    private Boolean isPetAllowed;
 
     @NotNull
     @Column(name = "room_count", nullable = false)
-    private Long roomCount;
+    private Byte roomCount;
 
     @NotNull
     @Column(name = "shower_count", nullable = false)
-    private Long showerCount;
+    private Byte showerCount;
 
     @Size(max = 2000)
     @Column(name = "description", length = 2000)
     private String description;
 
-    @Size(max = 50)
     @NotNull
     @Column(name = "room_style", nullable = false, length = 50)
     private RoomStyle roomStyle;
 
-    @Column(name = "is_clean")
-    private boolean isClean;
+    @Column(name = "is_clean",columnDefinition="tinyint(1) default 1")
+    private Boolean isClean;
 
-    @Column(name = "is_breakfast_served")
-    @NotNull
-    private boolean isBreakFastServed;
 
     @NotNull
     @Column(name = "room_size", nullable = false)
     private Short roomSize;
-
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(
-            name = "room_item",
-            joinColumns = @JoinColumn(name = "room_id"),
-            inverseJoinColumns = @JoinColumn(name = "item_id"))
-    private List<Item> items;
 }

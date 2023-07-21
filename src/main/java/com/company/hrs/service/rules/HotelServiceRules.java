@@ -12,6 +12,11 @@ import java.util.List;
 @Service
 public class HotelServiceRules {
 
+    public void checkIfHotelIsNull(Hotel hotel){
+        if(hotel == null){
+            throw new ServiceException(StatusCode.HOTEL_NOT_FOUND_Exception, Message.HOTEL_NOT_FOUND);
+        }
+    }
     public void checkIfFileNameInvalid(String originalFileName) {
         if(originalFileName.contains("..")){
             throw new ServiceException(StatusCode.INVALID_FILE_NAME,Message.INVALID_FILE_NAME);
@@ -20,7 +25,7 @@ public class HotelServiceRules {
 
     public void checkIfHotelsIsNullOrEmpty(List<Hotel> hotels) {
         if(hotels==null || hotels.isEmpty()){
-            throw new ServiceException(StatusCode.NOT_FOUND,Message.NOT_FOUND);
+            throw new ServiceException(StatusCode.HOTEL_NOT_FOUND_Exception,Message.HOTEL_NOT_FOUND);
         }
     }
 }

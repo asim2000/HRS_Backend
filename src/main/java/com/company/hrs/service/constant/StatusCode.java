@@ -10,5 +10,6 @@ public class StatusCode {
     public static final Integer NOT_FOUND = 404;
     public static final Integer IO_EXCEPTION = 405;
     public static final Integer ValidationException = 406;
+    public static final Integer HOTEL_NOT_FOUND_Exception = 407;
 
 }
