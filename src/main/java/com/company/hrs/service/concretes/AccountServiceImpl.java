@@ -15,6 +15,7 @@ import com.company.hrs.service.dtos.employee.requests.CreateEmployeeRequest;
 import com.company.hrs.service.dtos.person.requests.CreatePersonRequest;
 import com.company.hrs.service.dtos.person.responses.CreatedPersonResponse;
 import com.company.hrs.service.dtos.person.responses.LoginPersonResponse;
+import com.company.hrs.service.dtos.personRole.requests.CreatePersonRoleRequest;
 import com.company.hrs.service.dtos.role.requests.CreateRoleRequest;
 import com.company.hrs.service.dtos.role.responses.CreatedRoleResponse;
 import com.company.hrs.service.result.DataResult;
@@ -37,6 +38,7 @@ public class AccountServiceImpl implements AccountService {
     private final ModelMapperService modelMapperService;
     private final ContactService contactService;
     private final EmployeeService employeeService;
+    private final PersonRoleService personRoleService;
 
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -71,8 +73,12 @@ public class AccountServiceImpl implements AccountService {
         }else{
             role = modelMapperService.forResponse().map(roleService.getRoleByNameIgnoreCase(request.getRole()).getData(),Role.class);
         }
-        createPersonRequest.getRoles().add(role);
+
         CreatedPersonResponse createdPerson = personService.create(createPersonRequest).getData();
+        CreatePersonRoleRequest personRoleRequest = new CreatePersonRoleRequest();
+        personRoleRequest.setPersonId(createdPerson.getId());
+        personRoleRequest.setRoleId(role.getId());
+        personRoleService.create(personRoleRequest);
 
         if(request.getRole().equalsIgnoreCase("hotel")){
             CreateEmployeeRequest employee = new CreateEmployeeRequest();

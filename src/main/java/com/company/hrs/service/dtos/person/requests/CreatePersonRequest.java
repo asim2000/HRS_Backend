@@ -26,5 +26,4 @@ public class CreatePersonRequest {
     private Gender gender;
     private String password;
     private byte[] image;
-    private List<Role> roles = new ArrayList<>();
 }

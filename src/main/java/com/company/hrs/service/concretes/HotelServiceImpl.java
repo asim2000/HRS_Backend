@@ -10,7 +10,8 @@ import com.company.hrs.service.abstracts.HotelServiceService;
 import com.company.hrs.service.constant.Message;
 import com.company.hrs.service.constant.StatusCode;
 import com.company.hrs.service.dtos.hotel.requests.CreateHotelRequest;
-import com.company.hrs.service.dtos.hotel.response.GetAllHomeHotelResponse;
+import com.company.hrs.service.dtos.hotel.requests.SearchHotelRequest;
+import com.company.hrs.service.dtos.hotel.response.GetHomeHotelsResponse;
 import com.company.hrs.service.dtos.hotel.response.GetByEmployeeIdResponse;
 import com.company.hrs.service.dtos.hotel.response.GetHotelDetailsResponse;
 import com.company.hrs.service.result.DataResult;
@@ -31,8 +32,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
 @Service
@@ -79,11 +80,52 @@ public class HotelServiceImpl implements HotelService {
     }
 
     @Override
-    public DataResult<List<GetAllHomeHotelResponse>> getAllHomeHotels() {
+    public DataResult<List<GetHomeHotelsResponse>> getHomeHotels(SearchHotelRequest searchHotelRequest) {
         List<Hotel> hotels = hotelRepository.findAllByActive(Status.ACTIVE);
+        if (searchHotelRequest.getCheckIn()!=null && searchHotelRequest.getCheckOut()!=null){
+            hotels = hotelRepository.getHotelsByCheckInAndCheckOut(searchHotelRequest.getCheckIn(),searchHotelRequest.getCheckOut());
+        }
+        if(searchHotelRequest.getCityId()!=null){
+            List<Hotel> hotelList = new ArrayList<>();
+            hotels.stream().forEach(hotel -> {
+                if(hotel.getAddress().getCity().getId()==searchHotelRequest.getCityId())
+                    hotelList.add(hotel);
+            });
+            hotels = hotelList;
+        }
+        if(searchHotelRequest.getRoomCount()!=null){
+            Set<Hotel> hotelSet = new HashSet<>();
+            hotels.stream().forEach(hotel -> {
+                hotel.getRooms().stream().forEach(room -> {
+                    if(room.getRoomCount() == searchHotelRequest.getRoomCount())
+                        hotelSet.add(hotel);
+                });
+            });
+            hotels = hotelSet.stream().toList();
+        }
+        if(searchHotelRequest.getAdultCount()!=null){
+            Set<Hotel> hotelSet = new HashSet<>();
+            hotels.stream().forEach(hotel -> {
+                hotel.getRooms().stream().forEach(room -> {
+                    if(room.getAdultCount() == searchHotelRequest.getAdultCount())
+                        hotelSet.add(hotel);
+                });
+            });
+            hotels = hotelSet.stream().toList();
+        }
+        if(searchHotelRequest.getChildreenCount()!=null){
+            Set<Hotel> hotelSet = new HashSet<>();
+            hotels.stream().forEach(hotel -> {
+                hotel.getRooms().stream().forEach(room -> {
+                    if(room.getChildreenCount() == searchHotelRequest.getChildreenCount())
+                        hotelSet.add(hotel);
+                });
+            });
+            hotels = hotelSet.stream().toList();
+        }
         hotelServiceRules.checkIfHotelsIsNullOrEmpty(hotels);
-        List<GetAllHomeHotelResponse> homeHotelResponses = hotels.stream().map(hotel -> modelMapperService.forResponse().map(hotel,GetAllHomeHotelResponse.class)).collect(Collectors.toList());
-        return new SuccessDataResult<List<GetAllHomeHotelResponse>>(homeHotelResponses);
+        List<GetHomeHotelsResponse> homeHotelResponses = hotels.stream().map(hotel -> modelMapperService.forResponse().map(hotel, GetHomeHotelsResponse.class)).collect(Collectors.toList());
+        return new SuccessDataResult<List<GetHomeHotelsResponse>>(homeHotelResponses);
     }
 
     @Override
@@ -100,6 +142,8 @@ public class HotelServiceImpl implements HotelService {
         hotelServiceRules.checkIfHotelIsNull(hotel);
         return new SuccessDataResult<GetByEmployeeIdResponse>(modelMapperService.forResponse().map(hotel,GetByEmployeeIdResponse.class));
     }
+
+
 
     @Transactional(rollbackFor = Exception.class)
     public String saveImage(MultipartFile image){

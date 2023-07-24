@@ -4,9 +4,7 @@ import com.company.hrs.enums.BookingStatus;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -14,16 +12,18 @@ import java.util.List;
 @Data
 @Entity
 @Table(name = "booking")
+@AllArgsConstructor
+@NoArgsConstructor
 public class Booking extends BaseEntity{
     @NotNull
     @ManyToOne()
     @JoinColumn(name = "person_id", nullable = false,referencedColumnName = "id")
     private Person person;
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne()
     private Review review;
 
     @NotNull
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne()
     @JoinColumn(name = "room_id",referencedColumnName = "id", nullable = false)
     private Room room;
 
@@ -31,14 +31,6 @@ public class Booking extends BaseEntity{
     @NotNull
     @Column(name = "reservation_number", nullable = false, length = 30)
     private String reservationNumber;
-
-    @NotNull
-    @Column(name = "start_date", nullable = false)
-    private LocalDate startDate;
-
-    @NotNull
-    @Column(name = "duration_in_days", nullable = false)
-    private Long durationInDays;
 
     @Size(max = 50)
     @NotNull

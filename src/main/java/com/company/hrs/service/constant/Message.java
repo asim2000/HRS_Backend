@@ -8,8 +8,10 @@ public class Message {
     public static final String PASSWORD_INCORRECT = "Parol duzgun deyil";
     public static final String INVALID_FILE_NAME = "Fayl adi duzgun deyil";
     public static final String NOT_FOUND = "Tapilmadi";
+    public static final String SERVICE_NOT_FOUND = "Xidmet tapilmadi";
     public static final String FAILED_OR_INTERRUPT = "";
     public static final String SUCCESSFULLY_LOGIN = "Successfully login";
     public static final String IO_EXCEPTION = "Fayla yazma zamani xeta bas verdi";
     public static final String HOTEL_NOT_FOUND = "Hotel tapilmadi";
+    public static final String ROLE_EXISTS = "Role movcuddur";
 }

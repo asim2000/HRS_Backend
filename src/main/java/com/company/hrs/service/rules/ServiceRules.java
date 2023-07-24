@@ -10,7 +10,7 @@ import java.util.List;
 public class ServiceRules {
     public void checkIfIsNullOrEmptyServices(List<Service> services){
         if(services == null || services.isEmpty()){
-            throw new ServiceException(StatusCode.NOT_FOUND, Message.NOT_FOUND);
+            throw new ServiceException(StatusCode.SERVICE_NOT_FOUND, Message.SERVICE_NOT_FOUND);
         }
     }
 }

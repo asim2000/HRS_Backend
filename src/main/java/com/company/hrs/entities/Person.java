@@ -60,11 +60,4 @@ public class Person extends BaseEntity{
     @Lob
     private byte[] image;
 
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(
-            name = "person_role",
-            joinColumns = @JoinColumn(name = "person_id"),
-            inverseJoinColumns = @JoinColumn(name = "role_id"))
-    private List<Role> roles = new ArrayList<>();
-
 }

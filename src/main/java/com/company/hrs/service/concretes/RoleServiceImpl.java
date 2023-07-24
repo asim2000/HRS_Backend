@@ -33,8 +33,8 @@ public class RoleServiceImpl implements RoleService {
 
     @Override
     public DataResult<CreatedRoleResponse> create(CreateRoleRequest request) {
+        roleRules.checkIfExistsRole(request.getName());
         Role role = roleRepository.save(modelMapperService.forRequest().map(request,Role.class));
-        roleRules.checkIfNullRole(role);
         CreatedRoleResponse response = modelMapperService.forResponse().map(role, CreatedRoleResponse.class);
         return new SuccessDataResult<CreatedRoleResponse>(response);
     }

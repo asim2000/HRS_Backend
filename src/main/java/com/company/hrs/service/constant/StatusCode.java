@@ -11,5 +11,7 @@ public class StatusCode {
     public static final Integer IO_EXCEPTION = 405;
     public static final Integer ValidationException = 406;
     public static final Integer HOTEL_NOT_FOUND_Exception = 407;
+    public static final Integer ROLE_EXISTS = 408;
+    public static final Integer SERVICE_NOT_FOUND = 409;
 
 }
