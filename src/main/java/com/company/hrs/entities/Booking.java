@@ -32,9 +32,9 @@ public class Booking extends BaseEntity{
     @Column(name = "reservation_number", nullable = false, length = 30)
     private String reservationNumber;
 
-    @Size(max = 50)
     @NotNull
-    @Column(name = "booking_status", nullable = false, length = 50)
+    @Column(name = "booking_status", nullable = false)
+    @Enumerated(EnumType.ORDINAL)
     private BookingStatus bookingStatus;
 
     @NotNull

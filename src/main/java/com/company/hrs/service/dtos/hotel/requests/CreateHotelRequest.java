@@ -29,6 +29,8 @@ public class CreateHotelRequest {
     @Column(name = "address_line")
     private String addressLine;
     private String phone;
+    @NotNull
+    private String mainImageName;
     private String description;
     private List<Long> serviceIds;
     @NotNull

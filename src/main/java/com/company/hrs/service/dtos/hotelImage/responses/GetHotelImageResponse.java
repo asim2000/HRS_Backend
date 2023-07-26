@@ -12,5 +12,5 @@ public class GetHotelImageResponse {
     private Long id;
     @Column(name = "hotel_id")
     private Long hotelId;
-    private String path;
+    private String name;
 }

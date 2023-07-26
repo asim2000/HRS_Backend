@@ -21,7 +21,7 @@ public class HotelImage extends BaseEntity{
     private Hotel hotel;
 
     @NotNull
-    @Column(name = "path", nullable = false)
-    private String path;
+    @Column(name = "name", nullable = false)
+    private String name;
 
 }

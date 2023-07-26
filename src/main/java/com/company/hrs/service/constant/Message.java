@@ -14,4 +14,5 @@ public class Message {
     public static final String IO_EXCEPTION = "Fayla yazma zamani xeta bas verdi";
     public static final String HOTEL_NOT_FOUND = "Hotel tapilmadi";
     public static final String ROLE_EXISTS = "Role movcuddur";
+    public static final String ROOM_NOT_FOUND = "Otaq tapilmadi";
 }

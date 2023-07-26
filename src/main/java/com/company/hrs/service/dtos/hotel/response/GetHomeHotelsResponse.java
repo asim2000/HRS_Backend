@@ -19,6 +19,7 @@ public class GetHomeHotelsResponse {
     private Integer reviewCount;
     private GetAddressResponse address;
     private GetContactResponse contact;
+    private String mainImageName;
     private List<GetHotelImageResponse> images;
 
 }

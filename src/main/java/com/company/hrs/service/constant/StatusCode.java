@@ -14,4 +14,5 @@ public class StatusCode {
     public static final Integer ROLE_EXISTS = 408;
     public static final Integer SERVICE_NOT_FOUND = 409;
 
+    public static Integer ROOM_NOT_FOUND_Exception = 410;
 }

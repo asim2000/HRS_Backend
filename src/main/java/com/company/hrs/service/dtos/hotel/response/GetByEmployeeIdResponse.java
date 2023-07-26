@@ -21,6 +21,7 @@ public class GetByEmployeeIdResponse {
     private String description;
     private GetAddressResponse address;
     private GetContactResponse contact;
+    private String mainImageName;
     private List<GetHotelImageResponse> images;
     private List<GetAllServiceByHotelResponse> services;
 }

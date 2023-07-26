@@ -63,7 +63,7 @@ public class HotelServiceImpl implements HotelService {
         hotel.setDescription(request.getDescription());
         hotel.setImages(Arrays.stream(request.getImages()).map(image->{
             HotelImage hotelImage = new HotelImage();
-                hotelImage.setPath(saveImage(image));
+                hotelImage.setName(saveImage(image));
                 hotelImage.setHotel(hotel);
                 return hotelImage;
         }).collect(Collectors.toList()));
@@ -81,47 +81,42 @@ public class HotelServiceImpl implements HotelService {
 
     @Override
     public DataResult<List<GetHomeHotelsResponse>> getHomeHotels(SearchHotelRequest searchHotelRequest) {
-        List<Hotel> hotels = hotelRepository.findAllByActive(Status.ACTIVE);
+        List<Hotel> hotels = new ArrayList<>();
         if (searchHotelRequest.getCheckIn()!=null && searchHotelRequest.getCheckOut()!=null){
-            hotels = hotelRepository.getHotelsByCheckInAndCheckOut(searchHotelRequest.getCheckIn(),searchHotelRequest.getCheckOut());
+            List<Room> rooms = hotelRepository.getHotelsByCheckInAndCheckOut(searchHotelRequest.getCheckIn(),searchHotelRequest.getCheckOut());
+            if(searchHotelRequest.getRoomCount()!=null){
+                List<Room> roomList = new ArrayList<>();
+                rooms.stream().forEach(room ->  {
+                    if(room.getRoomCount()==searchHotelRequest.getRoomCount())
+                        roomList.add(room);
+                });
+                rooms = roomList;
+            }
+            if(searchHotelRequest.getAdultCount()!=null){
+                List<Room> roomList = new ArrayList<>();
+                rooms.stream().forEach(room ->  {
+                    if(room.getAdultCount()==searchHotelRequest.getAdultCount())
+                        roomList.add(room);
+                });
+                rooms = roomList;
+            }
+            if(searchHotelRequest.getChildreenCount()!=null){
+                List<Room> roomList = new ArrayList<>();
+                rooms.stream().forEach(room ->  {
+                    if(room.getChildreenCount()==searchHotelRequest.getChildreenCount())
+                        roomList.add(room);
+                });
+                rooms = roomList;
+            }
+            hotels = rooms.stream().map(room -> room.getHotel()).collect(Collectors.toList());
         }
         if(searchHotelRequest.getCityId()!=null){
             List<Hotel> hotelList = new ArrayList<>();
             hotels.stream().forEach(hotel -> {
-                if(hotel.getAddress().getCity().getId()==searchHotelRequest.getCityId())
+                if(hotel.getAddress().getCity().getId() == searchHotelRequest.getCityId())
                     hotelList.add(hotel);
             });
             hotels = hotelList;
-        }
-        if(searchHotelRequest.getRoomCount()!=null){
-            Set<Hotel> hotelSet = new HashSet<>();
-            hotels.stream().forEach(hotel -> {
-                hotel.getRooms().stream().forEach(room -> {
-                    if(room.getRoomCount() == searchHotelRequest.getRoomCount())
-                        hotelSet.add(hotel);
-                });
-            });
-            hotels = hotelSet.stream().toList();
-        }
-        if(searchHotelRequest.getAdultCount()!=null){
-            Set<Hotel> hotelSet = new HashSet<>();
-            hotels.stream().forEach(hotel -> {
-                hotel.getRooms().stream().forEach(room -> {
-                    if(room.getAdultCount() == searchHotelRequest.getAdultCount())
-                        hotelSet.add(hotel);
-                });
-            });
-            hotels = hotelSet.stream().toList();
-        }
-        if(searchHotelRequest.getChildreenCount()!=null){
-            Set<Hotel> hotelSet = new HashSet<>();
-            hotels.stream().forEach(hotel -> {
-                hotel.getRooms().stream().forEach(room -> {
-                    if(room.getChildreenCount() == searchHotelRequest.getChildreenCount())
-                        hotelSet.add(hotel);
-                });
-            });
-            hotels = hotelSet.stream().toList();
         }
         hotelServiceRules.checkIfHotelsIsNullOrEmpty(hotels);
         List<GetHomeHotelsResponse> homeHotelResponses = hotels.stream().map(hotel -> modelMapperService.forResponse().map(hotel, GetHomeHotelsResponse.class)).collect(Collectors.toList());

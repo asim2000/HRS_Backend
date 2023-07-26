@@ -36,6 +36,9 @@ public class Hotel extends BaseEntity{
     private String name;
     @Column(name = "rating")
     private Float rating;
+    @Column(name = "main_image_name")
+    @NotNull
+    private String mainImageName;
 
     @Size(max = 2000)
     @Column(name = "description", length = 2000)
