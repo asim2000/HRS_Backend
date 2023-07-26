@@ -15,4 +15,5 @@ public class Message {
     public static final String HOTEL_NOT_FOUND = "Hotel tapilmadi";
     public static final String ROLE_EXISTS = "Role movcuddur";
     public static final String ROOM_NOT_FOUND = "Otaq tapilmadi";
+    public static final String CHECK_IN_OR_CHECK_OUT_NULL_EXCEPTION = "CheckIn or checkOut is null";
 }

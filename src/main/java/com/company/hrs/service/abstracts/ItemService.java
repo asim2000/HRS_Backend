@@ -10,4 +10,5 @@ import java.util.List;
 public interface ItemService {
     Result create(CreateItemRequest createItemRequest);
     DataResult<List<GetAllItemResponse>> getAll();
+    DataResult<List<GetAllItemResponse>> getAllByRoomId(Long id);
 }

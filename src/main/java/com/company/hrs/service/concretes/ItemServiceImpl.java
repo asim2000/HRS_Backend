@@ -34,4 +34,10 @@ public class ItemServiceImpl implements ItemService {
         List<GetAllItemResponse> getAllItemResponses = items.stream().map(item -> modelMapperService.forResponse().map(item, GetAllItemResponse.class)).collect(Collectors.toList());
         return new SuccessDataResult<List<GetAllItemResponse>>(getAllItemResponses);
     }
+
+    @Override
+    public DataResult<List<GetAllItemResponse>> getAllByRoomId(Long id) {
+        List<Item> items = itemRepository.getAllByRoomId(id);
+        return new SuccessDataResult<List<GetAllItemResponse>>(items.stream().map(item -> modelMapperService.forResponse().map(item,GetAllItemResponse.class)).collect(Collectors.toList()));
+    }
 }

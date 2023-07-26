@@ -15,4 +15,5 @@ public class StatusCode {
     public static final Integer SERVICE_NOT_FOUND = 409;
 
     public static Integer ROOM_NOT_FOUND_Exception = 410;
+    public static final Integer CHECK_IN_OR_CHECK_OUT_NULL_EXCEPTION = 411;
 }

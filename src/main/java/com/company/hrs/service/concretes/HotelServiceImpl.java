@@ -7,6 +7,7 @@ import com.company.hrs.repository.HotelServiceRepository;
 import com.company.hrs.service.abstracts.CityService;
 import com.company.hrs.service.abstracts.HotelService;
 import com.company.hrs.service.abstracts.HotelServiceService;
+import com.company.hrs.service.abstracts.RoomService;
 import com.company.hrs.service.constant.Message;
 import com.company.hrs.service.constant.StatusCode;
 import com.company.hrs.service.dtos.hotel.requests.CreateHotelRequest;
@@ -14,6 +15,7 @@ import com.company.hrs.service.dtos.hotel.requests.SearchHotelRequest;
 import com.company.hrs.service.dtos.hotel.response.GetHomeHotelsResponse;
 import com.company.hrs.service.dtos.hotel.response.GetByEmployeeIdResponse;
 import com.company.hrs.service.dtos.hotel.response.GetHotelDetailsResponse;
+import com.company.hrs.service.dtos.room.responses.GetUnReservedRoomsResponse;
 import com.company.hrs.service.result.DataResult;
 import com.company.hrs.service.result.Result;
 import com.company.hrs.service.result.SuccessDataResult;
@@ -45,6 +47,7 @@ public class HotelServiceImpl implements HotelService {
     private final HotelServiceRules hotelServiceRules;
     private final HotelServiceRepository hotelServiceRepository;
     private final HotelServiceService hotelServiceService;
+    private final RoomService roomService;
 
     @Transactional(rollbackFor = Exception.class)
     @Override
@@ -82,34 +85,36 @@ public class HotelServiceImpl implements HotelService {
     @Override
     public DataResult<List<GetHomeHotelsResponse>> getHomeHotels(SearchHotelRequest searchHotelRequest) {
         List<Hotel> hotels = new ArrayList<>();
-        if (searchHotelRequest.getCheckIn()!=null && searchHotelRequest.getCheckOut()!=null){
-            List<Room> rooms = hotelRepository.getHotelsByCheckInAndCheckOut(searchHotelRequest.getCheckIn(),searchHotelRequest.getCheckOut());
-            if(searchHotelRequest.getRoomCount()!=null){
-                List<Room> roomList = new ArrayList<>();
-                rooms.stream().forEach(room ->  {
-                    if(room.getRoomCount()==searchHotelRequest.getRoomCount())
-                        roomList.add(room);
-                });
-                rooms = roomList;
-            }
-            if(searchHotelRequest.getAdultCount()!=null){
-                List<Room> roomList = new ArrayList<>();
-                rooms.stream().forEach(room ->  {
-                    if(room.getAdultCount()==searchHotelRequest.getAdultCount())
-                        roomList.add(room);
-                });
-                rooms = roomList;
-            }
-            if(searchHotelRequest.getChildreenCount()!=null){
-                List<Room> roomList = new ArrayList<>();
-                rooms.stream().forEach(room ->  {
-                    if(room.getChildreenCount()==searchHotelRequest.getChildreenCount())
-                        roomList.add(room);
-                });
-                rooms = roomList;
-            }
-            hotels = rooms.stream().map(room -> room.getHotel()).collect(Collectors.toList());
+        hotelServiceRules.checkIfCheckInOrCheckOutIsNull(searchHotelRequest.getCheckIn(),searchHotelRequest.getCheckOut());
+        DataResult<List<GetUnReservedRoomsResponse>> dataResult = roomService.getUnReservedRooms(searchHotelRequest.getCheckIn(),searchHotelRequest.getCheckOut());
+        List<Room> rooms = dataResult.getData().stream().map(data->modelMapperService.forResponse().map(data,Room.class)).collect(Collectors.toList());
+
+        if(searchHotelRequest.getRoomCount()!=null){
+            List<Room> roomList = new ArrayList<>();
+            rooms.stream().forEach(room ->  {
+                if(room.getRoomCount()==searchHotelRequest.getRoomCount())
+                    roomList.add(room);
+            });
+            rooms = roomList;
         }
+        if(searchHotelRequest.getAdultCount()!=null){
+            List<Room> roomList = new ArrayList<>();
+            rooms.stream().forEach(room ->  {
+                if(room.getAdultCount()==searchHotelRequest.getAdultCount())
+                    roomList.add(room);
+            });
+            rooms = roomList;
+        }
+        if(searchHotelRequest.getChildreenCount()!=null){
+            List<Room> roomList = new ArrayList<>();
+            rooms.stream().forEach(room ->  {
+                if(room.getChildreenCount()==searchHotelRequest.getChildreenCount())
+                    roomList.add(room);
+            });
+            rooms = roomList;
+        }
+        hotels = rooms.stream().map(room -> room.getHotel()).collect(Collectors.toList());
+
         if(searchHotelRequest.getCityId()!=null){
             List<Hotel> hotelList = new ArrayList<>();
             hotels.stream().forEach(hotel -> {
