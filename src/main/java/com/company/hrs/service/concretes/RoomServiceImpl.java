@@ -8,6 +8,7 @@ import com.company.hrs.repository.RoomItemRepository;
 import com.company.hrs.repository.RoomRepository;
 import com.company.hrs.service.abstracts.ItemService;
 import com.company.hrs.service.abstracts.RoomService;
+import com.company.hrs.service.dtos.hotel.response.GetRoomByIdForPaymentResponse;
 import com.company.hrs.service.dtos.item.responses.GetAllItemResponse;
 import com.company.hrs.service.dtos.room.requests.CreateRoomRequest;
 import com.company.hrs.service.dtos.room.requests.SearchRoomRequest;
@@ -107,5 +108,13 @@ public class RoomServiceImpl implements RoomService {
     public DataResult<GetByIdResponse> getById(Long id) {
         Room room = roomRepository.getById(id);
         return new SuccessDataResult<GetByIdResponse>(modelMapperService.forResponse().map(room, GetByIdResponse.class));
+    }
+
+    @Override
+    public DataResult<GetRoomByIdForPaymentResponse> getRoomByIdForPayment(Long id) {
+        Room room = roomRepository.getById(id);
+        GetRoomByIdForPaymentResponse response = modelMapperService.forResponse().map(room,GetRoomByIdForPaymentResponse.class);
+        response.setPayPerCent(room.getHotel().getPayPerCent());
+        return new SuccessDataResult<>(response);
     }
 }

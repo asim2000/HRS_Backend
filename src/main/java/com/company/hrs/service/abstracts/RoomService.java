@@ -1,5 +1,6 @@
 package com.company.hrs.service.abstracts;
 
+import com.company.hrs.service.dtos.hotel.response.GetRoomByIdForPaymentResponse;
 import com.company.hrs.service.dtos.room.requests.CreateRoomRequest;
 import com.company.hrs.service.dtos.room.requests.SearchRoomRequest;
 import com.company.hrs.service.dtos.room.responses.*;
@@ -15,4 +16,5 @@ public interface RoomService {
     DataResult<List<GetUnReservedRoomsResponse>> getUnReservedRooms(LocalDate checkIn,LocalDate checkOut);
     DataResult<GetRandomRoomResponse> getRandomRoom(SearchRoomRequest searchRoomRequest);
     DataResult<GetByIdResponse> getById(Long id);
+    DataResult<GetRoomByIdForPaymentResponse> getRoomByIdForPayment(Long id);
 }

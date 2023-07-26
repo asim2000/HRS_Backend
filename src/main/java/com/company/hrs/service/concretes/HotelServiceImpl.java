@@ -87,7 +87,7 @@ public class HotelServiceImpl implements HotelService {
         List<Hotel> hotels = new ArrayList<>();
         hotelServiceRules.checkIfCheckInOrCheckOutIsNull(searchHotelRequest.getCheckIn(),searchHotelRequest.getCheckOut());
         DataResult<List<GetUnReservedRoomsResponse>> dataResult = roomService.getUnReservedRooms(searchHotelRequest.getCheckIn(),searchHotelRequest.getCheckOut());
-        List<Room> rooms = dataResult.getData().stream().map(data->modelMapperService.forResponse().map(data,Room.class)).collect(Collectors.toList());
+        List<Room> rooms = dataResult.getData().stream().map(data->modelMapperService.forRequest().map(data,Room.class)).collect(Collectors.toList());
 
         if(searchHotelRequest.getRoomCount()!=null){
             List<Room> roomList = new ArrayList<>();

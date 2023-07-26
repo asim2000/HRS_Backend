@@ -1,6 +1,7 @@
 package com.company.hrs.api.controller;
 
 import com.company.hrs.service.abstracts.RoomService;
+import com.company.hrs.service.dtos.hotel.response.GetRoomByIdForPaymentResponse;
 import com.company.hrs.service.dtos.room.requests.CreateRoomRequest;
 import com.company.hrs.service.dtos.room.requests.SearchRoomRequest;
 import com.company.hrs.service.dtos.room.responses.GetAllRoomsByHotelIdResponse;
@@ -36,5 +37,8 @@ public class RoomController {
     public DataResult<GetByIdResponse> getById(@PathVariable Long id){
         return roomService.getById(id);
     }
-
+    @GetMapping("getbyidforpayment/{id}")
+    public DataResult<GetRoomByIdForPaymentResponse> getByIdForPayment(@PathVariable Long id){
+        return roomService.getRoomByIdForPayment(id);
+    }
 }
