@@ -4,6 +4,7 @@ import com.company.hrs.service.abstracts.RoomService;
 import com.company.hrs.service.dtos.room.requests.CreateRoomRequest;
 import com.company.hrs.service.dtos.room.requests.SearchRoomRequest;
 import com.company.hrs.service.dtos.room.responses.GetAllRoomsByHotelIdResponse;
+import com.company.hrs.service.dtos.room.responses.GetByIdResponse;
 import com.company.hrs.service.dtos.room.responses.GetRandomRoomResponse;
 import com.company.hrs.service.result.DataResult;
 import com.company.hrs.service.result.Result;
@@ -28,7 +29,12 @@ public class RoomController {
         return roomService.getAllByHotelId(id);
     }
     @PostMapping("getRandomRoom")
-    DataResult<GetRandomRoomResponse> GetRandomRoom(@RequestBody SearchRoomRequest searchRoomRequest){
+    public DataResult<GetRandomRoomResponse> GetRandomRoom(@RequestBody SearchRoomRequest searchRoomRequest){
         return roomService.getRandomRoom(searchRoomRequest);
     }
+    @GetMapping("getbyid/{id}")
+    public DataResult<GetByIdResponse> getById(@PathVariable Long id){
+        return roomService.getById(id);
+    }
+
 }

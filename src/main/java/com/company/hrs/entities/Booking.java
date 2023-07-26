@@ -19,9 +19,6 @@ public class Booking extends BaseEntity{
     @ManyToOne()
     @JoinColumn(name = "person_id", nullable = false,referencedColumnName = "id")
     private Person person;
-    @OneToOne()
-    private Review review;
-
     @NotNull
     @ManyToOne()
     @JoinColumn(name = "room_id",referencedColumnName = "id", nullable = false)

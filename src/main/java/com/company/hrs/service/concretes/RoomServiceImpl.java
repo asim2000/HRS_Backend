@@ -11,10 +11,7 @@ import com.company.hrs.service.abstracts.RoomService;
 import com.company.hrs.service.dtos.item.responses.GetAllItemResponse;
 import com.company.hrs.service.dtos.room.requests.CreateRoomRequest;
 import com.company.hrs.service.dtos.room.requests.SearchRoomRequest;
-import com.company.hrs.service.dtos.room.responses.GetAllRoomsByHotelIdResponse;
-import com.company.hrs.service.dtos.room.responses.GetRandomRoomResponse;
-import com.company.hrs.service.dtos.room.responses.GetUnReservedRoomsResponse;
-import com.company.hrs.service.dtos.room.responses.GetUnreservedAndFilteredRoomsResponse;
+import com.company.hrs.service.dtos.room.responses.*;
 import com.company.hrs.service.result.DataResult;
 import com.company.hrs.service.result.Result;
 import com.company.hrs.service.result.SuccessDataResult;
@@ -104,5 +101,11 @@ public class RoomServiceImpl implements RoomService {
         GetRandomRoomResponse response = modelMapperService.forResponse().map(room,GetRandomRoomResponse.class);
         response.setItems(itemService.getAllByRoomId(room.getId()).getData());
         return new SuccessDataResult<GetRandomRoomResponse>(response);
+    }
+
+    @Override
+    public DataResult<GetByIdResponse> getById(Long id) {
+        Room room = roomRepository.getById(id);
+        return new SuccessDataResult<GetByIdResponse>(modelMapperService.forResponse().map(room, GetByIdResponse.class));
     }
 }

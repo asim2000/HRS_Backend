@@ -22,4 +22,6 @@ public interface RoomRepository extends JpaRepository<Room,Long> {
             "and (:checkIn>=b.checkIn and :checkOut<=b.checkOut)" +
             "and (:checkIn<=b.checkIn and :checkOut>=b.checkOut))")
     List<Room> getUnReservedRooms(LocalDate checkIn, LocalDate checkOut);
+    @Query("select r from Room r where r.active=0 and r.id=:id")
+    Room getById(Long id);
 }
