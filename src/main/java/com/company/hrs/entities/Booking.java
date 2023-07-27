@@ -25,11 +25,11 @@ public class Booking extends BaseEntity{
     private Room room;
     @NotNull
     @Column(name = "price_per_night")
-    private Float priePerNight;
+    private Float pricePerNight;
 
-    @Size(max = 30)
+    @Size(max = 40)
     @NotNull
-    @Column(name = "reservation_number", nullable = false, length = 30)
+    @Column(name = "reservation_number", nullable = false)
     private String reservationNumber;
 
     @NotNull
@@ -44,4 +44,6 @@ public class Booking extends BaseEntity{
     @NotNull
     @Column(name = "check_out", nullable = false)
     private LocalDate checkOut;
+    @OneToMany(mappedBy = "booking",cascade = CascadeType.ALL)
+    private List<Payment> payments;
 }

@@ -27,6 +27,5 @@ public class CreateBookingRequest {
     private LocalDate checkOut;
     @NotNull
     private Float pricePerNight;
-    private CreateCreditCardRequest creditCard;
 
 }

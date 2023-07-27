@@ -85,7 +85,7 @@ public class HotelServiceImpl implements HotelService {
     @Override
     public DataResult<List<GetHomeHotelsResponse>> getHomeHotels(SearchHotelRequest searchHotelRequest) {
         List<Hotel> hotels = new ArrayList<>();
-        hotelServiceRules.checkIfCheckInOrCheckOutIsNull(searchHotelRequest.getCheckIn(),searchHotelRequest.getCheckOut());
+        hotelServiceRules.checkIfCheckInOrCheckOutIsNullOrInvalid(searchHotelRequest.getCheckIn(),searchHotelRequest.getCheckOut());
         DataResult<List<GetUnReservedRoomsResponse>> dataResult = roomService.getUnReservedRooms(searchHotelRequest.getCheckIn(),searchHotelRequest.getCheckOut());
         List<Room> rooms = dataResult.getData().stream().map(data->modelMapperService.forRequest().map(data,Room.class)).collect(Collectors.toList());
 

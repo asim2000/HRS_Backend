@@ -2,10 +2,14 @@ package com.company.hrs.api.controller;
 
 import com.company.hrs.service.abstracts.BookingService;
 import com.company.hrs.service.dtos.booking.requests.CreateBookingRequest;
+import com.company.hrs.service.dtos.booking.responses.GetAllBookingsByPersonIdResponse;
+import com.company.hrs.service.result.DataResult;
 import com.company.hrs.service.result.Result;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("booking")
@@ -13,8 +17,8 @@ import org.springframework.web.bind.annotation.*;
 @CrossOrigin
 public class BookingController {
     private final BookingService bookingService;
-    @PostMapping("book")
-    public Result book(@RequestBody @Valid CreateBookingRequest createBookingRequest){
-        return bookingService.book(createBookingRequest);
-    }
+    @GetMapping("getallbypersonid/{id}")
+public DataResult<List<GetAllBookingsByPersonIdResponse>> getAllByPersonId(@PathVariable Long id){
+    return bookingService.getAllByPersonId(id);
+}
 }

@@ -16,4 +16,5 @@ public class StatusCode {
 
     public static Integer ROOM_NOT_FOUND_Exception = 410;
     public static final Integer CHECK_IN_OR_CHECK_OUT_NULL_EXCEPTION = 411;
+    public static final Integer CHECK_IN_IS_NOT_BECOME_BEFORE_FROM_NOW = 412;
 }

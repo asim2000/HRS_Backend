@@ -16,11 +16,10 @@ public interface RoomRepository extends JpaRepository<Room,Long> {
             "not in(select b.room.id " +
             "from Booking b " +
             "where b.active = 0 " +
-            "and b.bookingStatus = 1 " +
-            "and (:checkIn<=b.checkIn and b.checkIn<=:checkOut and :checkOut<=b.checkOut)" +
-            "and (:checkIn<=b.checkOut and :checkIn>=b.checkIn and :checkOut>=b.checkOut)" +
-            "and (:checkIn>=b.checkIn and :checkOut<=b.checkOut)" +
-            "and (:checkIn<=b.checkIn and :checkOut>=b.checkOut))")
+            "and ((:checkIn<=b.checkIn and b.checkIn<=:checkOut and :checkOut<=b.checkOut)" +
+            "or (:checkIn<=b.checkOut and :checkIn>=b.checkIn and :checkOut>=b.checkOut)" +
+            "or (:checkIn>=b.checkIn and :checkOut<=b.checkOut)" +
+            "or (:checkIn<=b.checkIn and :checkOut>=b.checkOut)))")
     List<Room> getUnReservedRooms(LocalDate checkIn, LocalDate checkOut);
     @Query("select r from Room r where r.active=0 and r.id=:id")
     Room getById(Long id);

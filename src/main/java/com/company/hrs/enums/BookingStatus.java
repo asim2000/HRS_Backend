@@ -4,12 +4,12 @@ import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
 public enum BookingStatus {
-    REQUESTED(0),
-    PENDING(1),
-    CONFIRMED(2),
-    CHECKED_IN(3),
-    CHECKED_OUT(4),
-    CANCELED(5),
-    ABONDONED(6);
+    CONFIRMED(0),
+    COMPLETED(1),
+    CHECKED_IN(2),
+    CHECKED_OUT(3),
+    CANCELED(4),
+    ABONDONED(5),
+    PENDING(6);
     public Integer value;
 }

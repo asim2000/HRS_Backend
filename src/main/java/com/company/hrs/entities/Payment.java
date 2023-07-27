@@ -10,20 +10,21 @@ import lombok.Data;
 @Entity
 @Table(name = "payment")
 public class Payment extends BaseEntity{
-    @ManyToOne()
-    @JoinColumn(name = "credit_card_id", nullable = false)
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "credit_card_id",referencedColumnName = "id")
     private CreditCard creditCard;
 
-    @ManyToOne()
-    @JoinColumn(name = "booking_id",nullable = false)
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "booking_id",referencedColumnName = "id",nullable = false)
     private Booking booking;
 
     @NotNull
     @Column(name = "payment_status", nullable = false)
+    @Enumerated(EnumType.ORDINAL)
     private PaymentStatus paymentStatus;
 
     @NotNull
     @Column(name = "amount", nullable = false)
-    private Double amount;
+    private Float amount;
 
 }

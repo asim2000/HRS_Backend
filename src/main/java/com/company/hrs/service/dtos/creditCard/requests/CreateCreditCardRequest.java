@@ -1,8 +1,10 @@
 package com.company.hrs.service.dtos.creditCard.requests;
 
 import com.company.hrs.enums.CreditCardType;
+import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -17,12 +19,13 @@ public class CreateCreditCardRequest {
     @NotNull
     @Min(3)
     private String nameOnCard;
-    @Length(min = 16,max = 16)
     private Long cardNumber;
     @NotNull
     private Byte expMonth;
     @NotNull
     private Byte expYear;
     @NotNull
+    @Min(100)
+    @Max(999)
     private Short cvv;
 }

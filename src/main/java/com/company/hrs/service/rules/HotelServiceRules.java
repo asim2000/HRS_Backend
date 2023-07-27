@@ -33,9 +33,12 @@ public class HotelServiceRules {
     }
 
 
-    public void checkIfCheckInOrCheckOutIsNull(LocalDate checkIn, LocalDate checkOut) {
+    public void checkIfCheckInOrCheckOutIsNullOrInvalid(LocalDate checkIn, LocalDate checkOut) {
         if(checkIn == null || checkOut == null){
             throw new ServiceException(StatusCode.CHECK_IN_OR_CHECK_OUT_NULL_EXCEPTION,Message.CHECK_IN_OR_CHECK_OUT_NULL_EXCEPTION);
+        }
+        else if(LocalDate.now().isAfter(checkIn)){
+            throw new ServiceException(StatusCode.CHECK_IN_IS_NOT_BECOME_BEFORE_FROM_NOW,Message.CHECK_IN_IS_NOT_BECOME_BEFORE_FROM_NOW);
         }
     }
 }

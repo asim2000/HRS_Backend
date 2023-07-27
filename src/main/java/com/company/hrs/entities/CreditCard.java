@@ -2,6 +2,8 @@ package com.company.hrs.entities;
 
 import com.company.hrs.enums.CreditCardType;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
@@ -16,12 +18,9 @@ import java.util.List;
 @Entity
 @Table(name = "credit_card")
 public class CreditCard extends BaseEntity{
-    @Size(max = 50)
     @NotNull
-    @Column(name = "credit_card_type", nullable = false, length = 50)
+    @Column(name = "credit_card_type", nullable = false)
     private CreditCardType creditCardType;
-
-    @Length(min = 16,max = 16)
     @NotNull
     @Column(name = "card_number", nullable = false)
     private Long cardNumber;
@@ -35,6 +34,7 @@ public class CreditCard extends BaseEntity{
     private Byte expYear;
     @Column(name = "cvc")
     @NotNull
-    @Length(min=3,max=3)
+    @Min(100)
+    @Max(999)
     private Short cvv;
 }
