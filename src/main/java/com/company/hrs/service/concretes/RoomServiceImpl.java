@@ -79,7 +79,7 @@ public class RoomServiceImpl implements RoomService {
         if(searchRoomRequest.getAdultCount()!=null){
             List<Room> roomList = new ArrayList<>();
             rooms.stream().forEach(room ->  {
-                if(room.getAdultCount()==searchRoomRequest.getAdultCount())
+                if(room.getAdultCount()>=searchRoomRequest.getAdultCount())
                     roomList.add(room);
             });
             rooms = roomList;
@@ -87,7 +87,15 @@ public class RoomServiceImpl implements RoomService {
         if(searchRoomRequest.getChildreenCount()!=null){
             List<Room> roomList = new ArrayList<>();
             rooms.stream().forEach(room ->  {
-                if(room.getChildreenCount()==searchRoomRequest.getChildreenCount())
+                if(room.getChildreenCount()>=searchRoomRequest.getChildreenCount())
+                    roomList.add(room);
+            });
+            rooms = roomList;
+        }
+        if(searchRoomRequest.getRoomStyle() != null){
+            List<Room> roomList = new ArrayList<>();
+            rooms.stream().forEach(room ->  {
+                if(room.getRoomStyle() == searchRoomRequest.getRoomStyle())
                     roomList.add(room);
             });
             rooms = roomList;

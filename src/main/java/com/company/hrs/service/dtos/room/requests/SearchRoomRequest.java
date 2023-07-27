@@ -1,5 +1,7 @@
 package com.company.hrs.service.dtos.room.requests;
 
+import com.company.hrs.enums.RoomStyle;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -16,4 +18,6 @@ public class SearchRoomRequest {
     private Byte roomCount;
     private Byte adultCount;
     private Byte childreenCount;
+    @NotNull
+    private RoomStyle roomStyle;
 }

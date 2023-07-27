@@ -100,7 +100,7 @@ public class HotelServiceImpl implements HotelService {
         if(searchHotelRequest.getAdultCount()!=null){
             List<Room> roomList = new ArrayList<>();
             rooms.stream().forEach(room ->  {
-                if(room.getAdultCount()==searchHotelRequest.getAdultCount())
+                if(room.getAdultCount()>=searchHotelRequest.getAdultCount())
                     roomList.add(room);
             });
             rooms = roomList;
@@ -108,7 +108,7 @@ public class HotelServiceImpl implements HotelService {
         if(searchHotelRequest.getChildreenCount()!=null){
             List<Room> roomList = new ArrayList<>();
             rooms.stream().forEach(room ->  {
-                if(room.getChildreenCount()==searchHotelRequest.getChildreenCount())
+                if(room.getChildreenCount()>=searchHotelRequest.getChildreenCount())
                     roomList.add(room);
             });
             rooms = roomList;

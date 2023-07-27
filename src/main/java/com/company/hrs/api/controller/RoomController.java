@@ -30,7 +30,7 @@ public class RoomController {
         return roomService.getAllByHotelId(id);
     }
     @PostMapping("getRandomRoom")
-    public DataResult<GetRandomRoomResponse> GetRandomRoom(@RequestBody SearchRoomRequest searchRoomRequest){
+    public DataResult<GetRandomRoomResponse> GetRandomRoom(@RequestBody @Valid SearchRoomRequest searchRoomRequest){
         return roomService.getRandomRoom(searchRoomRequest);
     }
     @GetMapping("getbyid/{id}")
