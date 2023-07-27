@@ -10,19 +10,16 @@ import lombok.Data;
 @Entity
 @Table(name = "payment")
 public class Payment extends BaseEntity{
-
-    @NotNull
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne()
     @JoinColumn(name = "credit_card_id", nullable = false)
     private CreditCard creditCard;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne()
     @JoinColumn(name = "booking_id",nullable = false)
     private Booking booking;
 
-    @Size(max = 50)
     @NotNull
-    @Column(name = "payment_status", nullable = false, length = 50)
+    @Column(name = "payment_status", nullable = false)
     private PaymentStatus paymentStatus;
 
     @NotNull

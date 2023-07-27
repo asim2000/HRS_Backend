@@ -23,6 +23,9 @@ public class Booking extends BaseEntity{
     @ManyToOne()
     @JoinColumn(name = "room_id",referencedColumnName = "id", nullable = false)
     private Room room;
+    @NotNull
+    @Column(name = "price_per_night")
+    private Float priePerNight;
 
     @Size(max = 30)
     @NotNull
