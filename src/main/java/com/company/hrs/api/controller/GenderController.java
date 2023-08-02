@@ -13,7 +13,6 @@ import java.util.List;
 
 @RestController
 @RequestMapping("gender")
-@CrossOrigin
 public class GenderController {
     @GetMapping
     public DataResult<List<Gender>> getAll(){

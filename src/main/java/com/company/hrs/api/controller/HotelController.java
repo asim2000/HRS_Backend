@@ -17,7 +17,6 @@ import java.util.List;
 @RestController
 @RequestMapping("hotel")
 @RequiredArgsConstructor
-@CrossOrigin
 public class HotelController {
     private final HotelService hotelService;
     @PostMapping()

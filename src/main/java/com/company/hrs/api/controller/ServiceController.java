@@ -13,7 +13,6 @@ import java.util.List;
 @RestController
 @RequestMapping("service")
 @RequiredArgsConstructor
-@CrossOrigin
 public class ServiceController {
     private final ServiceService serviceService;
     @GetMapping

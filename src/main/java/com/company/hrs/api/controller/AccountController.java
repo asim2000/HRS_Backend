@@ -15,17 +15,15 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("account")
 @AllArgsConstructor
-@CrossOrigin
 public class AccountController {
     private AccountService accountService;
 
     @PostMapping("register")
-    @ResponseStatus(value = HttpStatus.CREATED)
     public Result registerForCustomer(@RequestBody @Valid RegisterRequest request){
         return accountService.register(request);
     }
     @PostMapping("login")
-    public DataResult<LoginPersonResponse> login(@RequestBody @Valid LoginRequest request){
+    public DataResult<String> login(@RequestBody @Valid LoginRequest request){
         return accountService.login(request);
     }
 }

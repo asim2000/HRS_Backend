@@ -10,4 +10,8 @@ public interface PersonRepository extends JpaRepository<Person,Long> {
     boolean existsPersonByEmailAndPasswordAndActive(String id, String password, Status status);
     @Query("select p from Person p inner join Contact c on p.contact.id=c.id where p.active = 0 and c.email=?1")
     Person getPersonByEmailAndActive(String email,Status status);
+    @Query("select p from Person p where p.active=0 and p.id=:id")
+    Person getById(Long id);
+    @Query("select p.password from Person p where p.active=0 and p.contact.email=:email")
+    String getPersonPasswordByEmail(String email);
 }

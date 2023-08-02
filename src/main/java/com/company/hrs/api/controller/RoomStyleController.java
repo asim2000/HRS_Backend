@@ -12,7 +12,6 @@ import java.util.List;
 
 @RestController
 @RequestMapping("roomstyle")
-@CrossOrigin
 public class RoomStyleController {
     @GetMapping("getall")
     public DataResult<List<RoomStyle>> getAll(){

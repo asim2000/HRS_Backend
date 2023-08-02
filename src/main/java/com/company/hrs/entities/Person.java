@@ -18,12 +18,12 @@ import java.util.List;
 @AllArgsConstructor
 @Table(name = "person")
 public class Person extends BaseEntity{
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne()
     @JoinColumn(name = "address_id",referencedColumnName = "id", nullable = false)
     private Address address;
 
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne()
     @JoinColumn(name = "contact_id",referencedColumnName = "id", nullable = false)
     private Contact contact;
 
@@ -41,9 +41,8 @@ public class Person extends BaseEntity{
     @Column(name = "date_of_birth", nullable = false)
     private LocalDate dateOfBirth;
 
-    @Size(max = 30)
     @NotNull
-    @Column(name = "password", nullable = false, length = 30)
+    @Column(name = "password", nullable = false)
     private String password;
 
 

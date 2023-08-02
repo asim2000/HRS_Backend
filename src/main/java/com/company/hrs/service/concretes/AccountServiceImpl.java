@@ -2,6 +2,7 @@ package com.company.hrs.service.concretes;
 
 import com.company.hrs.entities.*;
 import com.company.hrs.enums.Position;
+import com.company.hrs.security.JwtTokenProvider;
 import com.company.hrs.service.abstracts.*;
 import com.company.hrs.service.constant.Message;
 import com.company.hrs.service.constant.StatusCode;
@@ -25,6 +26,11 @@ import com.company.hrs.service.rules.AccountServiceRules;
 import com.company.hrs.utils.mappers.ModelMapperService;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -39,6 +45,9 @@ public class AccountServiceImpl implements AccountService {
     private final ContactService contactService;
     private final EmployeeService employeeService;
     private final PersonRoleService personRoleService;
+    private final PasswordEncoder passwordEncoder;
+    private final AuthenticationManager authenticationManager;
+    private final JwtTokenProvider jwtTokenProvider;
 
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -62,7 +71,7 @@ public class AccountServiceImpl implements AccountService {
         createPersonRequest.setSurname(request.getSurname());
         createPersonRequest.setGender(request.getGender());
         createPersonRequest.setImage(request.getImage());
-        createPersonRequest.setPassword(request.getPassword());
+        createPersonRequest.setPassword(passwordEncoder.encode(request.getPassword()));
         createPersonRequest.setDateOfBirth(request.getDateOfBirth());
         Role role = null;
         if(roleService.existsRoleByNameIgnoreCase(request.getRole()).getCode() == StatusCode.NOT_FOUND){
@@ -90,10 +99,13 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public DataResult<LoginPersonResponse> login(LoginRequest loginRequest) {
+    public DataResult<String> login(LoginRequest loginRequest) {
         accountServiceRules.checkIfPersonEmailNotExists(loginRequest.getEmail());
-        accountServiceRules.checkIfPersonPasswordConfirm(loginRequest);
-        LoginPersonResponse response = personService.getPersonByEmail(loginRequest.getEmail()).getData();
-        return new DataResult<LoginPersonResponse>(response,StatusCode.SUCCESS, Message.SUCCESSFULLY_LOGIN);
+        //accountServiceRules.checkIfPersonPasswordConfirm(loginRequest);
+        UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword());
+        Authentication auth = authenticationManager.authenticate(authToken);
+        SecurityContextHolder.getContext().setAuthentication(auth);
+        String jwtToken = jwtTokenProvider.generateJwtToken(modelMapperService.forResponse().map(personService.getPersonByEmail(loginRequest.getEmail()).getData(),Person.class));
+        return new DataResult<>(jwtToken,StatusCode.SUCCESS, Message.SUCCESSFULLY_LOGIN);
     }
 }

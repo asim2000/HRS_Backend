@@ -14,7 +14,6 @@ import java.util.List;
 
 @RestController
 @RequestMapping("creditcardtype")
-@CrossOrigin
 public class CreditCardTypeController {
     @GetMapping("getall")
     public DataResult<List<CreditCardType>> getAll(){

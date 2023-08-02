@@ -6,6 +6,7 @@ import com.company.hrs.repository.PersonRepository;
 import com.company.hrs.service.abstracts.PersonService;
 import com.company.hrs.service.dtos.person.requests.CreatePersonRequest;
 import com.company.hrs.service.dtos.person.responses.CreatedPersonResponse;
+import com.company.hrs.service.dtos.person.responses.GetPersonPasswordByEmailResponse;
 import com.company.hrs.service.dtos.person.responses.LoginPersonResponse;
 import com.company.hrs.service.result.DataResult;
 import com.company.hrs.service.result.SuccessDataResult;
@@ -36,5 +37,10 @@ public class PersonServiceImpl implements PersonService {
     public DataResult<LoginPersonResponse> getPersonByEmail(String email) {
         LoginPersonResponse response = modelMapperService.forResponse().map(personRepository.getPersonByEmailAndActive(email,Status.ACTIVE),LoginPersonResponse.class);
         return new SuccessDataResult<LoginPersonResponse>(response);
+    }
+
+    @Override
+    public DataResult<GetPersonPasswordByEmailResponse> getPersonPasswordByEmail(String email) {
+        return new SuccessDataResult<>(modelMapperService.forResponse().map(personRepository.getPersonPasswordByEmail(email),GetPersonPasswordByEmailResponse.class));
     }
 }

@@ -13,7 +13,6 @@ import java.util.List;
 @RestController
 @RequestMapping("item")
 @RequiredArgsConstructor
-@CrossOrigin
 public class ItemController {
     private final ItemService itemService;
     @PostMapping("create")

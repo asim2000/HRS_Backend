@@ -8,5 +8,5 @@ import com.company.hrs.service.result.Result;
 
 public interface AccountService {
     Result register(RegisterRequest registerRequest);
-    DataResult<LoginPersonResponse> login(LoginRequest loginRequest);
+    DataResult<String> login(LoginRequest loginRequest);
 }

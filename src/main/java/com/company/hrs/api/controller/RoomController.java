@@ -18,7 +18,6 @@ import java.util.List;
 @RestController
 @RequestMapping("room")
 @RequiredArgsConstructor
-@CrossOrigin
 public class RoomController {
     private final RoomService roomService;
     @PostMapping("create")

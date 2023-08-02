@@ -18,7 +18,6 @@ import java.util.List;
 @RestController
 @RequestMapping("city")
 @AllArgsConstructor
-@CrossOrigin
 public class CityController {
     private CityService cityService;
     @PostMapping
@@ -33,7 +32,7 @@ public class CityController {
     public Result delete(@PathVariable Long id){
         return cityService.delete(id);
     }
-    @GetMapping
+    @GetMapping()
     public DataResult<List<GetAllCityResponse>> getAll(){
         return cityService.getAll();
     }
