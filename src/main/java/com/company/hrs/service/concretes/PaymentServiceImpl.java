@@ -5,14 +5,14 @@ import com.company.hrs.enums.BookingStatus;
 import com.company.hrs.enums.PaymentStatus;
 import com.company.hrs.repository.PaymentRepository;
 import com.company.hrs.service.abstracts.PaymentService;
-import com.company.hrs.service.dtos.payment.requests.CreatePaymentRequest;
+import com.company.hrs.service.dtos.payment.requests.CreatePaymentForCustomerRequest;
+import com.company.hrs.service.dtos.payment.requests.CreatePaymentForHotelRequest;
 import com.company.hrs.service.result.Result;
 import com.company.hrs.service.result.SuccessResult;
 import com.company.hrs.utils.mappers.ModelMapperService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.ui.Model;
 
 import java.util.UUID;
 
@@ -23,17 +23,30 @@ public class PaymentServiceImpl implements PaymentService {
     private final ModelMapperService modelMapperService;
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public Result create(CreatePaymentRequest createPaymentRequest) {
+    public Result createPaymentForCustomer(CreatePaymentForCustomerRequest createPaymentForCustomerRequest) {
         //Odenis olunacaq
-        Payment payment = modelMapperService.forRequest().map(createPaymentRequest, Payment.class);
-        if(createPaymentRequest.getAmount() == createPaymentRequest.getBooking().getPricePerNight())
+        Payment payment = modelMapperService.forRequest().map(createPaymentForCustomerRequest, Payment.class);
+        if(createPaymentForCustomerRequest.getAmount().equals(createPaymentForCustomerRequest.getBooking().getPricePerNight()))
             payment.setPaymentStatus(PaymentStatus.COMPLETED);
         else
             payment.setPaymentStatus(PaymentStatus.PENDING);
         payment.getBooking().setBookingStatus(BookingStatus.CONFIRMED);
         payment.getBooking().setReservationNumber(UUID.randomUUID().toString());
-        if(!createPaymentRequest.getIsSaveCard())
+        if(!createPaymentForCustomerRequest.getIsSaveCard())
             payment.setCreditCard(null);
+        paymentRepository.save(payment);
+        return new SuccessResult();
+    }
+
+    @Override
+    public Result createPaymentForHotel(CreatePaymentForHotelRequest createPaymentForHotelRequest) {
+        Payment payment = modelMapperService.forRequest().map(createPaymentForHotelRequest, Payment.class);
+        if(createPaymentForHotelRequest.getAmount().equals(createPaymentForHotelRequest.getBooking().getPricePerNight()))
+            payment.setPaymentStatus(PaymentStatus.COMPLETED);
+        else
+            payment.setPaymentStatus(PaymentStatus.PENDING);
+        payment.getBooking().setBookingStatus(BookingStatus.CONFIRMED);
+        payment.getBooking().setReservationNumber(UUID.randomUUID().toString());
         paymentRepository.save(payment);
         return new SuccessResult();
     }

@@ -5,6 +5,7 @@ import com.company.hrs.service.dtos.item.requests.CreateItemRequest;
 import com.company.hrs.service.dtos.item.responses.GetAllItemResponse;
 import com.company.hrs.service.result.DataResult;
 import com.company.hrs.service.result.Result;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,11 +16,11 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ItemController {
     private final ItemService itemService;
-    @PostMapping("create")
-    public Result create(CreateItemRequest createItemRequest){
+    @PostMapping()
+    public Result create(@RequestBody @Valid CreateItemRequest createItemRequest){
         return itemService.create(createItemRequest);
     }
-    @GetMapping("getall")
+    @GetMapping()
     public DataResult<List<GetAllItemResponse>> getAll(){
         return itemService.getAll();
     }

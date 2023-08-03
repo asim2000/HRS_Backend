@@ -5,6 +5,7 @@ import com.company.hrs.service.dtos.service.requests.CreateServiceRequest;
 import com.company.hrs.service.dtos.service.responses.GetAllServiceResponse;
 import com.company.hrs.service.result.DataResult;
 import com.company.hrs.service.result.Result;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,7 +21,7 @@ public class ServiceController {
         return serviceService.getAll();
     }
     @PostMapping
-    public Result create(CreateServiceRequest request){
+    public Result create(@RequestBody @Valid CreateServiceRequest request){
         return serviceService.create(request);
     }
 }
