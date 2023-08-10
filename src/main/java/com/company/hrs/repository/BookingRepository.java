@@ -12,4 +12,6 @@ import java.util.List;
 public interface BookingRepository extends JpaRepository<Booking,Long> {
     @Query("select b from Booking b where b.active=0 and b.person.id=:id")
     List<Booking> getAllByPersonId(Long id);
+    @Query("select b from Booking b where b.active=0 and b.room.hotel.id=:id")
+    List<Booking> getAllBookingsByHotelId(Long id);
 }

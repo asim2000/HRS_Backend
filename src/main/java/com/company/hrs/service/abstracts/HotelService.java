@@ -16,4 +16,5 @@ public interface HotelService {
      DataResult<List<GetHomeHotelsResponse>> getHomeHotels(SearchHotelRequest searchHotelRequest);
      DataResult<GetHotelDetailsResponse> getHotelDetails(Long id);
      DataResult<GetByEmployeeIdResponse> getByEmployeeId(Long id);
+     DataResult<Boolean> checkIfExistsRoom(Long hotelId);
 }

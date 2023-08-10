@@ -12,6 +12,6 @@ import java.util.List;
 public interface HotelRepository extends JpaRepository<Hotel,Long> {
     List<Hotel> findAllByActive(Status status);
     Hotel findByIdAndActive(Long id,Status status);
-    @Query("select h from Hotel h where h.employee.id=?1 and h.active=?2")
+    @Query("select h from Hotel h where h.employee.person.id=?1 and h.active=?2")
     Hotel findByEmployeeId(Long id,Status status);
 }

@@ -1,5 +1,6 @@
 package com.company.hrs.api.controller;
 
+import com.company.hrs.entities.Booking;
 import com.company.hrs.service.abstracts.HotelService;
 import com.company.hrs.service.dtos.hotel.requests.CreateHotelRequest;
 import com.company.hrs.service.dtos.hotel.requests.SearchHotelRequest;
@@ -35,5 +36,9 @@ public class HotelController {
     @GetMapping("employee/{id}")
     public DataResult<GetByEmployeeIdResponse> getByEmployeeId(@PathVariable Long id){
         return hotelService.getByEmployeeId(id);
+    }
+    @GetMapping("{id}/existsroom")
+    public DataResult<Boolean> checkIfExistsRoom(@PathVariable Long id){
+        return hotelService.checkIfExistsRoom(id);
     }
 }

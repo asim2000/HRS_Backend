@@ -1,13 +1,12 @@
 package com.company.hrs.service.concretes;
 
 import com.company.hrs.entities.*;
+import com.company.hrs.entities.HotelService;
 import com.company.hrs.enums.Status;
+import com.company.hrs.repository.EmployeeRepository;
 import com.company.hrs.repository.HotelRepository;
 import com.company.hrs.repository.HotelServiceRepository;
-import com.company.hrs.service.abstracts.CityService;
-import com.company.hrs.service.abstracts.HotelService;
-import com.company.hrs.service.abstracts.HotelServiceService;
-import com.company.hrs.service.abstracts.RoomService;
+import com.company.hrs.service.abstracts.*;
 import com.company.hrs.service.constant.Message;
 import com.company.hrs.service.constant.StatusCode;
 import com.company.hrs.service.dtos.hotel.requests.CreateHotelRequest;
@@ -40,7 +39,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-public class HotelServiceImpl implements HotelService {
+public class HotelServiceImpl implements com.company.hrs.service.abstracts.HotelService {
     private final HotelRepository hotelRepository;
     private final ModelMapperService modelMapperService;
     private final CityService cityService;
@@ -48,6 +47,7 @@ public class HotelServiceImpl implements HotelService {
     private final HotelServiceRepository hotelServiceRepository;
     private final HotelServiceService hotelServiceService;
     private final RoomService roomService;
+    private final EmployeeRepository employeeRepository;
 
     @Transactional(rollbackFor = Exception.class)
     @Override
@@ -58,10 +58,11 @@ public class HotelServiceImpl implements HotelService {
         Address address = new Address();
         address.setCity(modelMapperService.forRequest().map(cityService.getById(request.getCityId()).getData(),City.class));
         address.setAddressLine(request.getAddressLine());
-
+        Employee employee = employeeRepository.findByPersonId(request.getPersonId());
         Hotel hotel = modelMapperService.forRequest().map(request,Hotel.class);
         hotel.setContact(contact);
         hotel.setAddress(address);
+        hotel.setEmployee(employee);
         hotel.setName(request.getName());
         hotel.setDescription(request.getDescription());
         hotel.setImages(Arrays.stream(request.getImages()).map(image->{
@@ -143,6 +144,13 @@ public class HotelServiceImpl implements HotelService {
         return new SuccessDataResult<GetByEmployeeIdResponse>(modelMapperService.forResponse().map(hotel,GetByEmployeeIdResponse.class));
     }
 
+    @Override
+    public DataResult<Boolean> checkIfExistsRoom(Long hotelId) {
+        Hotel hotel = hotelRepository.findByIdAndActive(hotelId,Status.ACTIVE);
+        if(hotel.getRooms() == null || hotel.getRooms().isEmpty())
+            return new SuccessDataResult<>(false);
+        return new SuccessDataResult<>(true);
+    }
 
 
     @Transactional(rollbackFor = Exception.class)

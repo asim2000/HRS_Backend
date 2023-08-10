@@ -67,7 +67,7 @@ public class RoomServiceImpl implements RoomService {
 
     @Override
     public DataResult<GetRandomRoomResponse> getRandomRoom(SearchRoomRequest searchRoomRequest) {
-        List<Room> rooms = roomRepository.getUnReservedRooms(searchRoomRequest.getCheckIn(),searchRoomRequest.getCheckOut());
+        List<Room> rooms = roomRepository.getUnReservedRoomsByHotelId(searchRoomRequest.getCheckIn(),searchRoomRequest.getCheckOut(),searchRoomRequest.getHotelId());
         if(searchRoomRequest.getRoomCount()!=null){
             List<Room> roomList = new ArrayList<>();
             rooms.stream().forEach(room ->  {
@@ -100,13 +100,8 @@ public class RoomServiceImpl implements RoomService {
             });
             rooms = roomList;
         }
-        List<Room> newRoomList = new ArrayList<>();
-        rooms.stream().forEach(room -> {
-            if(room.getHotel().getId()==searchRoomRequest.getHotelId())
-                newRoomList.add(room);
-        });
-        roomServiceRules.checkIfRoomsIsNullOrEmpty(newRoomList);
-        Room room = newRoomList.get(ThreadLocalRandom.current().nextInt(0, newRoomList.size()));
+        roomServiceRules.checkIfRoomsIsNullOrEmpty(rooms);
+        Room room = rooms.get(ThreadLocalRandom.current().nextInt(0, rooms.size()));
         GetRandomRoomResponse response = modelMapperService.forResponse().map(room,GetRandomRoomResponse.class);
         response.setItems(itemService.getAllByRoomId(room.getId()).getData());
         return new SuccessDataResult<GetRandomRoomResponse>(response);
