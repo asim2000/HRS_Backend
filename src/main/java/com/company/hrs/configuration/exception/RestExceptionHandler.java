@@ -46,8 +46,8 @@ public class RestExceptionHandler {
     public Result handleAuthenticateException(BadCredentialsException ex){
         return new Result(StatusCode.USERNAME_OR_PASSWORD_INVALID,Message.USERNAME_OR_PASSWORD_INVALID);
     }
-//    @ExceptionHandler
-//    public Result handleServiceException(Exception exception){
-//        return new Result(StatusCode.INTERNAL_EXCEPTION,Message.INTERNAL_EXCEPTION);
-//    }
+    @ExceptionHandler
+    public Result handleServiceException(Exception exception){
+        return new Result(StatusCode.INTERNAL_EXCEPTION,Message.INTERNAL_EXCEPTION);
+    }
 }

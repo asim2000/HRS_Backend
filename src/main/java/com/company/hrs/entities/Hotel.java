@@ -19,9 +19,6 @@ public class Hotel extends BaseEntity{
     @NotNull
     @JoinColumn(name = "employee_id",referencedColumnName = "id",nullable = false)
     private Employee employee;
-    @NotNull
-    @Column(name = "pay_per_cent")
-    private Byte payPerCent;
 
     @NotNull
     @OneToOne(cascade = CascadeType.ALL)

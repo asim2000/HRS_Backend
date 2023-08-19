@@ -33,7 +33,5 @@ public class CreateHotelRequest {
     private String description;
     private List<Long> serviceIds;
     @NotNull
-    private Byte payPerCent;
-    @NotNull
     private MultipartFile[] images;
 }

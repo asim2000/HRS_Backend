@@ -15,6 +15,7 @@ public class StatusCode {
     public static final Integer SERVICE_NOT_FOUND = 409;
     public static final Integer AUTHORIZATION_EXCEPTION = 401;
     public static final Integer USERNAME_OR_PASSWORD_INVALID = 405;
+    public static final Integer INVALID_AMOUNT_EXCEPTION = 708;
 
     public static Integer ROOM_NOT_FOUND_Exception = 410;
     public static final Integer CHECK_IN_OR_CHECK_OUT_NULL_EXCEPTION = 411;

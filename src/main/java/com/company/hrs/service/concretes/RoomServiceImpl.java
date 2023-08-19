@@ -117,7 +117,6 @@ public class RoomServiceImpl implements RoomService {
     public DataResult<GetRoomByIdForPaymentResponse> getRoomByIdForPayment(Long id) {
         Room room = roomRepository.getById(id);
         GetRoomByIdForPaymentResponse response = modelMapperService.forResponse().map(room,GetRoomByIdForPaymentResponse.class);
-        response.setPayPerCent(room.getHotel().getPayPerCent());
         return new SuccessDataResult<>(response);
     }
 }

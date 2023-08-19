@@ -19,4 +19,5 @@ public class Message {
     public static final String CHECK_IN_IS_NOT_BECOME_BEFORE_FROM_NOW = "Check in is not become before from now";
     public static final String AUTHORIZATION_EXCEPTION = "Zehmet olmasa sisteme daxil olun";
     public static final String USERNAME_OR_PASSWORD_INVALID = "Email ve ya parol yalnisdir!";
+    public static final String INVALID_AMOUNT_EXCEPTION = "Mebleg minimum odenisden az olmamalidir";
 }

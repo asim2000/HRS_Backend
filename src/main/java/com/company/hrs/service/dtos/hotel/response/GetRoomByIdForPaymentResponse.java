@@ -10,5 +10,4 @@ import lombok.NoArgsConstructor;
 public class GetRoomByIdForPaymentResponse {
     private Long id;
     private Float pricePerNight;
-    private Byte payPerCent;
 }

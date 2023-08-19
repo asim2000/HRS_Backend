@@ -13,7 +13,6 @@ import lombok.*;
 @AllArgsConstructor
 @Entity
 @Table(name = "address")
-@JsonIgnoreProperties({"hibernateLazyInitializer","handler","hotel"})
 public class Address extends BaseEntity{
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "city_id",referencedColumnName = "id",nullable = false)
