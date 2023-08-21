@@ -31,7 +31,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         return new User(username,person.getPassword(),getAuthorities(personRoleRepository.getRoleNamesByPersonId(person.getId())));
     }
     private Collection<? extends GrantedAuthority> getAuthorities(List<String> roles){
-        return roles.stream().map(role->new SimpleGrantedAuthority(role)).collect(Collectors.toList());
+        return roles.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList());
     }
 
     public UserDetails loadUserById(Long id) {

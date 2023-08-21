@@ -32,13 +32,14 @@ public class JwtTokenProvider {
     @Value("${hrs.app.secret}")
     private String APP_SECRET;
 
-//    @Value("${hrs.expires.in}")
-//    private long EXPIRES_IN;
+    @Value("${hrs.expires.in}")
+    private Long EXPIRES_IN;
 
     public String generateJwtToken(Person person) {
-        Date expireDate = new Date(new Date().getTime() + 5*60*1000);
+        Date now = new Date();
+        Date expireDate = new Date(now.getTime() + EXPIRES_IN);
         return Jwts.builder().setSubject(Long.toString(person.getId()))
-                .setIssuedAt(new Date()).setExpiration(expireDate)
+                .setIssuedAt(now).setExpiration(expireDate)
                 .claim("roles",personRoleRepository.getRoleNamesByPersonId(person.getId()))
                 .signWith(SignatureAlgorithm.HS512, APP_SECRET).compact();
     }

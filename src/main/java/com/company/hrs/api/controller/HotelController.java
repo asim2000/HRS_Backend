@@ -9,6 +9,7 @@ import com.company.hrs.service.dtos.hotel.response.GetByEmployeeIdResponse;
 import com.company.hrs.service.dtos.hotel.response.GetHotelDetailsResponse;
 import com.company.hrs.service.result.DataResult;
 import com.company.hrs.service.result.Result;
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
