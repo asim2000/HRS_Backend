@@ -1,5 +1,8 @@
 package com.company.hrs.security;
 
+import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -13,6 +16,7 @@ import org.springframework.security.config.annotation.web.configurers.CsrfConfig
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
@@ -23,16 +27,17 @@ import org.springframework.web.filter.CorsFilter;
 
 @Configuration
 @EnableWebSecurity
+@FieldDefaults(makeFinal = true,level = AccessLevel.PRIVATE)
+@RequiredArgsConstructor
 public class SecurityConfig {
-    @Autowired
-    private UserDetailsServiceImpl userDetailsService;
-    @Autowired
-    private JwtAuthenticationEntryPoint handler;
+     UserDetailsServiceImpl userDetailsService;
 
-    public SecurityConfig(UserDetailsServiceImpl userDetailsService, JwtAuthenticationEntryPoint handler) {
-        this.userDetailsService = userDetailsService;
-        this.handler = handler;
-    }
+     JwtAuthenticationEntryPoint handler;
+
+     CustomAccessDeniedHandler customAccessDeniedHandler;
+
+     CustomAuthenticationFailureHandler customAuthenticationFailureHandler;
+
 
     @Bean
     public JwtAuthenticationFilter jwtAuthenticationFilter() {
@@ -71,7 +76,8 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.csrf(csrf -> csrf.disable())
-                .exceptionHandling(exception -> exception.authenticationEntryPoint(handler))
+                .exceptionHandling(exception -> exception.accessDeniedHandler(customAccessDeniedHandler))
+               .exceptionHandling(exception -> exception.authenticationEntryPoint(handler))
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth ->
                         auth.requestMatchers("/account/**","/city/**","/gender/**","/hotel/home/getall","/hotel/details/{id}","/roomstyle/getall","/room/getRandomRoom","/swagger-ui/**","/v3/api-docs/**").permitAll()

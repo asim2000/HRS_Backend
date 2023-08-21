@@ -4,6 +4,8 @@ import com.company.hrs.entities.Person;
 import com.company.hrs.enums.Status;
 import com.company.hrs.repository.PersonRepository;
 import com.company.hrs.repository.PersonRoleRepository;
+import com.company.hrs.service.constant.Message;
+import com.company.hrs.service.constant.StatusCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -28,6 +30,9 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Person person = personRepository.getPersonByEmailAndActive(username, Status.ACTIVE);
+        if(person == null) {
+            throw new SecurityException(StatusCode.USER_NOT_FOUND, Message.USER_NOT_FOUND);
+        }
         return new User(username,person.getPassword(),getAuthorities(personRoleRepository.getRoleNamesByPersonId(person.getId())));
     }
     private Collection<? extends GrantedAuthority> getAuthorities(List<String> roles){

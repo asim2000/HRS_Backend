@@ -17,7 +17,9 @@ public class Message {
     public static final String ROOM_NOT_FOUND = "Otaq tapilmadi";
     public static final String CHECK_IN_OR_CHECK_OUT_NULL_EXCEPTION = "CheckIn or checkOut is null";
     public static final String CHECK_IN_IS_NOT_BECOME_BEFORE_FROM_NOW = "Check in is not become before from now";
-    public static final String AUTHORIZATION_EXCEPTION = "Zehmet olmasa sisteme daxil olun";
+    public static final String UN_AUTHORIZATION = "Zehmet olmasa sisteme daxil olun";
     public static final String USERNAME_OR_PASSWORD_INVALID = "Email ve ya parol yalnisdir!";
     public static final String INVALID_AMOUNT_EXCEPTION = "Mebleg minimum odenisden az olmamalidir";
+    public static final String USER_NOT_FOUND = "User not found";
+    public static final String ACCESS_DENIED = "Access denied";
 }

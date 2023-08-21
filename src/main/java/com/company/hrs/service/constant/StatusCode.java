@@ -13,9 +13,11 @@ public class StatusCode {
     public static final Integer HOTEL_NOT_FOUND_Exception = 407;
     public static final Integer ROLE_EXISTS = 408;
     public static final Integer SERVICE_NOT_FOUND = 409;
-    public static final Integer AUTHORIZATION_EXCEPTION = 401;
+    public static final Integer UN_AUTHORIZATION = 401;
     public static final Integer USERNAME_OR_PASSWORD_INVALID = 405;
     public static final Integer INVALID_AMOUNT_EXCEPTION = 708;
+    public static final Integer USER_NOT_FOUND = 402;
+    public static final Integer ACCESS_DENIED = 403;
 
     public static Integer ROOM_NOT_FOUND_Exception = 410;
     public static final Integer CHECK_IN_OR_CHECK_OUT_NULL_EXCEPTION = 411;
