@@ -20,23 +20,23 @@ import java.util.List;
 @RequiredArgsConstructor
 public class RoomController {
     private final RoomService roomService;
-    @PostMapping("create")
+    @PostMapping()
     public Result create(@RequestBody @Valid CreateRoomRequest createRoomRequest){
         return roomService.create(createRoomRequest);
     }
-    @GetMapping("getall/{id}")
+    @GetMapping("hotel/{id}")
     public DataResult<List<GetAllRoomsByHotelIdResponse>> getAllRoomsByEmployeeId(@PathVariable Long id){
         return roomService.getAllByHotelId(id);
     }
-    @PostMapping("getRandomRoom")
+    @PostMapping("GetRandomRoom")
     public DataResult<GetRandomRoomResponse> GetRandomRoom(@RequestBody @Valid SearchRoomRequest searchRoomRequest){
         return roomService.getRandomRoom(searchRoomRequest);
     }
-    @GetMapping("getbyid/{id}")
+    @GetMapping("{id}")
     public DataResult<GetByIdResponse> getById(@PathVariable Long id){
         return roomService.getById(id);
     }
-    @GetMapping("getbyidforpayment/{id}")
+    @GetMapping("{id}/ForPayment")
     public DataResult<GetRoomByIdForPaymentResponse> getByIdForPayment(@PathVariable Long id){
         return roomService.getRoomByIdForPayment(id);
     }

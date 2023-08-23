@@ -11,9 +11,9 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("roomstyle")
+@RequestMapping("RoomStyle")
 public class RoomStyleController {
-    @GetMapping("getall")
+    @GetMapping()
     public DataResult<List<RoomStyle>> getAll(){
         return new SuccessDataResult<List<RoomStyle>>(List.of(RoomStyle.values()));
     }

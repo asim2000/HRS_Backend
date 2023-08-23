@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -18,6 +19,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.web.cors.CorsConfiguration;
@@ -76,14 +78,18 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.csrf(csrf -> csrf.disable())
-                .exceptionHandling(exception -> exception.accessDeniedHandler(customAccessDeniedHandler))
-               .exceptionHandling(exception -> exception.authenticationEntryPoint(handler))
+                 .exceptionHandling(exception -> exception.accessDeniedHandler(customAccessDeniedHandler))
+                 //.exceptionHandling(exception -> exception.authenticationEntryPoint(handler))
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth ->
-                        auth.requestMatchers("/account/**","/city/**","/gender/**","/hotel/home/getall","/hotel/details/{id}","/roomstyle/getall","/room/getRandomRoom","/swagger-ui/**","/v3/api-docs/**").permitAll()
-                                .requestMatchers(HttpMethod.GET,"/hotel/**").hasAuthority("hotel")
-                                .requestMatchers(HttpMethod.OPTIONS,"/**").permitAll()
-                                .anyRequest().authenticated()
+                        auth
+                            .requestMatchers("/account/**","/city/**","/gender/**","/hotel/home","/hotel/{id}/details","/RoomStyle","/room/GetRandomRoom","/swagger-ui/**","/v3/api-docs/**").permitAll()
+                            .requestMatchers(HttpMethod.GET,"/hotel/employee/{id}").hasAuthority("hotel")
+                            .requestMatchers(HttpMethod.GET,"/creditcardtype").hasAuthority("customer")
+                            .requestMatchers(HttpMethod.GET,"/room/getbyidforpayment/{id}").hasAuthority("customer")
+                            .requestMatchers(HttpMethod.POST,"/payment/CreateForCustomer").hasAuthority("customer")
+                            .requestMatchers(HttpMethod.OPTIONS,"/**").permitAll()
+                            .anyRequest().authenticated()
                 );
 
         // fix H2 database console: Refused to display ' in a frame because it set 'X-Frame-Options' to 'deny'

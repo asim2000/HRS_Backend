@@ -26,11 +26,11 @@ public class HotelController {
         return hotelService.create(request);
     }
 
-    @PostMapping("home/getall")
+    @PostMapping("home")
     public DataResult<List<GetHomeHotelsResponse>> getHomeHotels(@RequestBody SearchHotelRequest request){
         return hotelService.getHomeHotels(request);
     }
-    @GetMapping("details/{id}")
+    @GetMapping("{id}/details")
     public DataResult<GetHotelDetailsResponse> getHotelDetails(@PathVariable Long id){
         return hotelService.getHotelDetails(id);
     }
@@ -38,7 +38,7 @@ public class HotelController {
     public DataResult<GetByEmployeeIdResponse> getByEmployeeId(@PathVariable Long id){
         return hotelService.getByEmployeeId(id);
     }
-    @GetMapping("{id}/existsroom")
+    @GetMapping("{id}/ExistsRoom")
     public DataResult<Boolean> checkIfExistsRoom(@PathVariable Long id){
         return hotelService.checkIfExistsRoom(id);
     }

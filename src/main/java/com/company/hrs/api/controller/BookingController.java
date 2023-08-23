@@ -17,11 +17,11 @@ import java.util.List;
 @RequiredArgsConstructor
 public class BookingController {
     private final BookingService bookingService;
-    @GetMapping("getallbypersonid/{id}")
+    @GetMapping("person/{id}")
     public DataResult<List<GetAllBookingsByPersonIdResponse>> getAllByPersonId(@PathVariable Long id){
         return bookingService.getAllByPersonId(id);
     }
-    @GetMapping("getallbyhotelid/{id}")
+    @GetMapping("hotel/{id}")
     public DataResult<List<GetAllBookingsByHotelIdResponse>> getAllByHotelId(@PathVariable Long id){
         return bookingService.getAllBookingsByHotelId(id);
     }

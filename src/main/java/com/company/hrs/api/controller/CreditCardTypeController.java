@@ -15,7 +15,7 @@ import java.util.List;
 @RestController
 @RequestMapping("creditcardtype")
 public class CreditCardTypeController {
-    @GetMapping("getall")
+    @GetMapping()
     public DataResult<List<CreditCardType>> getAll(){
         return new SuccessDataResult<>(Arrays.stream(CreditCardType.values()).toList());
     }
