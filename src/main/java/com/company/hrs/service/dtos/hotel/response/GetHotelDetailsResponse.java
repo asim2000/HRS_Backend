@@ -18,6 +18,7 @@ public class GetHotelDetailsResponse {
     private Long id;
     private String name;
     private Float rating;
+    private Float minimumPrice;
     private Integer reviewCount;
     private String description;
     private GetAddressResponse address;

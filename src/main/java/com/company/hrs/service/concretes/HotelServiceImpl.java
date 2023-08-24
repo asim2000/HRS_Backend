@@ -125,7 +125,11 @@ public class HotelServiceImpl implements com.company.hrs.service.abstracts.Hotel
             hotels = hotelList;
         }
         hotelServiceRules.checkIfHotelsIsNullOrEmpty(hotels);
-        List<GetHomeHotelsResponse> homeHotelResponses = hotels.stream().map(hotel -> modelMapperService.forResponse().map(hotel, GetHomeHotelsResponse.class)).collect(Collectors.toList());
+        List<GetHomeHotelsResponse> homeHotelResponses = hotels.stream().map(hotel -> {
+            GetHomeHotelsResponse homeHotelsResponse = modelMapperService.forResponse().map(hotel, GetHomeHotelsResponse.class);
+            homeHotelsResponse.setMinimumPrice(hotelRepository.getMinimumPriceByHotelId(hotel.getId()));
+            return homeHotelsResponse;
+        }).collect(Collectors.toList());
         return new SuccessDataResult<List<GetHomeHotelsResponse>>(homeHotelResponses);
     }
 
@@ -134,6 +138,7 @@ public class HotelServiceImpl implements com.company.hrs.service.abstracts.Hotel
         Hotel hotel = hotelRepository.findByIdAndActive(id,Status.ACTIVE);
         GetHotelDetailsResponse hotelDetailsResponse = modelMapperService.forResponse().map(hotel,GetHotelDetailsResponse.class);
         hotelDetailsResponse.setServices(hotelServiceService.getAllServiceByHotel(modelMapperService.forRequest().map(hotel,Hotel.class)));
+        hotelDetailsResponse.setMinimumPrice(hotelRepository.getMinimumPriceByHotelId(id));
         return new SuccessDataResult<GetHotelDetailsResponse>(hotelDetailsResponse);
     }
 

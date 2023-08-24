@@ -21,5 +21,6 @@ public class GetHomeHotelsResponse {
     private GetContactResponse contact;
     private String mainImageName;
     private List<GetHotelImageResponse> images;
+    private Float minimumPrice;
 
 }

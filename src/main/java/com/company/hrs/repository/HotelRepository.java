@@ -14,4 +14,6 @@ public interface HotelRepository extends JpaRepository<Hotel,Long> {
     Hotel findByIdAndActive(Long id,Status status);
     @Query("select h from Hotel h where h.employee.person.id=?1 and h.active=?2")
     Hotel findByEmployeeId(Long id,Status status);
+    @Query("select min(r.pricePerNight) from Room r where r.hotel.id = :id and r.active=0")
+    Float getMinimumPriceByHotelId(Long id);
 }
