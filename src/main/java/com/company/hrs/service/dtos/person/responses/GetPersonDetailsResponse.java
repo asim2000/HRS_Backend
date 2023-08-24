@@ -13,4 +13,5 @@ public class GetPersonDetailsResponse {
     private String name;
     private String surname;
     private GetContactResponse contact;
+    private String image;
 }

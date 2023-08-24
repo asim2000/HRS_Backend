@@ -56,7 +56,6 @@ public class Person extends BaseEntity{
     private AccountStatus accountStatus;
 
     @Column(name = "image")
-    @Lob
-    private byte[] image;
+    private String image;
 
 }

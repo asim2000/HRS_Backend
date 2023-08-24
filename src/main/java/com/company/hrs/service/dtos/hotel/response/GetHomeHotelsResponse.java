@@ -15,6 +15,7 @@ import java.util.List;
 public class GetHomeHotelsResponse {
     private Long id;
     private String name;
+    private Byte star;
     private Float rating;
     private Integer reviewCount;
     private GetAddressResponse address;

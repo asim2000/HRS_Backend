@@ -7,6 +7,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
 @Data
@@ -29,7 +30,7 @@ public class RegisterRequest {
     private LocalDate dateOfBirth;
     @NotNull
     private Gender gender;
-    private byte[] image;
+    private MultipartFile image;
     @NotNull
     @Column(name = "city_id")
     private Long cityId;

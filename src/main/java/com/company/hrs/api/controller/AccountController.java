@@ -19,7 +19,7 @@ public class AccountController {
     private AccountService accountService;
 
     @PostMapping("register")
-    public Result registerForCustomer(@RequestBody @Valid RegisterRequest request){
+    public Result registerForCustomer(@ModelAttribute() @Valid RegisterRequest request){
         return accountService.register(request);
     }
     @PostMapping("login")

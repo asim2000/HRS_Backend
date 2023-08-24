@@ -34,6 +34,9 @@ public class Hotel extends BaseEntity{
     @NotNull
     @Column(name = "name", nullable = false, length = 100)
     private String name;
+    @Column(name = "star")
+    @NotNull
+    private Byte star;
     @Column(name = "rating")
     private Float rating;
     @Column(name = "main_image_name")
@@ -48,5 +51,4 @@ public class Hotel extends BaseEntity{
     private List<HotelImage> images = new ArrayList<>();
     @OneToMany(mappedBy = "hotel")
     private List<Room> rooms;
-
 }

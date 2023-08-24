@@ -22,6 +22,8 @@ public class CreateHotelRequest {
     @NotNull
     private String name;
     @NotNull
+    private Byte star;
+    @NotNull
     private Long personId;
     @Column(name = "city_id")
     private Long cityId;

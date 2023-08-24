@@ -6,6 +6,7 @@ import jakarta.persistence.Column;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -25,5 +26,5 @@ public class CreatePersonRequest {
     private LocalDate dateOfBirth;
     private Gender gender;
     private String password;
-    private byte[] image;
+    private MultipartFile image;
 }
