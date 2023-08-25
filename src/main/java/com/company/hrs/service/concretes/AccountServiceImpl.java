@@ -101,7 +101,6 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public DataResult<String> login(LoginRequest loginRequest) {
         accountServiceRules.checkIfPersonEmailNotExists(loginRequest.getEmail());
-        //accountServiceRules.checkIfPersonPasswordConfirm(loginRequest);
         UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword());
         Authentication auth = authenticationManager.authenticate(authToken);
         SecurityContextHolder.getContext().setAuthentication(auth);

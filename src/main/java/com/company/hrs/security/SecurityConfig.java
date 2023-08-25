@@ -79,7 +79,7 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.csrf(csrf -> csrf.disable())
                  .exceptionHandling(exception -> exception.accessDeniedHandler(customAccessDeniedHandler))
-                 //.exceptionHandling(exception -> exception.authenticationEntryPoint(handler))
+                 .exceptionHandling(exception -> exception.authenticationEntryPoint(handler))
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth ->
                         auth

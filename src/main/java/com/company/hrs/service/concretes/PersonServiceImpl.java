@@ -36,7 +36,10 @@ public class PersonServiceImpl implements PersonService {
     @Override
     public DataResult<CreatedPersonResponse> create(CreatePersonRequest createPersonRequest) {
         Person p = modelMapperService.forRequest().map(createPersonRequest,Person.class);
-        p.setImage(saveImage(createPersonRequest.getImage()));
+        if(createPersonRequest.getImage()!=null)
+          p.setImage(saveImage(createPersonRequest.getImage()));
+        else
+            p.setImage("avatar.jpg");
         Person person = personRepository.save(p);
         CreatedPersonResponse response = modelMapperService.forResponse().map(person,CreatedPersonResponse.class);
         return new SuccessDataResult<CreatedPersonResponse>(response);
