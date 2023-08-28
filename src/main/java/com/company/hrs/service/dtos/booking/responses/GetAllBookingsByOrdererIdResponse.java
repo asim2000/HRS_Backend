@@ -15,6 +15,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class GetAllBookingsByOrdererIdResponse {
+    Long id;
     private GetRoomDetailsResponse room;
     private Float pricePerNight;
     private String reservationNumber;

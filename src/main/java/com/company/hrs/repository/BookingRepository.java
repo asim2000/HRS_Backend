@@ -16,4 +16,6 @@ public interface BookingRepository extends JpaRepository<Booking,Long> {
     List<Booking> getAllBookingsByHotelId(Long id);
     @Query("select b from Booking b where b.active=0 and b.ordered.id=:id")
     List<Booking> getAllByOrderedId(Long id);
+    @Query("select b from Booking b where b.active=0 and b.id=:id")
+    Booking getById(Long id);
 }

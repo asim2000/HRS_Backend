@@ -17,6 +17,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class GetAllBookingsByHotelIdResponse {
+    private Long id;
     private GetRoomDetailsResponse room;
     private GetPersonDetailsResponse ordered;
     private GetPersonDetailsResponse orderer;

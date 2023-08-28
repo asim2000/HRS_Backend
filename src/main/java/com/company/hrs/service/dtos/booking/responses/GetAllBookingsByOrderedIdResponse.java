@@ -17,7 +17,8 @@ import java.util.List;
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class GetAllBookingsByOrderedIdResponse {
-    private GetPersonDetailsResponse orderer;
+    Long id;
+    GetPersonDetailsResponse orderer;
     GetRoomDetailsResponse room;
     Float pricePerNight;
     String reservationNumber;

@@ -1,5 +1,6 @@
 package com.company.hrs.service.abstracts;
 
+import com.company.hrs.service.dtos.payment.requests.AddPaymentByHotelRequest;
 import com.company.hrs.service.dtos.payment.requests.CreatePaymentForBrokerRequest;
 import com.company.hrs.service.dtos.payment.requests.CreatePaymentForCustomerRequest;
 import com.company.hrs.service.dtos.payment.requests.CreatePaymentForHotelRequest;
@@ -10,4 +11,6 @@ public interface PaymentService {
     Result createPaymentForHotel(CreatePaymentForHotelRequest createPaymentForHotelRequest);
 
     Result createPaymentForBroker(CreatePaymentForBrokerRequest createPaymentForBrokerRequest);
+
+    Result addPaymentByHotel(AddPaymentByHotelRequest request);
 }

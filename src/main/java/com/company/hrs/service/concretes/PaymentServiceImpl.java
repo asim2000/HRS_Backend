@@ -1,26 +1,25 @@
 package com.company.hrs.service.concretes;
 
-import com.company.hrs.entities.Contact;
+import com.company.hrs.entities.Booking;
 import com.company.hrs.entities.Payment;
 import com.company.hrs.entities.Person;
 import com.company.hrs.enums.BookingStatus;
 import com.company.hrs.enums.PaymentStatus;
 import com.company.hrs.enums.Status;
+import com.company.hrs.repository.BookingRepository;
 import com.company.hrs.repository.PaymentRepository;
 import com.company.hrs.repository.PersonRepository;
 import com.company.hrs.service.abstracts.AccountService;
+import com.company.hrs.service.abstracts.BookingService;
 import com.company.hrs.service.abstracts.PaymentService;
 import com.company.hrs.service.abstracts.PersonService;
 import com.company.hrs.service.constant.Message;
 import com.company.hrs.service.constant.StatusCode;
 import com.company.hrs.service.dtos.account.requests.CustomerRegisterForHotelOrBroker;
-import com.company.hrs.service.dtos.account.requests.RegisterRequest;
+import com.company.hrs.service.dtos.payment.requests.AddPaymentByHotelRequest;
 import com.company.hrs.service.dtos.payment.requests.CreatePaymentForBrokerRequest;
 import com.company.hrs.service.dtos.payment.requests.CreatePaymentForCustomerRequest;
 import com.company.hrs.service.dtos.payment.requests.CreatePaymentForHotelRequest;
-import com.company.hrs.service.dtos.person.requests.CreatePersonRequest;
-import com.company.hrs.service.dtos.person.responses.CreatedPersonResponse;
-import com.company.hrs.service.result.DataResult;
 import com.company.hrs.service.result.Result;
 import com.company.hrs.service.result.SuccessResult;
 import com.company.hrs.utils.exceptions.ServiceException;
@@ -40,6 +39,7 @@ public class PaymentServiceImpl implements PaymentService {
     private final PersonRepository personRepository;
     private final PersonService personService;
     private final AccountService accountService;
+    private final BookingRepository bookingRepository;
     @Override
     @Transactional(rollbackFor = Exception.class)
     public Result createPaymentForCustomer(CreatePaymentForCustomerRequest createPaymentForCustomerRequest) {
@@ -107,6 +107,16 @@ public class PaymentServiceImpl implements PaymentService {
         else{
             payment.getBooking().setOrderer(person);
         }
+        paymentRepository.save(payment);
+        return new SuccessResult();
+    }
+
+    @Override
+    public Result addPaymentByHotel(AddPaymentByHotelRequest request) {
+        Payment payment = new Payment();
+        payment.setBooking(bookingRepository.getById(request.getBookingId()));
+        payment.setAmount(request.getAmount());
+        payment.setPaymentStatus(PaymentStatus.COMPLETED);
         paymentRepository.save(payment);
         return new SuccessResult();
     }
