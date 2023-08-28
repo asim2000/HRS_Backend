@@ -17,8 +17,12 @@ import java.util.List;
 public class Booking extends BaseEntity{
     @NotNull
     @ManyToOne()
-    @JoinColumn(name = "person_id", nullable = false,referencedColumnName = "id")
-    private Person person;
+    @JoinColumn(name = "ordered_id", nullable = false,referencedColumnName = "id")
+    private Person ordered;
+    @NotNull
+    @ManyToOne()
+    @JoinColumn(name = "orderer_id", nullable = false,referencedColumnName = "id")
+    private Person orderer;
     @NotNull
     @ManyToOne()
     @JoinColumn(name = "room_id",referencedColumnName = "id", nullable = false)

@@ -18,7 +18,8 @@ import java.util.List;
 @NoArgsConstructor
 public class GetAllBookingsByHotelIdResponse {
     private GetRoomDetailsResponse room;
-    private GetPersonDetailsResponse person;
+    private GetPersonDetailsResponse ordered;
+    private GetPersonDetailsResponse orderer;
     private Float pricePerNight;
     private String reservationNumber;
     private BookingStatus bookingStatus;

@@ -1,14 +1,26 @@
 package com.company.hrs.service.concretes;
 
+import com.company.hrs.entities.Contact;
 import com.company.hrs.entities.Payment;
+import com.company.hrs.entities.Person;
 import com.company.hrs.enums.BookingStatus;
 import com.company.hrs.enums.PaymentStatus;
+import com.company.hrs.enums.Status;
 import com.company.hrs.repository.PaymentRepository;
+import com.company.hrs.repository.PersonRepository;
+import com.company.hrs.service.abstracts.AccountService;
 import com.company.hrs.service.abstracts.PaymentService;
+import com.company.hrs.service.abstracts.PersonService;
 import com.company.hrs.service.constant.Message;
 import com.company.hrs.service.constant.StatusCode;
+import com.company.hrs.service.dtos.account.requests.CustomerRegisterForHotelOrBroker;
+import com.company.hrs.service.dtos.account.requests.RegisterRequest;
+import com.company.hrs.service.dtos.payment.requests.CreatePaymentForBrokerRequest;
 import com.company.hrs.service.dtos.payment.requests.CreatePaymentForCustomerRequest;
 import com.company.hrs.service.dtos.payment.requests.CreatePaymentForHotelRequest;
+import com.company.hrs.service.dtos.person.requests.CreatePersonRequest;
+import com.company.hrs.service.dtos.person.responses.CreatedPersonResponse;
+import com.company.hrs.service.result.DataResult;
 import com.company.hrs.service.result.Result;
 import com.company.hrs.service.result.SuccessResult;
 import com.company.hrs.utils.exceptions.ServiceException;
@@ -25,6 +37,9 @@ import java.util.UUID;
 public class PaymentServiceImpl implements PaymentService {
     private final PaymentRepository paymentRepository;
     private final ModelMapperService modelMapperService;
+    private final PersonRepository personRepository;
+    private final PersonService personService;
+    private final AccountService accountService;
     @Override
     @Transactional(rollbackFor = Exception.class)
     public Result createPaymentForCustomer(CreatePaymentForCustomerRequest createPaymentForCustomerRequest) {
@@ -55,6 +70,43 @@ public class PaymentServiceImpl implements PaymentService {
             payment.setPaymentStatus(PaymentStatus.PENDING);
         payment.getBooking().setBookingStatus(BookingStatus.CONFIRMED);
         payment.getBooking().setReservationNumber(UUID.randomUUID().toString());
+        Person person = personRepository.getPersonByEmailAndActive(createPaymentForHotelRequest.getBooking().getCustomer().getEmail(), Status.ACTIVE);
+        if(person == null){
+            CustomerRegisterForHotelOrBroker registerRequest = modelMapperService.forRequest().map(createPaymentForHotelRequest.getBooking().getCustomer(),CustomerRegisterForHotelOrBroker.class);
+            Result result = accountService.register(registerRequest);
+
+            if (result.getCode() == 200){
+                payment.getBooking().setOrderer(personRepository.getPersonByEmailAndActive(registerRequest.getEmail(), Status.ACTIVE));
+            }
+        }
+        else{
+            payment.getBooking().setOrderer(person);
+        }
+        paymentRepository.save(payment);
+        return new SuccessResult();
+    }
+
+    @Override
+    public Result createPaymentForBroker(CreatePaymentForBrokerRequest request) {
+        Payment payment = modelMapperService.forRequest().map(request, Payment.class);
+        if(request.getAmount().equals(request.getBooking().getPricePerNight()))
+            payment.setPaymentStatus(PaymentStatus.COMPLETED);
+        else
+            payment.setPaymentStatus(PaymentStatus.PENDING);
+        payment.getBooking().setBookingStatus(BookingStatus.CONFIRMED);
+        payment.getBooking().setReservationNumber(UUID.randomUUID().toString());
+        Person person = personRepository.getPersonByEmailAndActive(request.getBooking().getCustomer().getEmail(), Status.ACTIVE);
+        if(person == null){
+            CustomerRegisterForHotelOrBroker registerRequest = modelMapperService.forRequest().map(request.getBooking().getCustomer(),CustomerRegisterForHotelOrBroker.class);
+            Result result = accountService.register(registerRequest);
+
+            if (result.getCode() == 200){
+                payment.getBooking().setOrderer(personRepository.getPersonByEmailAndActive(registerRequest.getEmail(), Status.ACTIVE));
+            }
+        }
+        else{
+            payment.getBooking().setOrderer(person);
+        }
         paymentRepository.save(payment);
         return new SuccessResult();
     }

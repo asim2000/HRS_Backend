@@ -6,6 +6,7 @@ import com.company.hrs.security.JwtTokenProvider;
 import com.company.hrs.service.abstracts.*;
 import com.company.hrs.service.constant.Message;
 import com.company.hrs.service.constant.StatusCode;
+import com.company.hrs.service.dtos.account.requests.CustomerRegisterForHotelOrBroker;
 import com.company.hrs.service.dtos.account.requests.LoginRequest;
 import com.company.hrs.service.dtos.account.requests.RegisterRequest;
 import com.company.hrs.service.dtos.address.requestes.CreateAddressRequest;
@@ -95,6 +96,38 @@ public class AccountServiceImpl implements AccountService {
             employee.setPosition(Position.Admin);
             employeeService.create(employee);
         }
+        return new SuccessResult();
+    }
+
+    @Override
+    public Result register(CustomerRegisterForHotelOrBroker request) {
+        accountServiceRules.checkIfPersonEmailExists(request.getEmail());
+
+        CreateContactRequest contact = new CreateContactRequest();
+        contact.setEmail(request.getEmail());
+        contact.setPhone(request.getPhone());
+        CreatedContactResponse createdContact = contactService.create(contact).getData();
+
+        CreatePersonRequest createPersonRequest = new CreatePersonRequest();
+        createPersonRequest.setContactId(createdContact.getId());
+        createPersonRequest.setName(request.getName());
+        createPersonRequest.setSurname(request.getSurname());
+        createPersonRequest.setPassword(passwordEncoder.encode("customer123"));
+        Role role = null;
+        if(roleService.existsRoleByNameIgnoreCase("customer").getCode() == StatusCode.NOT_FOUND){
+            DataResult<CreatedRoleResponse> createdRoleResponse = roleService.create(new CreateRoleRequest("customer"));
+            if(createdRoleResponse.getCode() == StatusCode.SUCCESS){
+                role = modelMapperService.forResponse().map(createdRoleResponse.getData(),Role.class);
+            }
+        }else{
+            role = modelMapperService.forResponse().map(roleService.getRoleByNameIgnoreCase("customer").getData(),Role.class);
+        }
+
+        CreatedPersonResponse createdPerson = personService.create(createPersonRequest).getData();
+        CreatePersonRoleRequest personRoleRequest = new CreatePersonRoleRequest();
+        personRoleRequest.setPersonId(createdPerson.getId());
+        personRoleRequest.setRoleId(role.getId());
+        personRoleService.create(personRoleRequest);
         return new SuccessResult();
     }
 

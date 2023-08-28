@@ -1,6 +1,6 @@
 package com.company.hrs.service.dtos.booking.requests;
 
-import com.company.hrs.service.dtos.creditCard.requests.CreateCreditCardRequest;
+import com.company.hrs.service.dtos.person.requests.CreateCustomerForHotelOrBroker;
 import jakarta.persistence.Column;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -13,9 +13,11 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CreateBookingRequest {
-    @Column(name = "person_id")
+    @Column(name = "ordered_id")
     @NotNull
-    private Long personId;
+    private Long orderedId;
+    @NotNull
+    private CreateCustomerForHotelOrBroker customer;
     @Column(name = "room_id")
     @NotNull
     private Long roomId;

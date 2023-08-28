@@ -1,6 +1,7 @@
 package com.company.hrs.api.controller;
 
 import com.company.hrs.service.abstracts.PaymentService;
+import com.company.hrs.service.dtos.payment.requests.CreatePaymentForBrokerRequest;
 import com.company.hrs.service.dtos.payment.requests.CreatePaymentForCustomerRequest;
 import com.company.hrs.service.dtos.payment.requests.CreatePaymentForHotelRequest;
 import com.company.hrs.service.result.Result;
@@ -18,7 +19,11 @@ public class PaymentController {
         return paymentService.createPaymentForCustomer(createPaymentRequest);
     }
     @PostMapping("CreateForHotel")
-    public Result createpaymentforhotel(@RequestBody @Valid CreatePaymentForHotelRequest createPaymentForHotelRequest){
+    public Result createPaymentForHotel(@RequestBody @Valid CreatePaymentForHotelRequest createPaymentForHotelRequest){
         return paymentService.createPaymentForHotel(createPaymentForHotelRequest);
+    }
+    @PostMapping("CreateForBroker")
+    public Result createPaymentForBroker(@RequestBody @Valid CreatePaymentForBrokerRequest createPaymentForBrokerRequest){
+        return paymentService.createPaymentForBroker(createPaymentForBrokerRequest);
     }
 }

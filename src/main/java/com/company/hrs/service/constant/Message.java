@@ -22,4 +22,5 @@ public class Message {
     public static final String INVALID_AMOUNT_EXCEPTION = "Mebleg minimum odenisden az olmamalidir";
     public static final String USER_NOT_FOUND = "User not found";
     public static final String ACCESS_DENIED = "Access denied";
+    public static final String PERSON_NOT_FOUND = "Person not found";
 }

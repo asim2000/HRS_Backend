@@ -6,17 +6,21 @@ import com.company.hrs.repository.PersonRepository;
 import com.company.hrs.service.abstracts.PersonService;
 import com.company.hrs.service.constant.Message;
 import com.company.hrs.service.constant.StatusCode;
+import com.company.hrs.service.dtos.person.requests.CreateCustomerForHotelOrBroker;
 import com.company.hrs.service.dtos.person.requests.CreatePersonRequest;
 import com.company.hrs.service.dtos.person.responses.CreatedPersonResponse;
 import com.company.hrs.service.dtos.person.responses.GetPersonDetailsResponse;
 import com.company.hrs.service.dtos.person.responses.GetPersonPasswordByEmailResponse;
 import com.company.hrs.service.dtos.person.responses.LoginPersonResponse;
 import com.company.hrs.service.result.DataResult;
+import com.company.hrs.service.result.Result;
 import com.company.hrs.service.result.SuccessDataResult;
+import com.company.hrs.service.result.SuccessResult;
 import com.company.hrs.service.rules.PersonServiceRules;
 import com.company.hrs.utils.exceptions.ServiceException;
 import com.company.hrs.utils.mappers.ModelMapperService;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -28,11 +32,11 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class PersonServiceImpl implements PersonService {
-    private PersonRepository personRepository;
-    private ModelMapperService modelMapperService;
-    private PersonServiceRules personServiceRules;
+    private final PersonRepository personRepository;
+    private final ModelMapperService modelMapperService;
+    private final PersonServiceRules personServiceRules;
     @Override
     public DataResult<CreatedPersonResponse> create(CreatePersonRequest createPersonRequest) {
         Person p = modelMapperService.forRequest().map(createPersonRequest,Person.class);
@@ -44,6 +48,13 @@ public class PersonServiceImpl implements PersonService {
         CreatedPersonResponse response = modelMapperService.forResponse().map(person,CreatedPersonResponse.class);
         return new SuccessDataResult<CreatedPersonResponse>(response);
     }
+
+    @Override
+    public DataResult<CreatedPersonResponse> create(CreateCustomerForHotelOrBroker customer) {
+        Person person = personRepository.save(modelMapperService.forRequest().map(customer,Person.class));
+        return new SuccessDataResult<>(modelMapperService.forResponse().map(person,CreatedPersonResponse.class));
+    }
+
     public String saveImage(MultipartFile image){
         Path fileStorageLocation = Paths.get("D:\\Projects\\HRS_Frontend\\src\\assets\\img");
         String originalFileName = image.getOriginalFilename();
@@ -67,6 +78,15 @@ public class PersonServiceImpl implements PersonService {
     public DataResult<LoginPersonResponse> getPersonByEmail(String email) {
         LoginPersonResponse response = modelMapperService.forResponse().map(personRepository.getPersonByEmailAndActive(email,Status.ACTIVE),LoginPersonResponse.class);
         return new SuccessDataResult<LoginPersonResponse>(response);
+    }
+
+    @Override
+    public DataResult<GetPersonDetailsResponse> getByEmail(String email) {
+        Person person = personRepository.getPersonByEmailAndActive(email,Status.ACTIVE);
+        personServiceRules.checkIfPersonIsNull(person);
+        GetPersonDetailsResponse response = modelMapperService.forResponse().map(person,GetPersonDetailsResponse.class);
+
+        return new SuccessDataResult<GetPersonDetailsResponse>(response);
     }
 
     @Override

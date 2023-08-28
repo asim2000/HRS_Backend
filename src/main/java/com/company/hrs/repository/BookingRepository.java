@@ -10,8 +10,10 @@ import java.time.LocalDate;
 import java.util.List;
 
 public interface BookingRepository extends JpaRepository<Booking,Long> {
-    @Query("select b from Booking b where b.active=0 and b.person.id=:id")
+    @Query("select b from Booking b where b.active=0 and b.orderer.id=:id")
     List<Booking> getAllByPersonId(Long id);
     @Query("select b from Booking b where b.active=0 and b.room.hotel.id=:id")
     List<Booking> getAllBookingsByHotelId(Long id);
+    @Query("select b from Booking b where b.active=0 and b.ordered.id=:id")
+    List<Booking> getAllByOrderedId(Long id);
 }

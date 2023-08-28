@@ -19,7 +19,7 @@ import java.util.List;
 @Table(name = "person")
 public class Person extends BaseEntity{
     @OneToOne()
-    @JoinColumn(name = "address_id",referencedColumnName = "id", nullable = false)
+    @JoinColumn(name = "address_id",referencedColumnName = "id")
     private Address address;
 
 
@@ -37,16 +37,13 @@ public class Person extends BaseEntity{
     @Column(name = "surname", nullable = false, length = 20)
     private String surname;
 
-    @NotNull
-    @Column(name = "date_of_birth", nullable = false)
+    @Column(name = "date_of_birth")
     private LocalDate dateOfBirth;
 
     @NotNull
     @Column(name = "password", nullable = false)
     private String password;
 
-
-    @NotNull
     @Column(name = "gender")
     @Enumerated(value = EnumType.ORDINAL)
     private Gender gender;
