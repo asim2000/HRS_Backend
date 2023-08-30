@@ -5,6 +5,7 @@ import com.company.hrs.entities.Payment;
 import com.company.hrs.entities.Person;
 import com.company.hrs.enums.BookingStatus;
 import com.company.hrs.enums.PaymentStatus;
+import com.company.hrs.enums.PerCent;
 import com.company.hrs.enums.Status;
 import com.company.hrs.repository.BookingRepository;
 import com.company.hrs.repository.PaymentRepository;
@@ -44,7 +45,7 @@ public class PaymentServiceImpl implements PaymentService {
     @Transactional(rollbackFor = Exception.class)
     public Result createPaymentForCustomer(CreatePaymentForCustomerRequest createPaymentForCustomerRequest) {
         Long daysBetween = ChronoUnit.DAYS.between(createPaymentForCustomerRequest.getBooking().getCheckIn(), createPaymentForCustomerRequest.getBooking().getCheckOut()) + 1;
-        if(createPaymentForCustomerRequest.getBooking().getPricePerNight()*daysBetween/5>createPaymentForCustomerRequest.getAmount()){
+        if(createPaymentForCustomerRequest.getBooking().getPricePerNight()*daysBetween* PerCent.CUSTOMER_MINIMUM_PAY_PER_CENT.value /100>createPaymentForCustomerRequest.getAmount()){
             throw new ServiceException(StatusCode.INVALID_AMOUNT_EXCEPTION, Message.INVALID_AMOUNT_EXCEPTION);
         }
         //Odenis olunacaq

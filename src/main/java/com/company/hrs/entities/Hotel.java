@@ -15,10 +15,6 @@ import java.util.List;
 @Entity
 @Table(name = "hotel")
 public class Hotel extends BaseEntity{
-    @OneToOne
-    @NotNull
-    @JoinColumn(name = "employee_id",referencedColumnName = "id",nullable = false)
-    private Employee employee;
 
     @NotNull
     @OneToOne(cascade = CascadeType.ALL)

@@ -1,5 +1,6 @@
 package com.company.hrs.service.dtos.payment.requests;
 
+import com.company.hrs.service.dtos.booking.requests.CreateBookingForCustomerRequest;
 import com.company.hrs.service.dtos.booking.requests.CreateBookingRequest;
 import com.company.hrs.service.dtos.creditCard.requests.CreateCreditCardRequest;
 import jakarta.validation.constraints.NotNull;
@@ -14,7 +15,7 @@ public class CreatePaymentForCustomerRequest {
     @NotNull
     private CreateCreditCardRequest creditCard;
     @NotNull
-    private CreateBookingRequest booking;
+    private CreateBookingForCustomerRequest booking;
     @NotNull
     private Float amount;
     @NotNull

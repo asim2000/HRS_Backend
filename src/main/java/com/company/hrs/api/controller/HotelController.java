@@ -7,6 +7,7 @@ import com.company.hrs.service.dtos.hotel.requests.SearchHotelRequest;
 import com.company.hrs.service.dtos.hotel.response.GetHomeHotelsResponse;
 import com.company.hrs.service.dtos.hotel.response.GetByEmployeeIdResponse;
 import com.company.hrs.service.dtos.hotel.response.GetHotelDetailsResponse;
+import com.company.hrs.service.dtos.hotel.response.GetReportResponse;
 import com.company.hrs.service.result.DataResult;
 import com.company.hrs.service.result.Result;
 import jakarta.annotation.security.RolesAllowed;
@@ -41,5 +42,9 @@ public class HotelController {
     @GetMapping("{id}/ExistsRoom")
     public DataResult<Boolean> checkIfExistsRoom(@PathVariable Long id){
         return hotelService.checkIfExistsRoom(id);
+    }
+    @GetMapping("{id}/report")
+    public DataResult<GetReportResponse> getReportByHotel(@PathVariable Long id){
+        return hotelService.getReportByHotel(id);
     }
 }

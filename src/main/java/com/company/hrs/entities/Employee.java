@@ -22,6 +22,9 @@ public class Employee extends BaseEntity{
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "person_id",referencedColumnName = "id")
     private Person person;
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "hotel_id",referencedColumnName = "id")
+    private Hotel hotel;
 
     @NotNull
     @Column(name = "position", nullable = false)

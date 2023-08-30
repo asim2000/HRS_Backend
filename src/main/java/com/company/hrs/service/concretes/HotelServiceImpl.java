@@ -1,7 +1,7 @@
 package com.company.hrs.service.concretes;
 
 import com.company.hrs.entities.*;
-import com.company.hrs.entities.HotelService;
+import com.company.hrs.enums.PerCent;
 import com.company.hrs.enums.Status;
 import com.company.hrs.repository.EmployeeRepository;
 import com.company.hrs.repository.HotelRepository;
@@ -11,9 +11,7 @@ import com.company.hrs.service.constant.Message;
 import com.company.hrs.service.constant.StatusCode;
 import com.company.hrs.service.dtos.hotel.requests.CreateHotelRequest;
 import com.company.hrs.service.dtos.hotel.requests.SearchHotelRequest;
-import com.company.hrs.service.dtos.hotel.response.GetHomeHotelsResponse;
-import com.company.hrs.service.dtos.hotel.response.GetByEmployeeIdResponse;
-import com.company.hrs.service.dtos.hotel.response.GetHotelDetailsResponse;
+import com.company.hrs.service.dtos.hotel.response.*;
 import com.company.hrs.service.dtos.room.responses.GetUnReservedRoomsResponse;
 import com.company.hrs.service.result.DataResult;
 import com.company.hrs.service.result.Result;
@@ -33,6 +31,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
@@ -62,7 +61,6 @@ public class HotelServiceImpl implements com.company.hrs.service.abstracts.Hotel
         Hotel hotel = modelMapperService.forRequest().map(request,Hotel.class);
         hotel.setContact(contact);
         hotel.setAddress(address);
-        hotel.setEmployee(employee);
         hotel.setName(request.getName());
         hotel.setDescription(request.getDescription());
         hotel.setImages(Arrays.stream(request.getImages()).map(image->{
@@ -79,7 +77,9 @@ public class HotelServiceImpl implements com.company.hrs.service.abstracts.Hotel
             hotelService.setService(service);
             hotelServiceRepository.save(hotelService);
         });
-        hotelRepository.save(hotel);
+        Hotel createdHotel = hotelRepository.save(hotel);
+        employee.setHotel(createdHotel);
+        employeeRepository.save(employee);
         return new SuccessResult();
     }
 
@@ -144,9 +144,9 @@ public class HotelServiceImpl implements com.company.hrs.service.abstracts.Hotel
 
     @Override
     public DataResult<GetByEmployeeIdResponse> getByEmployeeId(Long id) {
-        Hotel hotel = hotelRepository.findByEmployeeId(id,Status.ACTIVE);
+        Hotel hotel = hotelRepository.findByPersonId(id,Status.ACTIVE);
         hotelServiceRules.checkIfHotelIsNull(hotel);
-        return new SuccessDataResult<GetByEmployeeIdResponse>(modelMapperService.forResponse().map(hotel,GetByEmployeeIdResponse.class));
+        return new SuccessDataResult<>(modelMapperService.forResponse().map(hotel,GetByEmployeeIdResponse.class));
     }
 
     @Override
@@ -155,6 +155,11 @@ public class HotelServiceImpl implements com.company.hrs.service.abstracts.Hotel
         if(hotel.getRooms() == null || hotel.getRooms().isEmpty())
             return new SuccessDataResult<>(false);
         return new SuccessDataResult<>(true);
+    }
+
+    @Override
+    public DataResult<GetReportResponse> getReportByHotel(Long id) {
+        return new SuccessDataResult<>(new GetReportResponse(hotelRepository.getReportOfHotel(id),hotelRepository.getReportOfOther(id,PerCent.HOTEL.value)));
     }
 
 
