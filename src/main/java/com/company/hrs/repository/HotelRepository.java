@@ -5,9 +5,11 @@ import com.company.hrs.entities.Hotel;
 import com.company.hrs.enums.Status;
 import com.company.hrs.service.dtos.hotel.response.GetHotelReportResponse;
 import com.company.hrs.service.dtos.hotel.response.GetOtherReportResponse;
+import com.company.hrs.service.dtos.hotel.response.GetReportResponse;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public interface HotelRepository extends JpaRepository<Hotel,Long> {
@@ -30,8 +32,8 @@ public interface HotelRepository extends JpaRepository<Hotel,Long> {
             "        FROM Employee e" +
             "        WHERE e.active = 0" +
             "            AND e.hotel.id = :id" +
-            "    )")
-    GetHotelReportResponse getReportOfHotel(Long id);
+            "    ) And (FUNCTION('YEAR', b.createdDate)>=FUNCTION('YEAR',:startDate) and FUNCTION('MONTH', b.createdDate)>=FUNCTION('MONTH',:startDate) and FUNCTION('YEAR', b.createdDate)<=FUNCTION('YEAR',:endDate) and FUNCTION('MONTH', b.createdDate)<=FUNCTION('MONTH',:endDate))")
+    GetHotelReportResponse getReportOfHotel(Long id,LocalDate startDate,LocalDate endDate);
     @Query("SELECT NEW com.company.hrs.service.dtos.hotel.response.GetOtherReportResponse(" +
             "    CAST(COUNT(b.id) AS INTEGER)," +
             "    CAST(SUM(b.pricePerNight * (FUNCTION('TIMESTAMPDIFF', DAY, b.checkIn, b.checkOut) + 1)) AS FLOAT)," +
@@ -45,6 +47,6 @@ public interface HotelRepository extends JpaRepository<Hotel,Long> {
             "        FROM Employee e" +
             "        WHERE e.active = 0" +
             "            AND e.hotel.id = :id" +
-            "    )")
-    GetOtherReportResponse getReportOfOther(Long id,Float perCent);
+            "    ) And (FUNCTION('YEAR', b.createdDate)>=FUNCTION('YEAR',:startDate) and FUNCTION('MONTH', b.createdDate)>=FUNCTION('MONTH',:startDate) and FUNCTION('YEAR', b.createdDate)<=FUNCTION('YEAR',:endDate) and FUNCTION('MONTH', b.createdDate)<=FUNCTION('MONTH',:endDate))")
+    GetOtherReportResponse getReportOfOther(Long id, Float perCent,LocalDate startDate,LocalDate endDate);
 }

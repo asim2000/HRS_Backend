@@ -6,6 +6,7 @@ import com.company.hrs.service.dtos.hotel.response.GetHomeHotelsResponse;
 import com.company.hrs.service.dtos.hotel.response.GetByEmployeeIdResponse;
 import com.company.hrs.service.dtos.hotel.response.GetHotelDetailsResponse;
 import com.company.hrs.service.dtos.hotel.response.GetReportResponse;
+import com.company.hrs.service.dtos.report.requests.PostDateRangeRequest;
 import com.company.hrs.service.result.DataResult;
 import com.company.hrs.service.result.Result;
 
@@ -19,5 +20,5 @@ public interface HotelService {
      DataResult<GetByEmployeeIdResponse> getByEmployeeId(Long id);
      DataResult<Boolean> checkIfExistsRoom(Long hotelId);
 
-    DataResult<GetReportResponse> getReportByHotel(Long id);
+    DataResult<GetReportResponse> getReportByHotel(Long id, PostDateRangeRequest request);
 }

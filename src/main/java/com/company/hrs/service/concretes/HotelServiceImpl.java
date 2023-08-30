@@ -12,6 +12,7 @@ import com.company.hrs.service.constant.StatusCode;
 import com.company.hrs.service.dtos.hotel.requests.CreateHotelRequest;
 import com.company.hrs.service.dtos.hotel.requests.SearchHotelRequest;
 import com.company.hrs.service.dtos.hotel.response.*;
+import com.company.hrs.service.dtos.report.requests.PostDateRangeRequest;
 import com.company.hrs.service.dtos.room.responses.GetUnReservedRoomsResponse;
 import com.company.hrs.service.result.DataResult;
 import com.company.hrs.service.result.Result;
@@ -31,6 +32,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
@@ -158,8 +160,8 @@ public class HotelServiceImpl implements com.company.hrs.service.abstracts.Hotel
     }
 
     @Override
-    public DataResult<GetReportResponse> getReportByHotel(Long id) {
-        return new SuccessDataResult<>(new GetReportResponse(hotelRepository.getReportOfHotel(id),hotelRepository.getReportOfOther(id,PerCent.HOTEL.value)));
+    public DataResult<GetReportResponse> getReportByHotel(Long id, PostDateRangeRequest request) {
+        return new SuccessDataResult<>(new GetReportResponse(hotelRepository.getReportOfHotel(id,request.getStartDate(),request.getEndDate()),hotelRepository.getReportOfOther(id,PerCent.HOTEL.value,request.getStartDate(),request.getEndDate())));
     }
 
 
