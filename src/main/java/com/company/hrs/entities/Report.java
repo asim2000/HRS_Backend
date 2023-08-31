@@ -7,6 +7,8 @@ import jakarta.persistence.Table;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
+import java.time.LocalDate;
+
 @Getter
 @Setter
 @AllArgsConstructor
@@ -24,6 +26,5 @@ public class Report extends BaseEntity{
     @JoinColumn(name = "recipient_id",referencedColumnName = "id")
     Person recipient;
     Float amount;
-    Byte month;
-    Byte year;
+    LocalDate payingDate;
 }

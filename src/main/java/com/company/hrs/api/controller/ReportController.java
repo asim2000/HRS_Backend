@@ -1,6 +1,8 @@
 package com.company.hrs.api.controller;
 
 import com.company.hrs.service.abstracts.ReportService;
+import com.company.hrs.service.dtos.report.requests.PostDateRangeRequest;
+import com.company.hrs.service.result.DataResult;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -10,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 public class ReportController {
     private final ReportService reportService;
     @PostMapping("recipient/{id}")
-    public Float getAmountByRecipient(@PathVariable Long id, @RequestParam Integer month,@RequestParam Integer year){
-        return reportService.getAmountByRecipient(id,month,year);
+    public DataResult<Float> getAmountByRecipient(@PathVariable Long id, @RequestBody PostDateRangeRequest request){
+        return reportService.getAmountByRecipient(id,request);
     }
 }

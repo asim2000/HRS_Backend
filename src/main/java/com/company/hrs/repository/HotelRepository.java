@@ -26,6 +26,7 @@ public interface HotelRepository extends JpaRepository<Hotel,Long> {
             ")" +
             "FROM Booking b " +
             "WHERE b.active = 0" +
+            "    And b.bookingStatus=3 " +
             "    AND b.room.hotel.id = :id" +
             "    AND b.ordered.id IN (" +
             "        SELECT e.person.id" +
@@ -41,6 +42,7 @@ public interface HotelRepository extends JpaRepository<Hotel,Long> {
             ")" +
             "FROM Booking b " +
             "WHERE b.active = 0" +
+            "    And b.bookingStatus=3 " +
             "    AND b.room.hotel.id = :id" +
             "    AND b.ordered.id NOT IN (" +
             "        SELECT e.person.id" +
